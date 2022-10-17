@@ -1,0 +1,74 @@
+<div class="flex flex-col p-4">
+  <div class="flex">
+    <h1 class="font-bold text-xl">Thành viên</h1>
+  </div>
+  <div class="flex mt-10 p-4">
+    <div class="flex-1">
+      <mat-form-field appearance="fill" style="width: 85%">
+        <mat-label>Favorite food</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let food of foods" [value]="food.value">
+            {{ food.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="flex-1">
+      <mat-form-field appearance="fill" style="width: 85%">
+        <mat-label>Favorite food</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let food of foods" [value]="food.value">
+            {{ food.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="flex">
+    <div class="flex justify-end">
+      <button mat-raised-button color="primary">Thêm</button>
+    </div>
+  </div>
+  <div class="flex mt-10 p-6">
+    <table class="w-full" table_admin>
+      <thead class="table_admin">
+        <th class="table_admin text-base" style="width: 10%; height: 60px"></th>
+        <th class="table_admin text-base" style="width: 5%; height: 60px">
+          No.
+        </th>
+        <th class="table_admin text-base" style="height: 60px">
+          Tên thành viên
+        </th>
+        <th class="table_admin text-base" style="height: 60px">Mật khẩu</th>
+        <th class="table_admin text-base" style="height: 60px">Trạng thái</th>
+      </thead>
+      <tbody *ngFor="let item of foods; index as i">
+        <tr>
+          <td class="table_admin">
+            <!-- <button mat-raised-button >Basic</button> -->
+            <div class="flex justify-center item-center">
+              <button mat-raised-button [matMenuTriggerFor]="menu">Menu</button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item>Sửa</button>
+              <button mat-menu-item>Xoá</button>
+              <button mat-menu-item>Ngừng sử dụng</button>
+            </mat-menu>
+            </div>
+          </td>
+          <td class="table_admin">
+            <span class="p-4">
+              {{ i + 1 }}
+            </span>
+          </td>
+          <td class="table_admin">
+            {{ item.value }}
+          </td>
+          <td class="table_admin">
+            {{ item.viewValue }}
+          </td>
+          <td class="table_admin">Đang sử dụng</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

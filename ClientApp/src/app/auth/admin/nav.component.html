@@ -1,0 +1,41 @@
+<mat-drawer-container class="example-container" style="height: 100% !important;">
+  <mat-drawer mode="side" opened  class="bg-current color-white" style="width:20% !important;height:100% !important;">
+    <div class="flex item-container justify-center w-full">
+      <div class="item-container justify-center  p-4">
+        <span class="font-bold text-2xl text-white">
+          Khoá Luận Tốt Nghiệp
+        </span>
+      </div>
+    </div>
+
+    <div class="flex item-container justify-center w-full mb-5">
+      <img src="/assets/img/angular.jpg" alt="" style=" width: 100px; height: 100px;" class="rounded-full">
+    </div>
+   <div class="flex flex-col w-full" *ngFor="let item of menu">
+    <div class="flex  w-full hover:bg-sky-700" routerLink="/{{item.link}}" routerLinkActive="active-link" >
+      <div class="p-4">
+        <span class=" text-xl text-white">
+          {{item.label}}
+        </span>
+      </div>
+    </div>
+   </div>
+  </mat-drawer>
+  <mat-drawer-content  style="width:80% !important;height:100% !important">
+    <div class="flex flex-col w-full h-full">
+      <div  style="width:100% !important;height:95% !important">
+        <router-outlet></router-outlet>
+        </div>
+        <div class="flex justify-end pr-4 mb-2" style="width:100% !important;height:5% !important">
+          <div class="">
+            Copyright © {{anio}} Đại học Công Nghiệp Thực Phẩm Thành Phố Hồ Chí Minh
+            <br>
+            <div class="flex justify-end">
+              Powered by Lê Thanh Thái & Võ Thị Thu Hà
+            </div>
+
+          </div>
+        </div>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>
