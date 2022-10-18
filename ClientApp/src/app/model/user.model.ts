@@ -1,5 +1,5 @@
 import { User } from "../database/user.data";
 
-export interface user_model {
+export class user_model {
   db: User;
 }
