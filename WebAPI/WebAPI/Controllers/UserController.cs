@@ -11,6 +11,12 @@ using WebAPI.Data;
 using WebAPI.Model;
 using WebAPI.System;
 using WebAPI.Support;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers
 {
@@ -20,8 +26,10 @@ namespace WebAPI.Controllers
     public class UserController: ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        public UserController(ApplicationDbContext _context) {
-            this._context = _context;    
+        private readonly ApplicationSettings _appSettings;
+        public UserController(ApplicationDbContext _context, IOptions<ApplicationSettings> appSettings) {
+            this._context = _context;
+            _appSettings = appSettings.Value;
         }
         [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
@@ -39,6 +47,38 @@ namespace WebAPI.Controllers
               {
                   db = d,
               }).ToList();
+            return Ok(result);
+        }
+        [HttpPost("login")]
+        public async Task<IActionResult> login( User users)
+        {
+            var model = _context.Users.Where(q => q.name == users.name).SingleOrDefault();
+
+            if (model != null)
+            {
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                        new Claim("UserID",model.id.ToString())
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(1),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+                var token = tokenHandler.WriteToken(securityToken);
+                return Ok(new { token });
+            }
+            else
+                return BadRequest(new { message = "Username or password is incorrect." });
+        }
+        [HttpGet("[action]")]
+        [Authorize]
+        public async Task<Object> get_profile_user()
+        {
+            string user_id = User.Claims.First(q => q.Type == "UserID").Value;
+            var result = _context.Users.Where(q => q.id == user_id).SingleOrDefault();
             return Ok(result);
         }
         [HttpPost("edit")]

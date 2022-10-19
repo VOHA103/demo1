@@ -40,13 +40,15 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import {MatNativeDateModule} from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 import { nav_indexComponent } from './auth/admin/nav.component';
 import { sys_user_popupComponent } from './system/sys_user/sys_user_popup.component';
 import { login_indexComponent } from './auth/login/login.component';
+import { sys_user_service } from './service/sys_user.service';
+import { AuthInterceptor } from './auth/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -101,7 +103,11 @@ import { login_indexComponent } from './auth/login/login.component';
     MatTooltipModule,
     MatTreeModule,
   ],
-  providers: [],
+  providers: [sys_user_service, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

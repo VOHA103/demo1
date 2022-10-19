@@ -28,6 +28,11 @@ export class sys_user_service {
     const url = "https://localhost:44334/User/GetAll";
     return this.http.get<user_model[]>(url);
   }
+    //lấy danh sách user
+    public get_profile_user(){
+      const url = "https://localhost:44334/User/get_profile_user";
+      return this.http.get(url);
+    }
   // thêm user
   public addUser(users: user_model) {
     const url = "https://localhost:44334/User/users";
@@ -45,7 +50,7 @@ export class sys_user_service {
   }
   //login
   public login(users: User) {
-    const url = "https://localhost:44334/User/";
+    const url = "https://localhost:44334/User/login";
     return this.http.post(url, users);
   }
 }
