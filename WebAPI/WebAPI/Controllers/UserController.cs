@@ -50,13 +50,6 @@ namespace WebAPI.Controllers
             _context.SaveChanges();
             return Ok(users);
         }
-        [HttpPost("create")]
-        public User create([FromBody] User users)
-        {
-            _context.Users.Add(users);
-            _context.SaveChanges();
-            return users;
-        }
         [HttpPost("users")]
         public async Task<IActionResult> Post([FromBody] user_model users)
         {

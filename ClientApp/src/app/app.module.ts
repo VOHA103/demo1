@@ -46,6 +46,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 import { nav_indexComponent } from './auth/admin/nav.component';
 import { sys_user_popupComponent } from './system/sys_user/sys_user_popup.component';
+import { login_indexComponent } from './auth/login/login.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { sys_user_popupComponent } from './system/sys_user/sys_user_popup.compon
     sys_user_indexComponent,
     nav_indexComponent,
     sys_user_popupComponent,
+    login_indexComponent,
   ],
   imports: [
     CommonModule,
