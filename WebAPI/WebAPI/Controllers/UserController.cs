@@ -23,11 +23,13 @@ namespace WebAPI.Controllers
         public UserController(ApplicationDbContext _context) {
             this._context = _context;    
         }
-        [HttpGet("id")]
-        public User GetById([FromQuery] JObject json)
+        [HttpGet("[action]")]
+        public IActionResult delete([FromQuery] string id)
         {
-            var id = json.GetValue("id").ToString();
-            return _context.Users.Where(a=>a.id==id).FirstOrDefault();
+            var result = _context.Users.Where(a => a.id == id).SingleOrDefault();
+            _context.Users.Remove(result);
+            _context.SaveChanges();
+            return Ok();
         }
         [HttpGet("[action]")]
         public IActionResult GetAll()
@@ -38,6 +40,15 @@ namespace WebAPI.Controllers
                   db = d,
               }).ToList();
             return Ok(result);
+        }
+        [HttpPost("edit")]
+        public async Task<IActionResult> edit([FromBody] user_model users)
+        {
+            var model = _context.Users.Where(q => q.id == users.db.id).SingleOrDefault();
+            model.name = users.db.name;
+            model.pass = users.db.pass;
+            _context.SaveChanges();
+            return Ok(users);
         }
         [HttpPost("create")]
         public User create([FromBody] User users)

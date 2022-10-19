@@ -46,6 +46,20 @@ export class sys_user_popupComponent {
     });
     console.log(this.user_model);
   }
+  Edit(): void {
+    this.sys_user_service.editUser(this.user_model).subscribe((result) => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        showConfirmButton: false,
+        timer: 2000
+      }).then((result) => {
+      this.Close();
+      })
+    });
+    console.log(this.user_model);
+  }
+
   ngOnInit(): void {
     this.lst_status = [
       {

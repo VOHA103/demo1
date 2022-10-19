@@ -33,6 +33,16 @@ export class sys_user_service {
     const url = "https://localhost:44334/User/users";
     return this.http.post(url, users);
   }
+  // edit user
+  public editUser(users: user_model) {
+    const url = "https://localhost:44334/User/edit";
+    return this.http.post(url, users);
+  }
+  // edit user
+  public deleteUser(id: string) {
+    const url = "https://localhost:44334/User/delete?id="+id;
+    return this.http.get(url);
+  }
   //login
   public login(users: User) {
     const url = "https://localhost:44334/User/";

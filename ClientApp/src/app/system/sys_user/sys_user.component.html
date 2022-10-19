@@ -5,7 +5,7 @@
  <mat-card>
   <div class="flex mt-10 p-4">
     <div class="flex-1">
-      <mat-form-field appearance="fill" style="width: 85%">
+      <mat-form-field appearance="fill" style="width: 95%">
         <mat-label>Tên thành viên</mat-label>
         <mat-select>
           <mat-option *ngFor="let food of foods" [value]="food.value">
@@ -15,7 +15,7 @@
       </mat-form-field>
     </div>
     <div class="flex-1">
-      <mat-form-field appearance="fill" style="width: 85%">
+      <mat-form-field appearance="fill" style="width: 95%">
         <mat-label>Trạng thái</mat-label>
         <mat-select>
           <mat-option *ngFor="let food of foods" [value]="food.value">
@@ -56,8 +56,8 @@
             <div class="flex justify-center item-center">
               <button mat-raised-button [matMenuTriggerFor]="menu">Menu</button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item>Sửa</button>
-              <button mat-menu-item>Xoá</button>
+              <button mat-menu-item (click)="openDialogDetail(item)">Sửa</button>
+              <button mat-menu-item (click)="delete(item.db.id)">Xoá</button>
               <button mat-menu-item>Ngừng sử dụng</button>
             </mat-menu>
             </div>
