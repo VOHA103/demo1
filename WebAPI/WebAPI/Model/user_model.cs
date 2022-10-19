@@ -11,7 +11,9 @@ namespace WebAPI.Model
         public user_model()
         {
             db = new User();
+            lst_cong_viec = new List<string>();
         }
         public User db { get; set; }
+        public List<string> lst_cong_viec { get; set; }
     }
 }

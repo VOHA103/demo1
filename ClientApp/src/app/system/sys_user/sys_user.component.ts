@@ -4,6 +4,7 @@ import { Component, OnInit, Input } from "@angular/core";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { sys_user_popupComponent } from './sys_user_popup.component';
+import { user_model } from '@/app/model/user.model';
 
 @Component({
   selector: "sys_user_index",
@@ -13,6 +14,7 @@ import { sys_user_popupComponent } from './sys_user_popup.component';
 export class sys_user_indexComponent implements OnInit {
   public foods:any=[];
   public listData:any=[];
+  public model:user_model;
   constructor(private http: HttpClient, private sys_user_service:sys_user_service, public dialog: MatDialog) {
 
   }
@@ -20,13 +22,16 @@ export class sys_user_indexComponent implements OnInit {
     const dialogRef = this.dialog.open(sys_user_popupComponent, {
       width: '850px',
       data: {
-        id:0
+        db:{
+          id:"10"
+        },
+        lst_cong_viec:null
       },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-
+      this.loadAPI();
     });
   }
   loadAPI() {
@@ -37,15 +42,5 @@ export class sys_user_indexComponent implements OnInit {
   }
   ngOnInit(): void {
     this.loadAPI();
-    this.foods=[
-      {
-        value:"sys_user_index",
-        viewValue:"Thành viên"
-      },
-      {
-        value:"sys_user_index1",
-        viewValue:"Công việc"
-      },
-    ]
   }
 }

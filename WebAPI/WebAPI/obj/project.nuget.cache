@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "PNcFQ00Ma3biXm7BRNIU88BEYaE96kDXAXpMFQdo2K2BbLtYAeu84YsG+ubecnGKCJxo8U7tPUmjzeM1rn9crw==",
+  "dgSpecHash": "UVBzF3GySXCKQfqXf9u9Uhgzoyw2YRVEyjQBk2fc+ik2ZKtaQidI13aabclH0NGRGF/BrmfAbaOuaHOIHqmRyA==",
   "success": true,
-  "projectFilePath": "D:\\Github\\Angular\\WebAPI\\WebAPI\\WebAPI\\WebAPI.csproj",
+  "projectFilePath": "D:\\Github\\khoa_luan_tot_nghiep\\WebAPI\\WebAPI\\WebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\thanh\\.nuget\\packages\\microsoft.aspnetcore.cors\\2.2.0\\microsoft.aspnetcore.cors.2.2.0.nupkg.sha512",
     "C:\\Users\\thanh\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",

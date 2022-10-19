@@ -5546,11 +5546,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Github\\Angular\\WebAPI\\WebAPI\\WebAPI\\WebAPI.csproj",
+      "projectUniqueName": "D:\\Github\\khoa_luan_tot_nghiep\\WebAPI\\WebAPI\\WebAPI.csproj",
       "projectName": "WebAPI",
-      "projectPath": "D:\\Github\\Angular\\WebAPI\\WebAPI\\WebAPI\\WebAPI.csproj",
+      "projectPath": "D:\\Github\\khoa_luan_tot_nghiep\\WebAPI\\WebAPI\\WebAPI.csproj",
       "packagesPath": "C:\\Users\\thanh\\.nuget\\packages\\",
-      "outputPath": "D:\\Github\\Angular\\WebAPI\\WebAPI\\WebAPI\\obj\\",
+      "outputPath": "D:\\Github\\khoa_luan_tot_nghiep\\WebAPI\\WebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\thanh\\AppData\\Roaming\\NuGet\\NuGet.Config",

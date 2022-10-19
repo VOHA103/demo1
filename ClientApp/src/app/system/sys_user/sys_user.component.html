@@ -49,7 +49,7 @@
         <th class="table_admin text-base" style="height: 60px">Mật khẩu</th>
         <th class="table_admin text-base" style="height: 60px">Trạng thái</th>
       </thead>
-      <tbody *ngFor="let item of foods; index as i">
+      <tbody *ngFor="let item of listData; index as i">
         <tr>
           <td class="table_admin">
             <!-- <button mat-raised-button >Basic</button> -->
@@ -68,10 +68,10 @@
             </span>
           </td>
           <td class="table_admin">
-            {{ item.value }}
+            {{ item.db.name }}
           </td>
           <td class="table_admin">
-            {{ item.viewValue }}
+            {{ item.db.pass }}
           </td>
           <td class="table_admin">Đang sử dụng</td>
         </tr>

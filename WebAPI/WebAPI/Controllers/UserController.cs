@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using WebAPI.Data;
 using WebAPI.Model;
 using WebAPI.System;
+using WebAPI.Support;
 
 namespace WebAPI.Controllers
 {
@@ -46,9 +47,10 @@ namespace WebAPI.Controllers
             return users;
         }
         [HttpPost("users")]
-        public async Task<IActionResult> Post([FromBody] User users)
+        public async Task<IActionResult> Post([FromBody] user_model users)
         {
-            _context.Users.Add(users);
+            users.db.id = RandomExtension.getStringID();
+            _context.Users.Add(users.db);
             _context.SaveChanges();
             return Ok(users);
         }

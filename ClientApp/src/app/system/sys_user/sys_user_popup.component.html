@@ -11,6 +11,7 @@
     </div>
   </div>
   <mat-card class="flex">
+
     <div class="flex">
       <div class="flex-1">
         <mat-form-field
@@ -19,12 +20,7 @@
           style="width: 95%"
         >
           <mat-label>Tên</mat-label>
-          <input
-            matInput
-            placeholder="Name"
-            type="text"
-            [(ngModel)]="user.name"
-          />
+          <input matInput placeholder="Tên" [(ngModel)]="user_model.db.name" />
         </mat-form-field>
       </div>
       <div class="flex-1">
@@ -34,44 +30,17 @@
           style="width: 95%"
         >
           <mat-label>Số điện thoại</mat-label>
-          <input
-            matInput
-            placeholder="Phone"
-            type="text"
-            [(ngModel)]="user.pass"
-          />
+          <input matInput placeholder="Số điện thoại" [(ngModel)]="user_model.db.pass" />
         </mat-form-field>
       </div>
     </div>
-    <div class="flex">
-      <div class="flex-1">
-        <mat-form-field
-          class="example-full-width"
-          appearance="fill"
-          style="width: 95%"
-        >
-          <mat-label>Tên</mat-label>
-          <input matInput placeholder="Tên" [(ngModel)]="user.name" />
-        </mat-form-field>
-      </div>
-      <div class="flex-1">
-        <mat-form-field
-          class="example-full-width"
-          appearance="fill"
-          style="width: 95%"
-        >
-          <mat-label>Số điện thoại</mat-label>
-          <input matInput placeholder="Số điện thoại" [(ngModel)]="user.pass" />
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="flex">
+    <!-- <div class="flex">
       <div class="flex-1">
         <mat-form-field appearance="fill" style="width: 95%">
           <mat-label>Tên thành viên</mat-label>
-          <mat-select  [(ngModel)]="user.id_value" name="food">
-            <mat-option *ngFor="let food of foods" [value]="food.value">
-              {{ food.viewValue }}
+          <mat-select  [(ngModel)]="user_model.db.id_value" name="food">
+            <mat-option *ngFor="let food of lst_status" [value]="food.id">
+              {{ food.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -79,12 +48,12 @@
       <div class="flex-1">
         <mat-form-field appearance="fill"  style="width: 95%">
           <mat-label>Toppings</mat-label>
-          <mat-select [(ngModel)]="user.id_value2"   multiple>
-            <mat-option *ngFor="let food of foods" [value]="food.value">{{food.viewValue }}</mat-option>
+          <mat-select [(ngModel)]="user_model.lst_cong_viec" multiple>
+            <mat-option *ngFor="let food of lst_status" [value]="food.id">{{food.name }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-    </div>
+    </div> -->
   </mat-card>
   <div class="flex pl-6 pt-6 justify-end">
     <div class="flex mr-3">

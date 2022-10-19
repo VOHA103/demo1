@@ -29,8 +29,8 @@ export class sys_user_service {
     return this.http.get<user_model[]>(url);
   }
   // thêm user
-  public addUser(users: User) {
-    const url = "https://localhost:44334/User/";
+  public addUser(users: user_model) {
+    const url = "https://localhost:44334/User/users";
     return this.http.post(url, users);
   }
   //login
