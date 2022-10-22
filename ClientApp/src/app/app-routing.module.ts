@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { nav_indexComponent } from './auth/admin/nav.component';
-import { sys_user_indexComponent } from './system/sys_user/sys_user.component';
 import { login_indexComponent } from './auth/login/login.component';
 import { AuthGuard } from './auth/auth.guard';
+import { sys_user_indexComponent } from './system/sys_user/sys_user.component';
 
 const routes: Routes = [
   { path: "login", component: login_indexComponent },

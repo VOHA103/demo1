@@ -8,8 +8,8 @@ import { Component, OnInit, Input, Inject } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { sys_user_service } from './../../service/sys_user.service';
-import { User } from '@/app/database/user.data';
 import Swal from 'sweetalert2'
+import { User } from '@/app/database/user.data';
 @Component({
   selector: 'sys_user_popup',
   templateUrl: './sys_user_popup.component.html',
@@ -34,6 +34,7 @@ export class sys_user_popupComponent {
     this.dialogRef.close();
   }
   Save(): void {
+    debugger
     this.sys_user_service.addUser(this.user_model).subscribe((result) => {
       Swal.fire({
         icon: 'success',

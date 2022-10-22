@@ -45,10 +45,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {MatNativeDateModule} from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 import { nav_indexComponent } from './auth/admin/nav.component';
-import { sys_user_popupComponent } from './system/sys_user/sys_user_popup.component';
 import { login_indexComponent } from './auth/login/login.component';
 import { sys_user_service } from './service/sys_user.service';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { PaginationComponent } from './pagination/pagination.component';
+import { sys_user_popupComponent } from './system/sys_user/sys_user_popup.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     nav_indexComponent,
     sys_user_popupComponent,
     login_indexComponent,
+    PaginationComponent,
   ],
   imports: [
     CommonModule,

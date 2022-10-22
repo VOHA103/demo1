@@ -25,32 +25,33 @@ export class sys_user_service {
   constructor(private http: HttpClient) {}
   //lấy danh sách user
   public getAll(): Observable<user_model[]> {
-    const url = "https://localhost:44334/User/GetAll";
+    const url = this.REST_API_URL+"/User/GetAll";
     return this.http.get<user_model[]>(url);
   }
     //lấy danh sách user
     public get_profile_user(){
-      const url = "https://localhost:44334/User/get_profile_user";
+      const url = this.REST_API_URL+"/User/get_profile_user";
       return this.http.get(url);
     }
   // thêm user
   public addUser(users: user_model) {
-    const url = "https://localhost:44334/User/users";
+    debugger
+    const url = this.REST_API_URL+"/User/users";
     return this.http.post(url, users);
   }
   // edit user
   public editUser(users: user_model) {
-    const url = "https://localhost:44334/User/edit";
+    const url = this.REST_API_URL+"/User/edit";
     return this.http.post(url, users);
   }
   // edit user
   public deleteUser(id: string) {
-    const url = "https://localhost:44334/User/delete?id="+id;
+    const url = this.REST_API_URL+"/User/delete?id="+id;
     return this.http.get(url);
   }
   //login
   public login(users: User) {
-    const url = "https://localhost:44334/User/login";
+    const url = this.REST_API_URL+"/User/login";
     return this.http.post(url, users);
   }
 }

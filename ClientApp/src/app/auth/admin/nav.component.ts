@@ -19,27 +19,24 @@ anio: number = new Date().getFullYear();
 
 this.currentYear=new Date("YYYY");
   }
-// public get_profile_user(){
-//   debugger
-//   this.sys_user_service.get_profile_user().subscribe(
-//     (res:any) => {
-//       this.userDetails = res;
-//       console.log("user");
-//       console.log(this.userDetails);
-
-//     },
-//     err => {
-//       console.log(err);
-//     },
-//   );
-// }
+public get_profile_user():void{
+  debugger
+  this.sys_user_service.get_profile_user().subscribe(
+    (res:any) => {
+      this.userDetails = res;
+    },
+    err => {
+      console.log(err);
+    },
+  );
+}
 onLogout() {
   localStorage.removeItem('token');
   this.router.navigate(['/login']);
 }
   ngOnInit(): void {
+    this.get_profile_user();
     console.log(localStorage.getItem('token'));
-
 
 this.menu=[
   {
@@ -49,6 +46,10 @@ this.menu=[
   {
     link:"sys_user_index1",
     label:"Công việc"
+  },
+  {
+    link:"login",
+    label:"Bộ môn"
   },
 
 ]

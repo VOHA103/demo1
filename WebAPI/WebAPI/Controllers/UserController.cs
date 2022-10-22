@@ -17,6 +17,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
+using WebAPI.Services.Interfaces;
 
 namespace WebAPI.Controllers
 {
@@ -27,14 +28,16 @@ namespace WebAPI.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ApplicationSettings _appSettings;
-        public UserController(ApplicationDbContext _context, IOptions<ApplicationSettings> appSettings) {
+        private readonly IUsersServices usersServices;
+        public UserController(ApplicationDbContext _context, IOptions<ApplicationSettings> appSettings, IUsersServices usersServices) {
             this._context = _context;
             _appSettings = appSettings.Value;
+            this.usersServices = usersServices;
         }
         [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
         {
-            var result = _context.Users.Where(a => a.id == id).SingleOrDefault();
+            var result = _context.Users.Find(id);
             _context.Users.Remove(result);
             _context.SaveChanges();
             return Ok();
@@ -52,39 +55,48 @@ namespace WebAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> login( User users)
         {
-            var model = _context.Users.Where(q => q.name == users.name).SingleOrDefault();
+            var model = _context.Users.SingleOrDefault(q => q.name == users.name);
 
             if (model != null)
             {
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim("UserID",model.id.ToString())
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(1),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                var token = tokenHandler.WriteToken(securityToken);
+                string token = GenerateToken(model);
                 return Ok(new { token });
             }
             else
                 return BadRequest(new { message = "Username or password is incorrect." });
         }
+
+        private string GenerateToken(User model)
+        {
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                        new Claim("UserID",model.id.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddDays(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret)), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var securityToken = tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.WriteToken(securityToken);
+            return token;
+        }
+
         [HttpGet("[action]")]
         [Authorize]
-        public async Task<Object> get_profile_user()
+        public async Task<IActionResult> get_profile_user()
         {
-            string user_id = User.Claims.First(q => q.Type == "UserID").Value;
-            var result = _context.Users.Where(q => q.id == user_id).SingleOrDefault();
-            return Ok(result);
+
+            //hàm này sau khi login thì t get api user á
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var user =await usersServices.GetUserAsync(user_id);
+            return Ok(user);
         }
         [HttpPost("edit")]
         public async Task<IActionResult> edit([FromBody] user_model users)
         {
-            var model = _context.Users.Where(q => q.id == users.db.id).SingleOrDefault();
+            var model =await _context.Users.FindAsync(users.db.id);
             model.name = users.db.name;
             model.pass = users.db.pass;
             _context.SaveChanges();
@@ -95,7 +107,7 @@ namespace WebAPI.Controllers
         {
             users.db.id = RandomExtension.getStringID();
             _context.Users.Add(users.db);
-            _context.SaveChanges();
+           await _context.SaveChangesAsync();
             return Ok(users);
         }
     }
