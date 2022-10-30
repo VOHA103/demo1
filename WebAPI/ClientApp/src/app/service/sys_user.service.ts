@@ -24,18 +24,23 @@ export class sys_user_service {
   };
   constructor(private http: HttpClient) {}
   //lấy danh sách user
-  public getAll(): Observable<user_model[]> {
-    const url = this.REST_API_URL+"/User/GetAll";
-    return this.http.get<user_model[]>(url);
+  public DataHandel(filter:any){
+    debugger
+    const url = this.REST_API_URL+"/User/DataHandel";
+    return this.http.post(url,filter);
   }
-    //lấy danh sách user
+    //lấy thông tin user
     public get_profile_user(){
       const url = this.REST_API_URL+"/User/get_profile_user";
       return this.http.get(url);
     }
+    //lấy danh sách user
+    public get_id_user(){
+      const url = this.REST_API_URL+"/User/get_id_user";
+      return this.http.get(url);
+    }
   // thêm user
   public addUser(users: user_model) {
-    debugger
     const url = this.REST_API_URL+"/User/users";
     return this.http.post(url, users);
   }

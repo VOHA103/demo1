@@ -14,16 +14,26 @@ export class nav_indexComponent implements OnInit {
 public menu:any=[];
 public currentYear:Date;
 public userDetails:any;
+public id_user:any;
 anio: number = new Date().getFullYear();
   constructor(private router: Router,private http: HttpClient, private sys_user_service:sys_user_service, public dialog: MatDialog) {
 
 this.currentYear=new Date("YYYY");
   }
 public get_profile_user():void{
-  debugger
   this.sys_user_service.get_profile_user().subscribe(
     (res:any) => {
       this.userDetails = res;
+    },
+    err => {
+      console.log(err);
+    },
+  );
+}
+public get_id_user():void{
+  this.sys_user_service.get_id_user().subscribe(
+    (res:any) => {
+      this.id_user = res;
     },
     err => {
       console.log(err);
@@ -36,6 +46,7 @@ onLogout() {
 }
   ngOnInit(): void {
     this.get_profile_user();
+    this.get_id_user();
     console.log(localStorage.getItem('token'));
 
 this.menu=[

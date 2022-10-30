@@ -129,6 +129,7 @@ D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\WebAPI.runt
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\WebAPI.runtimeconfig.dev.json
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\WebAPI.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\WebAPI.pdb
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.Data.SqlClient.dll
@@ -148,6 +149,11 @@ D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.E
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.Identity.Client.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
@@ -155,6 +161,7 @@ D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Swashbuckle
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\System.Data.SqlClient.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\System.Runtime.Caching.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\System.Runtime.CompilerServices.Unsafe.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
@@ -183,10 +190,3 @@ D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\obj\Debug\netcoreapp3.1\WebAPI.cspr
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\obj\Debug\netcoreapp3.1\WebAPI.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\obj\Debug\netcoreapp3.1\WebAPI.pdb
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\obj\Debug\netcoreapp3.1\WebAPI.genruntimeconfig.cache
-D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.JsonWebTokens.dll
-D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Logging.dll
-D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.dll
-D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
-D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
-D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll

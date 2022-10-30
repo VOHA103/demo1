@@ -34,7 +34,6 @@ export class sys_user_popupComponent {
     this.dialogRef.close();
   }
   Save(): void {
-    debugger
     this.sys_user_service.addUser(this.user_model).subscribe((result) => {
       Swal.fire({
         icon: 'success',

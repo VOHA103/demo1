@@ -16,7 +16,12 @@ namespace WebAPI.Support
         public static string getStringID()
         {
             Random random = new Random();
-            string s = random.NextString();
+            string s1 = random.NextString();
+            string s2 = random.NextString();
+            string s3 = random.NextString();
+            string s4 = random.NextString();
+            string s5 = random.NextString();
+            string s = s1 + "-" + s2 + "-" + s3 + "-" + s4 + "-" + s5;
             return s;
         }
     }

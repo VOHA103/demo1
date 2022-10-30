@@ -18,6 +18,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using WebAPI.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebAPI.Controllers
 {
@@ -29,7 +30,8 @@ namespace WebAPI.Controllers
         private readonly ApplicationDbContext _context;
         private readonly ApplicationSettings _appSettings;
         private readonly IUsersServices usersServices;
-        public UserController(ApplicationDbContext _context, IOptions<ApplicationSettings> appSettings, IUsersServices usersServices) {
+        private readonly string users;
+        public UserController(ApplicationDbContext _context,IOptions<ApplicationSettings> appSettings, IUsersServices usersServices) {
             this._context = _context;
             _appSettings = appSettings.Value;
             this.usersServices = usersServices;
@@ -42,14 +44,23 @@ namespace WebAPI.Controllers
             _context.SaveChanges();
             return Ok();
         }
-        [HttpGet("[action]")]
-        public IActionResult GetAll()
+        [HttpPost("DataHandel")]
+        public async Task<IActionResult> DataHandel([FromBody] JsonResult json)
         {
-            var result = _context.Users
+            var model = _context.Users
               .Select(d => new user_model()
               {
                   db = d,
               }).ToList();
+            var page = 0;
+            var limit = 0;
+            var result = new
+            {
+                data_list=model,
+                total= model.Count(),
+                page = page,
+                limit = limit,
+            };
             return Ok(result);
         }
         [HttpPost("login")]
@@ -87,11 +98,16 @@ namespace WebAPI.Controllers
         [Authorize]
         public async Task<IActionResult> get_profile_user()
         {
-
-            //hàm này sau khi login thì t get api user á
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
             var user =await usersServices.GetUserAsync(user_id);
             return Ok(user);
+        }
+        [HttpGet("[action]")]
+        [Authorize]
+        public async Task<IActionResult> get_id_user()
+        {
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            return Ok(user_id);
         }
         [HttpPost("edit")]
         public async Task<IActionResult> edit([FromBody] user_model users)
@@ -102,8 +118,8 @@ namespace WebAPI.Controllers
             _context.SaveChanges();
             return Ok(users);
         }
-        [HttpPost("users")]
-        public async Task<IActionResult> Post([FromBody] user_model users)
+        [HttpPost("create")]
+        public async Task<IActionResult> create([FromBody] user_model users)
         {
             users.db.id = RandomExtension.getStringID();
             _context.Users.Add(users.db);

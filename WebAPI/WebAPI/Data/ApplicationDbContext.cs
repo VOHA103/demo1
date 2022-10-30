@@ -10,9 +10,6 @@ namespace WebAPI.Data
 {
     public partial class ApplicationDbContext : DbContext
     {
-        public DbSet<Accounts> accounts { get; set; }
-        public DbSet<Products> products { get; set; }
-        public DbSet<ProductTypes> productTypes { get; set; }
         public DbSet<User> Users { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

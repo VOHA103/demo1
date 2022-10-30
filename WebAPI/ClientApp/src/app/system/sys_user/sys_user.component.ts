@@ -17,18 +17,18 @@ export class sys_user_indexComponent implements OnInit {
   public listData: any = [];
   public lst_status: any = [];
   public model: user_model;
+  public loading = false;
   total = 0;
   page = 1;
   limit = 10;
+  filter = { search: '',total: 0, page: 0, limit:10};
   searchKey: string;
- @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private http: HttpClient,
     private sys_user_service: sys_user_service,
     public dialog: MatDialog
-  ) {
-
-  }
+  ) {}
   openDialogDetail(item): void {
     const dialogRef = this.dialog.open(sys_user_popupComponent, {
       width: '850px',
@@ -49,13 +49,11 @@ export class sys_user_indexComponent implements OnInit {
     //   });
   }
   goToPrevious(): void {
-    // console.log('Previous Button Clicked!');
     this.page--;
     this.getOrders();
   }
 
   goToNext(): void {
-    // console.log('Next Button Clicked!');
     this.page++;
     this.getOrders();
   }
@@ -65,12 +63,11 @@ export class sys_user_indexComponent implements OnInit {
     this.getOrders();
   }
   onSearchClear() {
-    this.searchKey = "";
+    this.searchKey = '';
     this.applyFilter();
   }
 
   applyFilter() {
-    debugger
     this.listData.filter = this.searchKey.trim().toLowerCase();
   }
 
@@ -91,16 +88,15 @@ export class sys_user_indexComponent implements OnInit {
     });
   }
   loadAPI() {
-    this.sys_user_service.getAll().subscribe((data) => {
-      this.listData = data;
-      // let array=data.map(data =>{
-      //   return {
-      //     $key: data.db.name,
-      //     ...data.payload.val()
-      //   }
-      // })
-      // this.listData=new MatTableDataSource(array)
-      // this.listData.paginator=this.paginator
+    this.loading = false;
+    this.sys_user_service.DataHandel(this.filter).subscribe((resp) => {
+      var result:any;
+      result = resp;
+      this.listData=result.data_list;
+      this.total=result.total,
+      this.page = result.page,
+      this.limit = result.limit,
+      this.loading = true;
     });
   }
   delete(id): void {
