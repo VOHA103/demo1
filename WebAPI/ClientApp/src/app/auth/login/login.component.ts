@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./login.component.scss'],
 })
 export class login_indexComponent implements OnInit {
-  public user = new User();
+  public user = new User;
   name: string = '';
   pass: string = '';
   constructor(

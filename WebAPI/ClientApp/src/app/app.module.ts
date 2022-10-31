@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
-import { sys_user_indexComponent } from './system/sys_user/sys_user.component';
+import { sys_user_indexComponent } from './system/sys_user/index.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
@@ -49,9 +49,9 @@ import { login_indexComponent } from './auth/login/login.component';
 import { sys_user_service } from './service/sys_user.service';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { PaginationComponent } from './pagination/pagination.component';
-import { sys_user_popupComponent } from './system/sys_user/sys_user_popup.component';
+import { sys_user_popupComponent } from './system/sys_user/popupAdd.component';
+import { sys_khoa_popupComponent } from './system/sys_khoa/popupAdd.component';
 import { sys_khoa_indexComponent } from './system/sys_khoa/index.component';
-import { sys_khoa_popupComponent } from './system/sys_khoa/popup.component';
 
 @NgModule({
   declarations: [
@@ -61,8 +61,8 @@ import { sys_khoa_popupComponent } from './system/sys_khoa/popup.component';
     sys_user_popupComponent,
     login_indexComponent,
     PaginationComponent,
-    sys_khoa_indexComponent,
     sys_khoa_popupComponent,
+    sys_khoa_indexComponent,
   ],
   imports: [
     CommonModule,

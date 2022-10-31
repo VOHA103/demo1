@@ -3,14 +3,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { sys_user_popupComponent } from './popup.component';
+import { sys_user_popupComponent } from './popupAdd.component';
 import { user_model } from '@/app/model/user.model';
 import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
 @Component({
   selector: 'sys_user_index',
-  templateUrl: './sys_user.component.html',
-  styleUrls: ['./sys_user.component.scss'],
+  templateUrl: './index.component.html',
+  styleUrls: ['./index.component.scss'],
 })
 export class sys_user_indexComponent implements OnInit {
   public foods: any = [];
@@ -23,7 +23,6 @@ export class sys_user_indexComponent implements OnInit {
   limit = 10;
   filter = { search: '',total: 0, page: 0, limit:10};
   searchKey: string;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private http: HttpClient,
     private sys_user_service: sys_user_service,
@@ -89,7 +88,7 @@ export class sys_user_indexComponent implements OnInit {
   }
   loadAPI() {
     this.loading = false;
-    this.sys_user_service.DataHandel().subscribe((resp) => {
+    this.sys_user_service.getAll().subscribe((resp) => {
       this.listData=resp;
       // var result:any;
       // result = resp;

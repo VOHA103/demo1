@@ -3,10 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { sys_khoa_popupComponent } from './popup.component';
 import { user_model } from '@/app/model/user.model';
 import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
+import { sys_khoa_popupComponent } from './popupAdd.component';
 @Component({
   selector: 'sys_khoa_index',
   templateUrl: './index.component.html',
@@ -23,7 +23,6 @@ export class sys_khoa_indexComponent implements OnInit {
   limit = 10;
   filter = { search: '',total: 0, page: 0, limit:10};
   searchKey: string;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private http: HttpClient,
     private sys_khoa_service: sys_khoa_service,
@@ -100,17 +99,17 @@ export class sys_khoa_indexComponent implements OnInit {
       this.loading = true;
     });
   }
-  delete(id): void {
-    this.sys_khoa_service.delete(id).subscribe((result) => {
-      Swal.fire({
-        icon: 'success',
-        title: 'Thành công',
-        showConfirmButton: false,
-        timer: 2000,
-      }).then((result) => {
-        this.loadAPI();
-      });
-    });
+   delete(id): void {
+  //   this.sys_khoa_service.deleteUser(id).subscribe((result) => {
+  //     Swal.fire({
+  //       icon: 'success',
+  //       title: 'Thành công',
+  //       showConfirmButton: false,
+  //       timer: 2000,
+  //     }).then((result) => {
+  //       this.loadAPI();
+  //     });
+  //   });
   }
   ngOnInit(): void {
     this.loadAPI();

@@ -6,4 +6,5 @@ export interface sys_khoa {
   update_by: string;
   update_date: string | null;
   status_del: number | null;
+  note: string;
 }
