@@ -55,16 +55,8 @@ this.menu=[
     label:"Thành viên"
   },
   {
-    link:"sys_user_index1",
-    label:"Công việc"
-  },
-  {
     link:"sys_khoa_index",
     label:"Khoa"
-  },
-  {
-    link:"login",
-    label:"Bộ môn"
   },
 
 ]

@@ -25,7 +25,7 @@ export class sys_user_service {
   constructor(private http: HttpClient) {}
   //lấy danh sách user
   public DataHandel():Observable<user_model[]>{
-    const url = this.REST_API_URL+"/User/DataHandel";
+    const url = this.REST_API_URL+"/User/get_list_user";
     return this.http.get<user_model[]>(url);
   }
    //lấy danh sách user
@@ -45,7 +45,7 @@ export class sys_user_service {
     }
   // thêm user
   public addUser(users: user_model) {
-    const url = this.REST_API_URL+"/User/users";
+    const url = this.REST_API_URL+"/User/create";
     return this.http.post(url, users);
   }
   // edit user

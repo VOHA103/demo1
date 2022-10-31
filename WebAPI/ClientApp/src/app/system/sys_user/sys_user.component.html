@@ -8,8 +8,8 @@
   <mat-card>
     <div class="flex">
       <div class="flex-1  px-2">
-        <mat-form-field appearance="outline" class="w-full">
           <mat-label>Tên thành viên</mat-label>
+        <mat-form-field appearance="outline" class="w-full">
           <mat-select>
             <mat-option *ngFor="let food of lst_status" [value]="food.id" (onSelectionChange)="openDialogAdd()">
               {{ food.name }}
@@ -18,8 +18,8 @@
         </mat-form-field>
       </div>
       <div class="flex-1  px-2">
-        <mat-form-field appearance="outline" class="w-full">
           <mat-label>Trạng thái</mat-label>
+        <mat-form-field appearance="outline" class="w-full">
           <mat-select>
             <mat-option *ngFor="let food of lst_status" [value]="food.id" (onSelectionChange)="openDialogAdd()">
               {{ food.name }}
@@ -30,15 +30,9 @@
     </div>
     <div  class="flex">
       <div class="flex-1 px-2">
-        <mat-form-field class="w-full" appearance="outline" class="w-full">
           <mat-label>Tìm kiếm</mat-label>
+        <mat-form-field class="w-full" appearance="outline" class="w-full">
           <input [(ngModel)]="filter.search" matInput >
-          <mat-error >
-            Please enter a valid email address
-          </mat-error>
-          <mat-error >
-            Email is <strong>required</strong>
-          </mat-error>
         </mat-form-field>
       </div>
     </div>

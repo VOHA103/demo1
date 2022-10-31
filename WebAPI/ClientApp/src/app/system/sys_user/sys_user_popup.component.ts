@@ -28,7 +28,8 @@ export class sys_user_popupComponent {
   ) {
     //this.user = data;
     this.user_model = data;
-
+    if(this.user_model.db.id=='0')
+    this.Save();
   }
   Close(): void {
     this.dialogRef.close();

@@ -49,12 +49,16 @@ body {
   padding: 0px !important;
   border-radius: 3px;
 }
-.mat-form-field-appearance-fill .mat-form-field-flex{
-  padding: 0px !important;
-}
 .mat-form-field-appearance-outline {
   padding: 0px !important;
-  border-radius: 3px;
+  border-radius: 3px !important;
+}
+.mat-dialog-container .mat-form-field-appearance-outline {
+  padding: 0px !important;
+  border-radius: 3px !important;
+}
+.mat-form-field-appearance-outline .mat-form-field-flex{
+  border-radius: 3px !important;
 }
 .mat-form-field-flex{
   height: 55px !important;
@@ -69,6 +73,7 @@ body {
 }
 .mat-dialog-container{
   padding:0px !important;
+  height: auto!important;
   overflow: auto !important;
 }
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";

@@ -23,7 +23,6 @@ export class sys_user_indexComponent implements OnInit {
   limit = 10;
   filter = { search: '',total: 0, page: 0, limit:10};
   searchKey: string;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private http: HttpClient,
     private sys_user_service: sys_user_service,

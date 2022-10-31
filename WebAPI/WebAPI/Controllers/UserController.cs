@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using WebAPI.Data;
 using WebAPI.Model;
 using WebAPI.System;
+using WebAPI.Part;
 using WebAPI.Support;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -25,15 +26,15 @@ namespace WebAPI.Controllers
     [ApiController]
     [EnableCors("LeThanhThai")]
     [Route("[controller]")]
-    public class UserController: ControllerBase
+    public class UserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
         private readonly ApplicationSettings _appSettings;
         private readonly IUsersServices usersServices;
-        public UserController(ApplicationDbContext _context,IOptions<ApplicationSettings> appSettings, IUsersServices usersServices) {
+        public UserController(ApplicationDbContext _context, IOptions<ApplicationSettings> appSettings, IUsersServices usersServices)
+        {
             this._context = _context;
             _appSettings = appSettings.Value;
-            this.usersServices = usersServices;
         }
         [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
@@ -54,9 +55,10 @@ namespace WebAPI.Controllers
             return Ok(model);
         }
         [HttpPost("DataHandel")]
-        public async Task<IActionResult> DataHandel([FromBody] JsonResult json)
+        public async Task<IActionResult> DataHandel([FromBody] filter_data json)
         {
-            var model = _context.Users
+            var search = json.search;
+            var model = _context.Users.Where(q => q.name == search)
               .Select(d => new user_model()
               {
                   db = d,
@@ -65,15 +67,15 @@ namespace WebAPI.Controllers
             var limit = 0;
             var result = new
             {
-                data_list=model,
-                total= model.Count(),
+                data_list = model,
+                total = model.Count(),
                 page = page,
                 limit = limit,
             };
             return Ok(result);
         }
         [HttpPost("login")]
-        public async Task<IActionResult> login( User users)
+        public async Task<IActionResult> login(User users)
         {
             var model = _context.Users.SingleOrDefault(q => q.name == users.name);
 
@@ -108,7 +110,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> get_profile_user()
         {
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
-            var user =await usersServices.GetUserAsync(user_id);
+            var user = await usersServices.GetUserAsync(user_id);
             return Ok(user);
         }
         [HttpGet("[action]")]
@@ -121,19 +123,78 @@ namespace WebAPI.Controllers
         [HttpPost("edit")]
         public async Task<IActionResult> edit([FromBody] user_model users)
         {
-            var model =await _context.Users.FindAsync(users.db.id);
-            model.name = users.db.name;
-            model.pass = users.db.pass;
-            _context.SaveChanges();
-            return Ok(users);
+            var check = user_part.check_error_insert_update(users);
+            if (check.Count != 0)
+            {
+                var error = new
+                {
+                    error = check,
+                    value = users
+                };
+                return Ok(error);
+            }
+            else
+            {
+                try
+                {
+                    var model = await _context.Users.FindAsync(users.db.id);
+                    model.name = users.db.name;
+                    model.pass = users.db.pass;
+                    _context.SaveChanges();
+                    return Ok(users);
+                }
+                catch (Exception ex)
+                {
+                    return Ok(ex.Message);
+                }
+            }
+            
         }
         [HttpPost("create")]
         public async Task<IActionResult> create([FromBody] user_model users)
         {
             users.db.id = RandomExtension.getStringID();
-            _context.Users.Add(users.db);
-           await _context.SaveChangesAsync();
-            return Ok(users);
+            var check = user_part.check_error_insert_update(users);
+            if (check.Count != 0)
+            {
+                var error = new
+                {
+                    error = check,
+                    value = users
+                };
+                return Ok(error);
+            }
+            else
+            {
+                try
+                {
+                    _context.Users.Add(users.db);
+                    await _context.SaveChangesAsync();
+                    var result = new
+                    {
+                        error = check,
+                        value = users
+                    };
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    return Ok(ex.Message);
+                }
+               
+            }
+           
         }
+        //public async Task<string> generate_id()
+        //{
+        //    var id = "";
+        //    var check_id = 0;
+        //    do
+        //    {
+        //        id = RandomExtension.getStringID();
+        //        check_id = _context.Users.Where(q => q.id == id).Count();
+        //    } while (check_id != 0);
+        //    return id;
+        //}
     }
 }
