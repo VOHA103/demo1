@@ -59,6 +59,10 @@ this.menu=[
     label:"Công việc"
   },
   {
+    link:"sys_khoa_index",
+    label:"Khoa"
+  },
+  {
     link:"login",
     label:"Bộ môn"
   },

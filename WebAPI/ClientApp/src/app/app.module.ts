@@ -50,6 +50,8 @@ import { sys_user_service } from './service/sys_user.service';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { PaginationComponent } from './pagination/pagination.component';
 import { sys_user_popupComponent } from './system/sys_user/sys_user_popup.component';
+import { sys_khoa_indexComponent } from './system/sys_khoa/index.component';
+import { sys_khoa_popupComponent } from './system/sys_khoa/popup.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,8 @@ import { sys_user_popupComponent } from './system/sys_user/sys_user_popup.compon
     sys_user_popupComponent,
     login_indexComponent,
     PaginationComponent,
+    sys_khoa_indexComponent,
+    sys_khoa_popupComponent,
   ],
   imports: [
     CommonModule,

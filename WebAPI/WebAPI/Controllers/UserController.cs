@@ -30,7 +30,6 @@ namespace WebAPI.Controllers
         private readonly ApplicationDbContext _context;
         private readonly ApplicationSettings _appSettings;
         private readonly IUsersServices usersServices;
-        private readonly string users;
         public UserController(ApplicationDbContext _context,IOptions<ApplicationSettings> appSettings, IUsersServices usersServices) {
             this._context = _context;
             _appSettings = appSettings.Value;
@@ -43,6 +42,16 @@ namespace WebAPI.Controllers
             _context.Users.Remove(result);
             _context.SaveChanges();
             return Ok();
+        }
+        [HttpGet("[action]")]
+        public IActionResult get_list_user()
+        {
+            var model = _context.Users
+              .Select(d => new user_model()
+              {
+                  db = d,
+              }).ToList();
+            return Ok(model);
         }
         [HttpPost("DataHandel")]
         public async Task<IActionResult> DataHandel([FromBody] JsonResult json)

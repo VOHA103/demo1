@@ -24,47 +24,51 @@ namespace WebAPI.Controllers
     [ApiController]
     [EnableCors("LeThanhThai")]
     [Route("[controller]")]
-    public class sys_loai_cong_viecController: ControllerBase
+    public class sys_bo_monController : ControllerBase
     {
+
         private readonly ApplicationDbContext _context;
-        public sys_loai_cong_viecController(ApplicationDbContext _context,IOptions<ApplicationSettings> appSettings, IUsersServices usersServices) {
+        private readonly ApplicationSettings _appSettings;
+        public sys_bo_monController(ApplicationDbContext _context, IOptions<ApplicationSettings> appSettings)
+        {
             this._context = _context;
+            _appSettings = appSettings.Value;
         }
         [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
         {
-            var result = _context.Users.Find(id);
-            _context.Users.Remove(result);
+            var result = _context.sys_bo_mon.Find(id);
+            _context.sys_bo_mon.Remove(result);
             _context.SaveChanges();
             return Ok();
         }
         [HttpGet("[action]")]
         public IActionResult GetAll()
         {
-            var result = _context.Users
-              .Select(d => new user_model()
+            var result = _context.sys_bo_mon
+              .Select(d => new sys_bo_mon_model()
               {
                   db = d,
+                  create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                  update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
               }).ToList();
             return Ok(result);
         }
         [HttpPost("edit")]
-        public async Task<IActionResult> edit([FromBody] user_model users)
+        public async Task<IActionResult> edit([FromBody] user_model sys_bo_mon)
         {
-            string user_id= User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
-            var model =await _context.Users.FindAsync(users.db.id);
-            model.name = users.db.name;
-            model.pass = users.db.pass;
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var model = await _context.sys_bo_mon.FindAsync(sys_bo_mon.db.id);
             _context.SaveChanges();
-            return Ok(users);
+            return Ok(sys_bo_mon);
         }
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromBody] user_model users)
+        public async Task<IActionResult> create([FromBody] sys_bo_mon_model sys_bo_mon)
         {
-            users.db.id = RandomExtension.getStringID();
-            _context.Users.Add(users.db);
-           await _context.SaveChangesAsync();
-            return Ok(users);
+            sys_bo_mon.db.id = 0;
+            _context.sys_bo_mon.Add(sys_bo_mon.db);
+            await _context.SaveChangesAsync();
+            return Ok(sys_bo_mon);
         }
     }
 }

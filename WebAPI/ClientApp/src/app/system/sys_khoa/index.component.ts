@@ -1,18 +1,18 @@
-import { sys_user_service } from './../../service/sys_user.service';
+import { sys_khoa_service } from '../../service/sys_khoa.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { sys_user_popupComponent } from './sys_user_popup.component';
+import { sys_khoa_popupComponent } from './popup.component';
 import { user_model } from '@/app/model/user.model';
 import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
 @Component({
-  selector: 'sys_user_index',
-  templateUrl: './sys_user.component.html',
-  styleUrls: ['./sys_user.component.scss'],
+  selector: 'sys_khoa_index',
+  templateUrl: './index.component.html',
+  styleUrls: ['./index.component.scss'],
 })
-export class sys_user_indexComponent implements OnInit {
+export class sys_khoa_indexComponent implements OnInit {
   public foods: any = [];
   public listData: any = [];
   public lst_status: any = [];
@@ -26,11 +26,11 @@ export class sys_user_indexComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   constructor(
     private http: HttpClient,
-    private sys_user_service: sys_user_service,
+    private sys_khoa_service: sys_khoa_service,
     public dialog: MatDialog
   ) {}
   openDialogDetail(item): void {
-    const dialogRef = this.dialog.open(sys_user_popupComponent, {
+    const dialogRef = this.dialog.open(sys_khoa_popupComponent, {
       width: '850px',
       data: item,
     });
@@ -72,7 +72,7 @@ export class sys_user_indexComponent implements OnInit {
   }
 
   openDialogAdd(): void {
-    const dialogRef = this.dialog.open(sys_user_popupComponent, {
+    const dialogRef = this.dialog.open(sys_khoa_popupComponent, {
       width: '850px',
       data: {
         db: {
@@ -89,7 +89,7 @@ export class sys_user_indexComponent implements OnInit {
   }
   loadAPI() {
     this.loading = false;
-    this.sys_user_service.DataHandel().subscribe((resp) => {
+    this.sys_khoa_service.getAll().subscribe((resp) => {
       this.listData=resp;
       // var result:any;
       // result = resp;
@@ -101,7 +101,7 @@ export class sys_user_indexComponent implements OnInit {
     });
   }
   delete(id): void {
-    this.sys_user_service.deleteUser(id).subscribe((result) => {
+    this.sys_khoa_service.delete(id).subscribe((result) => {
       Swal.fire({
         icon: 'success',
         title: 'Thành công',

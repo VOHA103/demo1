@@ -1,9 +1,9 @@
-import { sys_user_service } from './../../service/sys_user.service';
+import { sys_user_service } from '../../service/sys_user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { sys_user_popupComponent } from './sys_user_popup.component';
+import { sys_user_popupComponent } from './popup.component';
 import { user_model } from '@/app/model/user.model';
 import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';

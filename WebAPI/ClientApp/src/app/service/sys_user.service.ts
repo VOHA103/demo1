@@ -24,10 +24,14 @@ export class sys_user_service {
   };
   constructor(private http: HttpClient) {}
   //lấy danh sách user
-  public DataHandel(filter:any){
-    debugger
+  public DataHandel():Observable<user_model[]>{
     const url = this.REST_API_URL+"/User/DataHandel";
-    return this.http.post(url,filter);
+    return this.http.get<user_model[]>(url);
+  }
+   //lấy danh sách user
+   public getAll(): Observable<user_model[]> {
+    const url = "https://localhost:44334/User/GetAll";
+    return this.http.get<user_model[]>(url);
   }
     //lấy thông tin user
     public get_profile_user(){

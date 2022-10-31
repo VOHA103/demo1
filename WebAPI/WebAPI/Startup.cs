@@ -118,7 +118,8 @@ namespace WebAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors("LeThanhThai");//Use cors có thể dùng 2 cách
+            app.UseCors("LeThanhThai");
+            //Use cors có thể dùng 2 cách
             //1. Dùng lại config có sẵn từ addCors
             //2. Tự config trực tiếp trong useCors
             //Ví dụ cách 2
