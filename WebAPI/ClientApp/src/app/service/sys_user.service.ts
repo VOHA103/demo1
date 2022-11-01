@@ -30,7 +30,7 @@ export class sys_user_service {
   }
    //lấy danh sách user
    public getAll(): Observable<user_model[]> {
-    const url = "https://localhost:44334/User/GetAll";
+    const url = this.REST_API_URL+"/User/GetAll";
     return this.http.get<user_model[]>(url);
   }
     //lấy thông tin user

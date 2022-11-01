@@ -1,0 +1,51 @@
+import { environment } from '../../environments/environment';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
+('@angular/common/http');
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/internal/Observable';
+import { catchError, throwError } from 'rxjs';
+import { sys_bo_mon } from '../database/sys_bo_mon.data';
+import { sys_bo_mon_model } from '../model/sys_bo_mon.model';
+// type products = productModel.product_model;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class sys_bo_mon_service {
+  private REST_API_URL = environment.api;
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+  };
+  constructor(private http: HttpClient) {}
+  //lấy danh sách sys_bo_mon
+  public DataHandel(): Observable<sys_bo_mon_model[]> {
+    const url = this.REST_API_URL + '/sys_bo_mon/DataHandel';
+    return this.http.get<sys_bo_mon_model[]>(url);
+  }
+  //lấy danh sách sys_bo_mon
+  public getAll(): Observable<sys_bo_mon_model[]> {
+    const url = 'https://localhost:44334/sys_bo_mon/GetAll';
+    return this.http.get<sys_bo_mon_model[]>(url);
+  }
+  // thêm sys_bo_mon
+  public add(sys_bo_mons: sys_bo_mon_model) {
+    const url = this.REST_API_URL + '/sys_bo_mon/sys_bo_mons';
+    return this.http.post(url, sys_bo_mons);
+  }
+  // edit sys_bo_mon
+  public edit(sys_bo_mons: sys_bo_mon_model) {
+    const url = this.REST_API_URL + '/sys_bo_mon/edit';
+    return this.http.post(url, sys_bo_mons);
+  }
+  // edit sys_bo_mon
+  public delete(id: string) {
+    const url = this.REST_API_URL + '/sys_bo_mon/delete?id=' + id;
+    return this.http.get(url);
+  }
+}

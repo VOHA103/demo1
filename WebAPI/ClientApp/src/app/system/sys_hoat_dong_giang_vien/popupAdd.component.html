@@ -1,0 +1,115 @@
+<div class="flex flex-col flex-auto w-full  h-fit overflow-y-visible">
+  <div
+    class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8"
+  >
+    <span class="text-lg font-medium">Khoa</span>
+  </div>
+  <div class="w-full p-6 sm:p-8 space-y-1 overflow-y-auto">
+    <div class="flex flex-col">
+      <div class="flex pl-6 pb-6 pt-6 justify-end">
+        <div class="flex mr-3">
+          <button mat-raised-button (click)="Close()">Close</button>
+        </div>
+        <div>
+          <button
+            mat-raised-button
+            color="primary"
+            *ngIf="user_model.db.id == '0'"
+            (click)="Save()"
+          >
+            Save
+          </button>
+        </div>
+        <div>
+          <button
+            mat-raised-button
+            color="primary"
+            *ngIf="user_model.db.id != '0'"
+            (click)="Edit()"
+          >
+            Edit
+          </button>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Tên
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.name'">({{key.value}})</span>
+            </span>
+
+          </mat-label>
+          <mat-form-field class="w-full" appearance="outline">
+            <input
+              matInput
+              placeholder="Tên"
+            />
+          </mat-form-field>
+        </div>
+        <div class="flex-1 px-2">
+          <mat-label>Mật khẩu
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.pass'">({{key.value}})</span>
+            </span>
+
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <input
+              matInput
+              placeholder="Mật khẩu"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+
+
+      <!-- <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Tên thành viên</mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="user_model.db.id" name="food">
+              <mat-option *ngFor="let food of lst_status" [value]="food.id">
+                {{ food.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex-1 px-2">
+          <mat-label class="mb-5">Toppings</mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="user_model.lst_cong_viec" multiple>
+              <mat-option *ngFor="let food of lst_status" [value]="food.id">{{
+                food.name
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div> -->
+      <div class="flex pl-6 pt-6 justify-end">
+        <div class="flex mr-3">
+          <button mat-raised-button (click)="Close()">Close</button>
+        </div>
+        <div>
+          <button
+            mat-raised-button
+            color="primary"
+            *ngIf="user_model.db.id == '0'"
+            (click)="Save()"
+          >
+            Save
+          </button>
+        </div>
+        <div>
+          <button
+            mat-raised-button
+            color="primary"
+            *ngIf="user_model.db.id != '0'"
+            (click)="Edit()"
+          >
+            Edit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

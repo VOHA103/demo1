@@ -48,9 +48,4 @@ export class sys_khoa_service {
     const url = this.REST_API_URL + '/sys_khoa/delete?id=' + id;
     return this.http.get(url);
   }
-  //login
-  public login(sys_khoas: sys_khoa) {
-    const url = this.REST_API_URL + '/sys_khoa/login';
-    return this.http.post(url, sys_khoas);
-  }
 }

@@ -1,4 +1,4 @@
-export interface sys_khoa {
+export class sys_khoa {
   id: number;
   ten_khoa: string;
   create_by: string;
