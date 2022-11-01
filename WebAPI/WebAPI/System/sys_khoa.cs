@@ -15,5 +15,6 @@ namespace WebAPI.System
 
         public DateTime? update_date { get; set; }
         public int? status_del { get; set; }
+        public string note { get; set; }
     }
 }

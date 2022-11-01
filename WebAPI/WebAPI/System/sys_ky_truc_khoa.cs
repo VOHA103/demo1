@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 
 namespace WebAPI.System
 {
-    public class sys_bo_mon
+    public class sys_ky_truc_khoa
     {
         public int id { get; set; }
-        public string ten_bo_mon { get; set; }
+        public string ten_ky { get; set; }
+        public DateTime? thoi_gian_bat_dau { get; set; }
+        public DateTime? thoi_gian_ket_thuc { get; set; }
+
         public string create_by { get; set; }
         public DateTime? create_date { get; set; }
         public string update_by { get; set; }

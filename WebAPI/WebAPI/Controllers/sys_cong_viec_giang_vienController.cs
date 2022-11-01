@@ -24,26 +24,26 @@ namespace WebAPI.Controllers
     [ApiController]
     [EnableCors("LeThanhThai")]
     [Route("[controller]")]
-    public class sys_bo_monController : ControllerBase
+    public class sys_cong_viec_giang_vienController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        public sys_bo_monController(ApplicationDbContext _context)
+        public sys_cong_viec_giang_vienController(ApplicationDbContext _context)
         {
             this._context = _context;
         }
         [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
         {
-            var result = _context.sys_bo_mon.Find(id);
-            _context.sys_bo_mon.Remove(result);
+            var result = _context.sys_cong_viec_giang_vien.Find(id);
+            _context.sys_cong_viec_giang_vien.Remove(result);
             _context.SaveChanges();
             return Ok();
         }
         [HttpGet("[action]")]
         public IActionResult GetAll()
         {
-            var result = _context.sys_bo_mon
-              .Select(d => new sys_bo_mon_model()
+            var result = _context.sys_cong_viec_giang_vien
+              .Select(d => new sys_cong_viec_giang_vien_model()
               {
                   db = d,
                   create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
@@ -52,20 +52,20 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
         [HttpPost("edit")]
-        public async Task<IActionResult> edit([FromBody] user_model sys_bo_mon)
+        public async Task<IActionResult> edit([FromBody] user_model sys_cong_viec_giang_vien)
         {
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
-            var model = await _context.sys_bo_mon.FindAsync(sys_bo_mon.db.id);
+            var model = await _context.sys_cong_viec_giang_vien.FindAsync(sys_cong_viec_giang_vien.db.id);
             _context.SaveChanges();
-            return Ok(sys_bo_mon);
+            return Ok(sys_cong_viec_giang_vien);
         }
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromBody] sys_bo_mon_model sys_bo_mon)
+        public async Task<IActionResult> create([FromBody] sys_cong_viec_giang_vien_model sys_cong_viec_giang_vien)
         {
-            sys_bo_mon.db.id = 0;
-            _context.sys_bo_mon.Add(sys_bo_mon.db);
+            sys_cong_viec_giang_vien.db.id = "";
+            _context.sys_cong_viec_giang_vien.Add(sys_cong_viec_giang_vien.db);
             await _context.SaveChangesAsync();
-            return Ok(sys_bo_mon);
+            return Ok(sys_cong_viec_giang_vien);
         }
     }
 }

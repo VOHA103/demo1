@@ -27,44 +27,43 @@ namespace WebAPI.Controllers
     public class sys_loai_cong_viecController: ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        public sys_loai_cong_viecController(ApplicationDbContext _context,IOptions<ApplicationSettings> appSettings, IUsersServices usersServices) {
+        public sys_loai_cong_viecController(ApplicationDbContext _context) {
             this._context = _context;
         }
         [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
         {
-            var result = _context.Users.Find(id);
-            _context.Users.Remove(result);
+            var result = _context.sys_loai_cong_viec.Find(id);
+            _context.sys_loai_cong_viec.Remove(result);
             _context.SaveChanges();
             return Ok();
         }
         [HttpGet("[action]")]
         public IActionResult GetAll()
         {
-            var result = _context.Users
-              .Select(d => new user_model()
+            var result = _context.sys_loai_cong_viec
+              .Select(d => new sys_loai_cong_viec_model()
               {
                   db = d,
+                  create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                  update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
               }).ToList();
             return Ok(result);
         }
         [HttpPost("edit")]
-        public async Task<IActionResult> edit([FromBody] user_model users)
+        public async Task<IActionResult> edit([FromBody] sys_loai_cong_viec_model sys_loai_cong_viec)
         {
-            string user_id= User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
-            var model =await _context.Users.FindAsync(users.db.id);
-            model.name = users.db.name;
-            model.pass = users.db.pass;
+            var model =await _context.sys_loai_cong_viec.FindAsync(sys_loai_cong_viec.db.id);
             _context.SaveChanges();
-            return Ok(users);
+            return Ok(sys_loai_cong_viec);
         }
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromBody] user_model users)
+        public async Task<IActionResult> create([FromBody] sys_loai_cong_viec_model sys_loai_cong_viec)
         {
-            users.db.id = RandomExtension.getStringID();
-            _context.Users.Add(users.db);
+            sys_loai_cong_viec.db.id = 0;
+            _context.sys_loai_cong_viec.Add(sys_loai_cong_viec.db);
            await _context.SaveChangesAsync();
-            return Ok(users);
+            return Ok(sys_loai_cong_viec);
         }
     }
 }

@@ -24,11 +24,10 @@ namespace WebAPI.Controllers
     [ApiController]
     [EnableCors("LeThanhThai")]
     [Route("[controller]")]
-    public class sys_khoaController : ControllerBase
+    public class sys_khoaController: ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        public sys_khoaController(ApplicationDbContext _context)
-        {
+        public sys_khoaController(ApplicationDbContext _context) {
             this._context = _context;
         }
         [HttpGet("[action]")]
@@ -54,17 +53,16 @@ namespace WebAPI.Controllers
         [HttpPost("edit")]
         public async Task<IActionResult> edit([FromBody] user_model users)
         {
-            var model = await _context.sys_khoa.FindAsync(users.db.id);
+            var model =await _context.sys_khoa.FindAsync(users.db.id);
             _context.SaveChanges();
             return Ok(users);
         }
         [HttpPost("create")]
         public async Task<IActionResult> create([FromBody] sys_khoa_model sys_khoa)
         {
-            //string id = HttpContext.User.FindFirstValue("UserID");
             sys_khoa.db.id = 0;
             _context.sys_khoa.Add(sys_khoa.db);
-            await _context.SaveChangesAsync();
+           await _context.SaveChangesAsync();
             return Ok(sys_khoa);
         }
     }
