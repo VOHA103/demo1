@@ -35,7 +35,7 @@ export class sys_chuc_vu_service {
   }
   // thêm sys_chuc_vu
   public add(sys_chuc_vus: sys_chuc_vu_model) {
-    const url = this.REST_API_URL + '/sys_chuc_vu/sys_chuc_vus';
+    const url = this.REST_API_URL + '/sys_chuc_vu/create';
     return this.http.post(url, sys_chuc_vus);
   }
   // edit sys_chuc_vu
@@ -46,6 +46,11 @@ export class sys_chuc_vu_service {
   // edit sys_chuc_vu
   public delete(id: string) {
     const url = this.REST_API_URL + '/sys_chuc_vu/delete?id=' + id;
+    return this.http.get(url);
+  }
+  // reven status sys_chuc_vu
+  public reven_status(id: string) {
+    const url = this.REST_API_URL + '/sys_chuc_vu/reven_status?id=' + id;
     return this.http.get(url);
   }
 }

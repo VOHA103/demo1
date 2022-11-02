@@ -35,7 +35,7 @@ export class sys_cong_viec_service {
   }
   // thêm sys_cong_viec
   public add(sys_cong_viecs: sys_cong_viec_model) {
-    const url = this.REST_API_URL + '/sys_cong_viec/sys_cong_viecs';
+    const url = this.REST_API_URL + '/sys_cong_viec/create';
     return this.http.post(url, sys_cong_viecs);
   }
   // edit sys_cong_viec
@@ -46,6 +46,11 @@ export class sys_cong_viec_service {
   // edit sys_cong_viec
   public delete(id: string) {
     const url = this.REST_API_URL + '/sys_cong_viec/delete?id=' + id;
+    return this.http.get(url);
+  }
+  // reven status sys_cong_viec
+  public reven_status(id: string) {
+    const url = this.REST_API_URL + '/sys_cong_viec/reven_status?id=' + id;
     return this.http.get(url);
   }
 }

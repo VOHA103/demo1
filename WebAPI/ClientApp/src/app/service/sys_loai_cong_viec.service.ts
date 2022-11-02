@@ -33,7 +33,7 @@ export class sys_loai_cong_viec_service {
   }
   // thêm sys_loai_cong_viec
   public add(sys_loai_cong_viecs: sys_loai_cong_viec_model) {
-    const url = this.REST_API_URL + '/sys_loai_cong_viec/sys_loai_cong_viecs';
+    const url = this.REST_API_URL + '/sys_loai_cong_viec/create';
     return this.http.post(url, sys_loai_cong_viecs);
   }
   // edit sys_loai_cong_viec

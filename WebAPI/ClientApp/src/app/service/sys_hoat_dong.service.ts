@@ -33,7 +33,7 @@ export class sys_hoat_dong_service {
   }
   // thêm sys_hoat_dong
   public add(sys_hoat_dongs: sys_hoat_dong_model) {
-    const url = this.REST_API_URL + '/sys_hoat_dong/sys_hoat_dongs';
+    const url = this.REST_API_URL + '/sys_hoat_dong/create';
     return this.http.post(url, sys_hoat_dongs);
   }
   // edit sys_hoat_dong

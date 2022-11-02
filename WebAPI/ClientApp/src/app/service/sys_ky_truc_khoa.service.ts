@@ -35,7 +35,7 @@ export class sys_ky_truc_khoa_service {
   }
   // thêm sys_ky_truc_khoa
   public add(sys_ky_truc_khoas: sys_ky_truc_khoa_model) {
-    const url = this.REST_API_URL + '/sys_ky_truc_khoa/sys_ky_truc_khoas';
+    const url = this.REST_API_URL + '/sys_ky_truc_khoa/create';
     return this.http.post(url, sys_ky_truc_khoas);
   }
   // edit sys_ky_truc_khoa

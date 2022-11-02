@@ -3,16 +3,16 @@
 
 <div class="flex flex-col p-4"  *ngIf="loading==true">
   <div class="flex">
-    <h1 class="font-bold text-xl">Thành viên</h1>
+    <h1 class="font-bold text-xl">Chức vụ</h1>
   </div>
   <mat-card>
     <div class="flex">
       <div class="flex-1  px-2">
-          <mat-label>Tên thành viên</mat-label>
+          <mat-label>Tên chức vụ</mat-label>
         <mat-form-field appearance="outline" class="w-full">
-          <mat-select>
-            <mat-option *ngFor="let food of lst_status" [value]="food.id" (onSelectionChange)="openDialogAdd()">
-              {{ food.name }}
+          <mat-select  [(ngModel)]="filter.search">
+            <mat-option *ngFor="let item of lst_status" [value]="item.id" (onSelectionChange)="openDialogAdd()">
+              {{ item.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -21,8 +21,8 @@
           <mat-label>Trạng thái</mat-label>
         <mat-form-field appearance="outline" class="w-full">
           <mat-select>
-            <mat-option *ngFor="let food of lst_status" [value]="food.id" (onSelectionChange)="openDialogAdd()">
-              {{ food.name }}
+            <mat-option *ngFor="let item of lst_status" [value]="item.id" (onSelectionChange)="openDialogAdd()">
+              {{ item.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -57,10 +57,11 @@
         No.
       </th>
       <th class=" text-base" style="height: 60px">
-        Tên thành viên
+        Tên chức vụ
       </th>
-      <th class=" text-base" style="height: 60px">Mật khẩu</th>
-      <th class=" text-base" style="height: 60px">Trạng thái</th>
+      <th class=" text-base" style="height: 60px">Người tạo</th>
+      <th class=" text-base" style="height: 60px">Ngày tạo</th>
+      <th class=" text-base" style="height: 60px">Ghi chú</th>
     </thead>
     <tbody *ngFor="let item of listData; index as i">
       <tr>
@@ -71,8 +72,8 @@
               <button mat-menu-item (click)="openDialogDetail(item)">
                 Sửa
               </button>
-              <button mat-menu-item (click)="delete(item.db.id)">Xoá</button>
-              <button mat-menu-item>Ngừng sử dụng</button>
+              <button mat-menu-item *ngIf="item.db.status_del==1" (click)="delete(item.db.id)">Xoá</button>
+              <button mat-menu-item *ngIf="item.db.status_del==2" (click)="reven_status(item.db.id)">Sử dụng</button>
             </mat-menu>
           </div>
         </td>
@@ -82,12 +83,15 @@
           </span>
         </td>
         <td class="">
-          {{ item.db.name }}{{ item.db.id }}
+          {{ item.db.ten_chuc_vu }}
         </td>
         <td class="">
-          {{ item.db.pass }}
+          {{ item.create_name }}
         </td>
-        <td class="">Đang sử dụng</td>
+        <td class="">
+          {{ item.db.create_date | date :'dd/MM/YYYY HH:mm' }}
+        </td>
+        <td class="">{{ item.db.note }}</td>
       </tr>
     </tbody>
 

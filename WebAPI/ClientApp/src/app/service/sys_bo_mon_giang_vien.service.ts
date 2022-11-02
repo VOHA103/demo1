@@ -33,7 +33,7 @@ export class sys_bo_mon_giang_vien_service {
   }
   // thêm sys_bo_mon_giang_vien
   public add(sys_bo_mon_giang_viens: sys_bo_mon_giang_vien_model) {
-    const url = this.REST_API_URL + '/sys_bo_mon_giang_vien/sys_bo_mon_giang_viens';
+    const url = this.REST_API_URL + '/sys_bo_mon_giang_vien/create';
     return this.http.post(url, sys_bo_mon_giang_viens);
   }
   // edit sys_bo_mon_giang_vien

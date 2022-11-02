@@ -35,7 +35,7 @@ export class sys_hoat_dong_giang_vien_service {
   }
   // thêm sys_hoat_dong_giang_vien
   public add(sys_hoat_dong_giang_viens: sys_hoat_dong_giang_vien_model) {
-    const url = this.REST_API_URL + '/sys_hoat_dong_giang_vien/sys_hoat_dong_giang_viens';
+    const url = this.REST_API_URL + '/sys_hoat_dong_giang_vien/create';
     return this.http.post(url, sys_hoat_dong_giang_viens);
   }
   // edit sys_hoat_dong_giang_vien

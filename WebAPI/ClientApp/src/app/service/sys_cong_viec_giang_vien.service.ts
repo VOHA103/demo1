@@ -35,7 +35,7 @@ export class sys_cong_viec_giang_vien_service {
   }
   // thêm sys_cong_viec_giang_vien
   public add(sys_cong_viec_giang_viens: sys_cong_viec_giang_vien_model) {
-    const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/sys_cong_viec_giang_viens';
+    const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/create';
     return this.http.post(url, sys_cong_viec_giang_viens);
   }
   // edit sys_cong_viec_giang_vien

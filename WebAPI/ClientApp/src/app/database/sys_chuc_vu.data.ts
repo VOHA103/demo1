@@ -1,6 +1,6 @@
 export class sys_chuc_vu {
   id: number;
-  ten_bo_mon: string;
+  ten_chuc_vu: string;
   create_by: string;
   create_date: string | null;
   update_by: string;

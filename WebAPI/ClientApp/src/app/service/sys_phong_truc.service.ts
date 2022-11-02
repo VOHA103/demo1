@@ -35,7 +35,7 @@ export class sys_phong_truc_service {
   }
   // thêm sys_phong_truc
   public add(sys_phong_trucs: sys_phong_truc_model) {
-    const url = this.REST_API_URL + '/sys_phong_truc/sys_phong_trucs';
+    const url = this.REST_API_URL + '/sys_phong_truc/create';
     return this.http.post(url, sys_phong_trucs);
   }
   // edit sys_phong_truc

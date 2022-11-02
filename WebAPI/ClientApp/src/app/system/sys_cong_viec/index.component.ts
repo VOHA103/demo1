@@ -100,28 +100,41 @@ export class sys_cong_viec_indexComponent implements OnInit {
     });
   }
    delete(id): void {
-  //   this.sys_cong_viec_service.deleteUser(id).subscribe((result) => {
-  //     Swal.fire({
-  //       icon: 'success',
-  //       title: 'Thành công',
-  //       showConfirmButton: false,
-  //       timer: 2000,
-  //     }).then((result) => {
-  //       this.loadAPI();
-  //     });
-  //   });
+    this.sys_cong_viec_service.delete(id).subscribe((result) => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        showConfirmButton: false,
+        timer: 2000,
+      }).then((result) => {
+        this.loadAPI();
+      });
+    });
+  }
+  reven_status(id): void {
+    this.sys_cong_viec_service.reven_status(id).subscribe((result) => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        showConfirmButton: false,
+        timer: 2000,
+      }).then((result) => {
+        this.loadAPI();
+      });
+    });
   }
   ngOnInit(): void {
     this.loadAPI();
     this.lst_status = [
       {
         id: '1',
-        name: 'Thành viên',
+        name: 'Đang sử dụng',
       },
       {
         id: '2',
-        name: 'Công việc',
+        name: 'Ngưng sử dụng',
       },
+
     ];
   }
 }

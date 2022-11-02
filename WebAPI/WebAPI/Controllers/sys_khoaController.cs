@@ -18,6 +18,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using WebAPI.Services.Interfaces;
+using WebAPI.Part;
 
 namespace WebAPI.Controllers
 {
@@ -33,10 +34,26 @@ namespace WebAPI.Controllers
         [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
         {
-            var result = _context.sys_khoa.Find(id);
-            _context.sys_khoa.Remove(result);
+            var result = _context.sys_khoa.Where(q=>q.id==Int32.Parse(id)).SingleOrDefault();
+            // xoá khỏi database
+            //_context.sys_khoa.Remove(result);
+
+            //cập nhập trạng thái ngưng sử dụng
+            result.status_del = 2;
             _context.SaveChanges();
-            return Ok();
+            return Ok(result);
+        }
+        [HttpGet("[action]")]
+        public IActionResult reven_status([FromQuery] string id)
+        {
+            var result = _context.sys_khoa.Where(q => q.id == Int32.Parse(id)).SingleOrDefault();
+            // xoá khỏi database
+            //_context.sys_khoa.Remove(result);
+
+            //cập nhập trạng thái ngưng sử dụng
+            result.status_del = 1;
+            _context.SaveChanges();
+            return Ok(result);
         }
         [HttpGet("[action]")]
         public IActionResult GetAll()
@@ -51,19 +68,60 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
         [HttpPost("edit")]
-        public async Task<IActionResult> edit([FromBody] user_model users)
+        public async Task<IActionResult> edit([FromBody] sys_khoa_model sys_khoa)
         {
-            var model =await _context.sys_khoa.FindAsync(users.db.id);
-            _context.SaveChanges();
-            return Ok(users);
+            try
+            {
+                var error = sys_khoa_part.check_error_insert_update(sys_khoa);
+                if (error.Count() == 0)
+                {
+                    var model = _context.sys_khoa.Where(q => q.id == sys_khoa.db.id).SingleOrDefault();
+                    model.update_date = DateTime.Now;
+                    model.update_by = sys_khoa.db.update_by;
+                    model.note = sys_khoa.db.note;
+                    model.ten_khoa = sys_khoa.db.ten_khoa;
+                    model.status_del = 1;
+                    await _context.SaveChangesAsync();
+                }
+                var result = new
+                {
+                    data = sys_khoa,
+                    error = error,
+                };
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
         }
         [HttpPost("create")]
         public async Task<IActionResult> create([FromBody] sys_khoa_model sys_khoa)
         {
-            sys_khoa.db.id = 0;
-            _context.sys_khoa.Add(sys_khoa.db);
-           await _context.SaveChangesAsync();
-            return Ok(sys_khoa);
+            try
+            {
+                var error = sys_khoa_part.check_error_insert_update(sys_khoa);
+                if (error.Count() == 0)
+                {
+                    sys_khoa.db.id =0;
+                    sys_khoa.db.update_date = DateTime.Now;
+                    sys_khoa.db.create_date = DateTime.Now;
+                    sys_khoa.db.update_by = sys_khoa.db.create_by;
+                    sys_khoa.db.status_del = 1;
+                    _context.sys_khoa.Add(sys_khoa.db);
+                    await _context.SaveChangesAsync();
+                }
+                var result = new
+                {
+                    data = sys_khoa,
+                    error = error,
+                };
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
         }
     }
 }

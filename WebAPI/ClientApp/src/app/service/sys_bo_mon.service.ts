@@ -34,18 +34,23 @@ export class sys_bo_mon_service {
     return this.http.get<sys_bo_mon_model[]>(url);
   }
   // thêm sys_bo_mon
-  public add(sys_bo_mons: sys_bo_mon_model) {
-    const url = this.REST_API_URL + '/sys_bo_mon/sys_bo_mons';
-    return this.http.post(url, sys_bo_mons);
+  public add(data: sys_bo_mon_model) {
+    const url = this.REST_API_URL + '/sys_bo_mon/create';
+    return this.http.post(url, data);
   }
   // edit sys_bo_mon
-  public edit(sys_bo_mons: sys_bo_mon_model) {
+  public edit(data: sys_bo_mon_model) {
     const url = this.REST_API_URL + '/sys_bo_mon/edit';
-    return this.http.post(url, sys_bo_mons);
+    return this.http.post(url, data);
   }
   // edit sys_bo_mon
   public delete(id: string) {
     const url = this.REST_API_URL + '/sys_bo_mon/delete?id=' + id;
+    return this.http.get(url);
+  }
+  // reven status sys_khoa
+  public reven_status(id: string) {
+    const url = this.REST_API_URL + '/sys_bo_mon/reven_status?id=' + id;
     return this.http.get(url);
   }
 }

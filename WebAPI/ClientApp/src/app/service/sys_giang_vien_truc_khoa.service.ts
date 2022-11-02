@@ -35,7 +35,7 @@ export class sys_giang_vien_truc_khoa_service {
   }
   // thêm sys_giang_vien_truc_khoa
   public add(sys_giang_vien_truc_khoas: sys_giang_vien_truc_khoa_model) {
-    const url = this.REST_API_URL + '/sys_giang_vien_truc_khoa/sys_giang_vien_truc_khoas';
+    const url = this.REST_API_URL + '/sys_giang_vien_truc_khoa/create';
     return this.http.post(url, sys_giang_vien_truc_khoas);
   }
   // edit sys_giang_vien_truc_khoa

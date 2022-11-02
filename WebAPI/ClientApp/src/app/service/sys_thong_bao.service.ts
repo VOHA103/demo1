@@ -33,7 +33,7 @@ export class sys_thong_bao_service {
   }
   // thêm sys_thong_bao
   public add(sys_thong_baos: sys_thong_bao_model) {
-    const url = this.REST_API_URL + '/sys_thong_bao/sys_thong_baos';
+    const url = this.REST_API_URL + '/sys_thong_bao/create';
     return this.http.post(url, sys_thong_baos);
   }
   // edit sys_thong_bao

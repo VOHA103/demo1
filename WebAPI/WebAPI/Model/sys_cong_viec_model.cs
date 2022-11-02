@@ -15,5 +15,6 @@ namespace WebAPI.Model
         public sys_cong_viec db { get; set; }
         public string create_name { get; set; }
         public string update_name { get; set; }
+        public string ten_loai_cong_viec { get; set; }
     }
 }
