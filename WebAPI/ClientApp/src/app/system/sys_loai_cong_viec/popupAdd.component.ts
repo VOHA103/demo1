@@ -1,4 +1,3 @@
-import { user_model } from '../../model/user.model';
 import {
   MatDialog,
   MatDialogRef,
@@ -9,14 +8,15 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { sys_loai_cong_viec_service } from '../../service/sys_loai_cong_viec.service';
 import Swal from 'sweetalert2';
-import { User } from '@/app/database/user.data';
+import { sys_user_service } from '../../service/sys_user.service';
+import { sys_loai_cong_viec_model } from '@/app/model/sys_loai_cong_viec.model';
 @Component({
   selector: 'sys_loai_cong_viec_popup',
   templateUrl: './popupAdd.component.html',
   styleUrls: ['./popupAdd.component.scss'],
 })
 export class sys_loai_cong_viec_popupComponent {
-  public user_model = new user_model();
+  public sys_loai_cong_viec_model = new sys_loai_cong_viec_model();
   public lst_status: any = [];
   public check_error: any = [];
   constructor(
@@ -24,44 +24,48 @@ export class sys_loai_cong_viec_popupComponent {
     private sys_loai_cong_viec_service: sys_loai_cong_viec_service,
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<sys_loai_cong_viec_popupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: user_model
+    @Inject(MAT_DIALOG_DATA) public data: sys_loai_cong_viec_model
   ) {
-    //this.user = data;
-    this.user_model = data;
-    if (this.user_model.db.id == '0') this.Save();
+    //this.sys_loai_cong_viec_model = data;
+    this.sys_loai_cong_viec_model = data;
+    if (this.sys_loai_cong_viec_model.db.id == 0) this.Save();
   }
   Close(): void {
     this.dialogRef.close();
   }
   Save(): void {
-    // this.sys_loai_cong_viec_service.addUser(this.user_model).subscribe((result) => {
-    //   var data: any = result;
-    //   this.check_error = data.error;
-    //   if (this.check_error.length === 0) {
-    //     Swal.fire({
-    //       icon: 'success',
-    //       title: 'Thành công',
-    //       showConfirmButton: false,
-    //       timer: 2000,
-    //     }).then((result) => {
-    //       this.Close();
-    //     });
-    //   }
-    // });
-    // console.log(this.user_model);
+    this.sys_loai_cong_viec_service
+      .add(this.sys_loai_cong_viec_model)
+      .subscribe((result) => {
+        var data: any = result;
+        this.check_error = data.error;
+        if (this.check_error.length === 0) {
+          this.Close();
+          Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            showConfirmButton: false,
+            timer: 2000,
+          }).then((result) => {});
+        }
+      });
   }
   Edit(): void {
-    // this.sys_loai_cong_viec_service.editUser(this.user_model).subscribe((result) => {
-    //   Swal.fire({
-    //     icon: 'success',
-    //     title: 'Thành công',
-    //     showConfirmButton: false,
-    //     timer: 2000,
-    //   }).then((result) => {
-    //     this.Close();
-    //   });
-    // });
-    // console.log(this.user_model);
+    this.sys_loai_cong_viec_service
+      .edit(this.sys_loai_cong_viec_model)
+      .subscribe((result) => {
+        var data: any = result;
+        this.check_error = data.error;
+        if (this.check_error.length === 0) {
+          this.Close();
+          Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            showConfirmButton: false,
+            timer: 2000,
+          }).then((result) => {});
+        }
+      });
   }
 
   ngOnInit(): void {

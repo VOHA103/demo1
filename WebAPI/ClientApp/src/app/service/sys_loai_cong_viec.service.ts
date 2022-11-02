@@ -46,4 +46,9 @@ export class sys_loai_cong_viec_service {
     const url = this.REST_API_URL + '/sys_loai_cong_viec/delete?id=' + id;
     return this.http.get(url);
   }
+  // reven status sys_loai_cong_viec
+  public reven_status(id: string) {
+    const url = this.REST_API_URL + '/sys_loai_cong_viec/reven_status?id=' + id;
+    return this.http.get(url);
+  }
 }

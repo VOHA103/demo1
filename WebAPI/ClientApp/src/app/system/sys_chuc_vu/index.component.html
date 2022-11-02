@@ -7,16 +7,12 @@
   </div>
   <mat-card>
     <div class="flex">
-      <div class="flex-1  px-2">
-          <mat-label>Tên chức vụ</mat-label>
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-select  [(ngModel)]="filter.search">
-            <mat-option *ngFor="let item of lst_status" [value]="item.id" (onSelectionChange)="openDialogAdd()">
-              {{ item.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+      <div class="flex-1 px-2">
+        <mat-label>Tìm kiếm</mat-label>
+      <mat-form-field class="w-full" appearance="outline" class="w-full">
+        <input [(ngModel)]="filter.search" matInput >
+      </mat-form-field>
+    </div>
       <div class="flex-1  px-2">
           <mat-label>Trạng thái</mat-label>
         <mat-form-field appearance="outline" class="w-full">
@@ -25,14 +21,6 @@
               {{ item.name }}
             </mat-option>
           </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
-    <div  class="flex">
-      <div class="flex-1 px-2">
-          <mat-label>Tìm kiếm</mat-label>
-        <mat-form-field class="w-full" appearance="outline" class="w-full">
-          <input [(ngModel)]="filter.search" matInput >
         </mat-form-field>
       </div>
     </div>
