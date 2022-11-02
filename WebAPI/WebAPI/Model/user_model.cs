@@ -11,26 +11,14 @@ namespace WebAPI.Model
         public user_model()
         {
             db = new User();
-            lst_cong_viec = new List<string>();
         }
         public User db { get; set; }
-        public List<string> lst_cong_viec { get; set; }
     }
-    public class filter_data
+    public class filter_datahandler
     {
-        public filter_data()
+        public filter_datahandler()
         {
-
         }
         public string search { get; set; }
-    }
-    public class check_error
-    {
-        public check_error()
-        {
-
-        }
-        public string key { get; set; }
-        public string value { get; set; }
     }
 }

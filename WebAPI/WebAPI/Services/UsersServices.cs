@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,6 +21,5 @@ namespace WebAPI.Services
             var user =await _db.Users.FindAsync(Id);
             return user;
         }
-
     }
 }

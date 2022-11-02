@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class nav_indexComponent implements OnInit {
 public menu:any=[];
 opened=false;
+panelOpenState = false;
 public currentYear:Date;
 public userDetails:any;
 public id_user:any;
