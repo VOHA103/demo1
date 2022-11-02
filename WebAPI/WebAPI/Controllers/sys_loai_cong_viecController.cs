@@ -32,6 +32,16 @@ namespace WebAPI.Controllers
             this._context = _context;
         }
         [HttpGet("[action]")]
+        public IActionResult get_list_use()
+        {
+            var result = _context.sys_loai_cong_viec.Where(q => q.status_del == 1).Select(q => new
+            {
+                id = q.id,
+                name = q.ten_loai_cong_viec,
+            }).ToList();
+            return Ok(result);
+        }
+        [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
         {
             var result = _context.sys_loai_cong_viec.Where(q => q.id == Int32.Parse(id)).SingleOrDefault();

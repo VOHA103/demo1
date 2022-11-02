@@ -4,4 +4,5 @@ export class sys_cong_viec_model {
   db: sys_cong_viec;
   create_name: string;
   update_name: string;
+  ten_loai_cong_viec: string;
 }

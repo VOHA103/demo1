@@ -16,6 +16,10 @@ namespace WebAPI.Part
             {
                 list_error.Add(set_error.set("db.ten_cong_viec", "Bắt buộc"));
             }
+            if (string.IsNullOrEmpty(item.db.id_loai_cong_viec.ToString()))
+            {
+                list_error.Add(set_error.set("db.id_loai_cong_viec", "Bắt buộc"));
+            }
             return list_error;
         }
     }
