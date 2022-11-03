@@ -7,32 +7,20 @@
   </div>
   <mat-card>
     <div class="flex">
-      <div class="flex-1  px-2">
-          <mat-label>Tên thành viên</mat-label>
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-select>
-            <mat-option *ngFor="let food of lst_status" [value]="food.id" (onSelectionChange)="openDialogAdd()">
-              {{ food.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="flex-1  px-2">
-          <mat-label>Trạng thái</mat-label>
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-select>
-            <mat-option *ngFor="let food of lst_status" [value]="food.id" (onSelectionChange)="openDialogAdd()">
-              {{ food.name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
-    <div  class="flex">
       <div class="flex-1 px-2">
-          <mat-label>Tìm kiếm</mat-label>
+        <mat-label>Tên công việc</mat-label>
         <mat-form-field class="w-full" appearance="outline" class="w-full">
-          <input [(ngModel)]="filter.search" matInput >
+          <input [(ngModel)]="filter.search" matInput>
+        </mat-form-field>
+      </div>
+      <div class="flex-1  px-2">
+        <mat-label>Trạng thái</mat-label>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-select  [(ngModel)]="filter.search" >
+            <mat-option *ngFor="let item of lst_status" [value]="item.id" (onSelectionChange)="openDialogAdd()">
+              {{ item.name }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
     </div>
@@ -53,14 +41,18 @@
   <table  class="w-full table_admin" >
     <thead class="">
       <th class=" text-base" style="width: 10%; height: 60px"></th>
-      <th class=" text-base" style="width: 5%; height: 60px">
-        No.
-      </th>
-      <th class=" text-base" style="height: 60px">
-        Tên thành viên
-      </th>
-      <th class=" text-base" style="height: 60px">Mật khẩu</th>
-      <th class=" text-base" style="height: 60px">Trạng thái</th>
+      <th class=" text-base" style="width: 5%; height: 60px">No.</th>
+      <th class=" text-base" style="height: 60px">Tên giảng viên</th>
+      <th class=" text-base" style="height: 60px">Mã giảng viên</th>
+      <th class=" text-base" style="height: 60px">Tài khoản</th>
+      <th class=" text-base" style="height: 60px">Chức vụ</th>
+      <th class=" text-base" style="height: 60px">Khoa</th>
+      <th class=" text-base" style="height: 60px">Số điện thoại</th>
+      <th class=" text-base" style="height: 60px">Email</th>
+      <th class=" text-base" style="height: 60px">Địa chỉ</th>
+      <th class=" text-base" style="height: 60px">Ngày sinh</th>
+      <th class=" text-base" style="height: 60px">Người tạo</th>
+      <th class=" text-base" style="height: 60px">Ngày tạo</th>
     </thead>
     <tbody *ngFor="let item of listData; index as i">
       <tr>
@@ -71,35 +63,30 @@
               <button mat-menu-item (click)="openDialogDetail(item)">
                 Sửa
               </button>
-              <button mat-menu-item (click)="delete(item.db.id)">Xoá</button>
-              <button mat-menu-item>Ngừng sử dụng</button>
+              <button mat-menu-item *ngIf="item.db.status_del==1" (click)="delete(item.db.id)">Xoá</button>
+              <button mat-menu-item *ngIf="item.db.status_del==2" (click)="reven_status(item.db.id)">Sử
+                dụng</button>
             </mat-menu>
           </div>
         </td>
-        <td class="">
-          <span class="p-4">
-            {{ i + 1 }}
-          </span>
-        </td>
-        <td class="">
-          {{ item.db.name }}{{ item.db.id }}
-        </td>
-        <td class="">
-          {{ item.db.pass }}
-        </td>
-        <td class="">Đang sử dụng</td>
+        <td class=""><span class="p-4">{{ i + 1 }}</span></td>
+        <td class="">{{ item.db.ten_giang_vien }}</td>
+        <td class="">{{ item.db.ma_giang_vien }}</td>
+        <td class="">{{ item.db.username }}</td>
+        <td class="">{{ item.ten_chuc_vu }}</td>
+        <td class="">{{ item.ten_khoa }}</td>
+        <td class="">{{ item.db.sdt }}</td>
+        <td class="">{{ item.db.email }}</td>
+        <td class="">{{ item.db.dia_chi }}</td>
+        <td class="">{{ item.db.ngay_sinh  | date :'dd/MM/YYYY HH:mm' }}</td>
+        <td class="">{{ item.create_name }}</td>
+        <td class="">{{ item.db.create_date  | date :'dd/MM/YYYY HH:mm' }}</td>
       </tr>
     </tbody>
 
   </table>
  </mat-card>
   </div>
-<!-- <mat-paginator
-[length]="listData.length"
-[pageSize]="5"
-[pageSizeOptions]="[10, 25, 50, 100]"
-aria-label="Select page">
-</mat-paginator> -->
 <app-pagination
 (goPage)="goToPage($event)"
 (goPrev)="goToPrevious()"

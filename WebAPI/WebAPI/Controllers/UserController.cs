@@ -31,7 +31,6 @@ namespace WebAPI.Controllers
         private readonly ApplicationDbContext _context;
         private readonly ApplicationSettings _appSettings;
         private readonly IUsersServices usersServices;
-        private readonly string users;
         public UserController(ApplicationDbContext _context, IOptions<ApplicationSettings> appSettings, IUsersServices usersServices)
         {
             this._context = _context;

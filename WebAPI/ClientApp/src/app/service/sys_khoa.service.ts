@@ -54,4 +54,9 @@ export class sys_khoa_service {
     const url = this.REST_API_URL + '/sys_khoa/reven_status?id=' + id;
     return this.http.get(url);
   }
+  //lấy danh sách sys_khoa
+  public get_list_khoa(): Observable<any[]> {
+    const url = this.REST_API_URL + '/sys_khoa/get_list_khoa';
+    return this.http.get<any[]>(url);
+  }
 }

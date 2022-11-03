@@ -100,16 +100,28 @@ export class sys_giang_vien_indexComponent implements OnInit {
     });
   }
    delete(id): void {
-  //   this.sys_giang_vien_service.deleteUser(id).subscribe((result) => {
-  //     Swal.fire({
-  //       icon: 'success',
-  //       title: 'Thành công',
-  //       showConfirmButton: false,
-  //       timer: 2000,
-  //     }).then((result) => {
-  //       this.loadAPI();
-  //     });
-  //   });
+    this.sys_giang_vien_service.delete(id).subscribe((result) => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        showConfirmButton: false,
+        timer: 2000,
+      }).then((result) => {
+        this.loadAPI();
+      });
+    });
+  }
+  reven_status(id): void {
+    this.sys_giang_vien_service.reven_status(id).subscribe((result) => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        showConfirmButton: false,
+        timer: 2000,
+      }).then((result) => {
+        this.loadAPI();
+      });
+    });
   }
   ngOnInit(): void {
     this.loadAPI();

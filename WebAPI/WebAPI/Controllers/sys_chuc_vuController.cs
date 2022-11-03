@@ -33,6 +33,15 @@ namespace WebAPI.Controllers
             this._context = _context;
         }
         [HttpGet("[action]")]
+        public IActionResult get_list_chuc_vu()
+        {
+            var result = _context.sys_chuc_vu.Select(q=>new { 
+            id=q.id,
+            name=q.ten_chuc_vu,
+            }).ToList();
+            return Ok(result);
+        }
+        [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
         {
             var result = _context.sys_chuc_vu.Where(q => q.id == Int32.Parse(id)).SingleOrDefault();

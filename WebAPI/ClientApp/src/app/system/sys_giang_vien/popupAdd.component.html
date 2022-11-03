@@ -1,7 +1,5 @@
 <div class="flex flex-col flex-auto w-full  h-fit overflow-y-visible">
-  <div
-    class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8"
-  >
+  <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8">
     <span class="text-lg font-medium">Khoa</span>
   </div>
   <div class="w-full p-6 sm:p-8 space-y-1 overflow-y-auto">
@@ -11,22 +9,12 @@
           <button mat-raised-button (click)="Close()">Close</button>
         </div>
         <div>
-          <button
-            mat-raised-button
-            color="primary"
-            *ngIf="user_model.db.id == '0'"
-            (click)="Save()"
-          >
+          <button mat-raised-button color="primary" *ngIf="sys_giang_vien_model.db.id == '0'" (click)="Save()">
             Save
           </button>
         </div>
         <div>
-          <button
-            mat-raised-button
-            color="primary"
-            *ngIf="user_model.db.id != '0'"
-            (click)="Edit()"
-          >
+          <button mat-raised-button color="primary" *ngIf="sys_giang_vien_model.db.id != '0'" (click)="Edit()">
             Edit
           </button>
         </div>
@@ -35,39 +23,123 @@
         <div class="flex-1 px-2">
           <mat-label>Tên
             <span *ngFor="let key of check_error">
-              <span style="color:red" *ngIf="key.key=='db.name'">({{key.value}})</span>
+              <span style="color:red" *ngIf="key.key=='db.ten_giang_vien'">({{key.value}})</span>
             </span>
 
           </mat-label>
           <mat-form-field class="w-full" appearance="outline">
-            <input
-              matInput
-              placeholder="Tên"
-            />
+            <input matInput [(ngModel)]="sys_giang_vien_model.db.ten_giang_vien" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Mã giảng viên
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.ma_giang_vien'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field class="w-full" appearance="outline">
+            <input matInput [(ngModel)]="sys_giang_vien_model.db.ma_giang_vien" />
           </mat-form-field>
         </div>
         <div class="flex-1 px-2">
-          <mat-label>Mật khẩu
+          <mat-label>Tài khoản
             <span *ngFor="let key of check_error">
-              <span style="color:red" *ngIf="key.key=='db.pass'">({{key.value}})</span>
+              <span style="color:red" *ngIf="key.key=='db.ma_giang_vien'">({{key.value}})</span>
             </span>
 
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <input
-              matInput
-              placeholder="Mật khẩu"
-            />
+            <input matInput [(ngModel)]="sys_giang_vien_model.db.ma_giang_vien" />
           </mat-form-field>
         </div>
       </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Chức vụ
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.id_chuc_vu'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="sys_giang_vien_model.db.id_chuc_vu">
+              <mat-option *ngFor="let item of lst_chuc_vu" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex-1 px-2">
+          <mat-label class="mb-5">Khoa
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.id_khoa'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="sys_giang_vien_model.db.id_khoa">
+              <mat-option *ngFor="let item of lst_khoa" [value]="item.id">{{
+                item.name
+                }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Số điện thoại
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.sdt'">({{key.value}})</span>
+            </span>
 
+          </mat-label>
+          <mat-form-field class="w-full" appearance="outline">
+            <input matInput [(ngModel)]="sys_giang_vien_model.db.sdt" />
+          </mat-form-field>
+        </div>
+        <div class="flex-1 px-2">
+          <mat-label>Email
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.email'">({{key.value}})</span>
+            </span>
 
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput [(ngModel)]="sys_giang_vien_model.db.email" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Địa chỉ
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.dia_chi'">({{key.value}})</span>
+            </span>
+
+          </mat-label>
+          <mat-form-field class="w-full" appearance="outline">
+            <input matInput [(ngModel)]="sys_giang_vien_model.db.dia_chi" />
+          </mat-form-field>
+        </div>
+        <div class="flex-1 px-2">
+          <mat-label>Ngày sinh
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.email'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput [matDatepicker]="picker" [(ngModel)]="sys_giang_vien_model.db.ngay_sinh">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+        </div>
+      </div>
       <!-- <div class="flex">
         <div class="flex-1 px-2">
           <mat-label>Tên thành viên</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="user_model.db.id" name="food">
+            <mat-select [(ngModel)]="sys_giang_vien_model.db.id" name="food">
               <mat-option *ngFor="let food of lst_status" [value]="food.id">
                 {{ food.name }}
               </mat-option>
@@ -77,7 +149,7 @@
         <div class="flex-1 px-2">
           <mat-label class="mb-5">Toppings</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="user_model.lst_cong_viec" multiple>
+            <mat-select [(ngModel)]="sys_giang_vien_model.lst_cong_viec" multiple>
               <mat-option *ngFor="let food of lst_status" [value]="food.id">{{
                 food.name
               }}</mat-option>
@@ -90,22 +162,12 @@
           <button mat-raised-button (click)="Close()">Close</button>
         </div>
         <div>
-          <button
-            mat-raised-button
-            color="primary"
-            *ngIf="user_model.db.id == '0'"
-            (click)="Save()"
-          >
+          <button mat-raised-button color="primary" *ngIf="sys_giang_vien_model.db.id == '0'" (click)="Save()">
             Save
           </button>
         </div>
         <div>
-          <button
-            mat-raised-button
-            color="primary"
-            *ngIf="user_model.db.id != '0'"
-            (click)="Edit()"
-          >
+          <button mat-raised-button color="primary" *ngIf="sys_giang_vien_model.db.id != '0'" (click)="Edit()">
             Edit
           </button>
         </div>

@@ -7,7 +7,7 @@ using WebAPI.System;
 
 namespace WebAPI.Part
 {
-    public static class sys_bo_mon_part
+    public class sys_bo_mon_part
     {
         public static List<check_error> check_error_insert_update(sys_bo_mon_model item)
         {

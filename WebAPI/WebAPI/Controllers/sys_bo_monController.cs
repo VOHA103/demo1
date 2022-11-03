@@ -81,7 +81,7 @@ namespace WebAPI.Controllers
                 {
                     var model = _context.sys_bo_mon.Where(q => q.id == sys_bo_mon.db.id).SingleOrDefault();
                     model.update_date = DateTime.Now;
-                    model.update_by = sys_bo_mon.db.update_by;
+                    model.update_by = user_id;
                     model.note = sys_bo_mon.db.note;
                     model.ten_bo_mon = sys_bo_mon.db.ten_bo_mon;
                     model.status_del = 1;
@@ -104,13 +104,14 @@ namespace WebAPI.Controllers
         {
             try
             {
+                string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var error = sys_bo_mon_part.check_error_insert_update(sys_bo_mon);
                 if (error.Count() == 0)
                 {
                     sys_bo_mon.db.id = 0;
                     sys_bo_mon.db.update_date = DateTime.Now;
                     sys_bo_mon.db.create_date = DateTime.Now;
-                    sys_bo_mon.db.update_by = sys_bo_mon.db.create_by;
+                    sys_bo_mon.db.update_by = user_id;
                     sys_bo_mon.db.status_del = 1;
                     _context.sys_bo_mon.Add(sys_bo_mon.db);
                     await _context.SaveChangesAsync();

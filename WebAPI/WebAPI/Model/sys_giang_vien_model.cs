@@ -15,5 +15,7 @@ namespace WebAPI.Model
         public sys_giang_vien db { get; set; }
         public string create_name { get; set; }
         public string update_name { get; set; }
+        public string ten_chuc_vu { get; set; }
+        public string ten_khoa { get; set; }
     }
 }

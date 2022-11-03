@@ -32,6 +32,15 @@ namespace WebAPI.Controllers
             this._context = _context;
         }
         [HttpGet("[action]")]
+        public IActionResult get_list_khoa()
+        {
+            var result = _context.sys_khoa.Select(q => new {
+                id = q.id,
+                name = q.ten_khoa,
+            }).ToList();
+            return Ok(result);
+        }
+        [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
         {
             var result = _context.sys_khoa.Where(q=>q.id==Int32.Parse(id)).SingleOrDefault();

@@ -30,7 +30,7 @@ export class sys_chuc_vu_service {
   }
   //lấy danh sách sys_chuc_vu
   public getAll(): Observable<sys_chuc_vu_model[]> {
-    const url = 'https://localhost:44334/sys_chuc_vu/GetAll';
+    const url = this.REST_API_URL + '/sys_chuc_vu/GetAll';
     return this.http.get<sys_chuc_vu_model[]>(url);
   }
   // thêm sys_chuc_vu
@@ -52,5 +52,10 @@ export class sys_chuc_vu_service {
   public reven_status(id: string) {
     const url = this.REST_API_URL + '/sys_chuc_vu/reven_status?id=' + id;
     return this.http.get(url);
+  }
+  //lấy danh sách sys_chuc_vu
+  public get_list_chuc_vu(): Observable<any[]> {
+    const url = this.REST_API_URL + '/sys_chuc_vu/get_list_chuc_vu';
+    return this.http.get<any[]>(url);
   }
 }

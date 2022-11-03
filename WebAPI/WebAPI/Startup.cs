@@ -44,7 +44,7 @@ namespace WebAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "CuaSneaker API",
+                    Title = "Khoá Luận Tốt Nghiệp",
                     Version = "v1",
                     Description = "Description for the API goes here.",
                 });
@@ -55,7 +55,8 @@ namespace WebAPI
             });
 
             services.AddScoped<IUsersServices, UsersServices>();
-  
+            services.AddScoped<IJwtAuthenticationManager, JwtAuthenticationManager>();
+
             services.AddMvc(option =>
             {
                 Console.Write(option);
