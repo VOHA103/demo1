@@ -35,6 +35,7 @@ export class sys_giang_vien_service {
   }
   // thêm sys_giang_vien
   public add(sys_giang_viens: sys_giang_vien_model) {
+    debugger
     const url = this.REST_API_URL + '/sys_giang_vien/create';
     return this.http.post(url, sys_giang_viens);
   }

@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -77,6 +78,12 @@ import { sys_phong_truc_indexComponent } from './system/sys_phong_truc/index.com
 import { sys_thong_bao_popupComponent } from './system/sys_thong_bao/popupAdd.component';
 import { sys_thong_bao_indexComponent } from './system/sys_thong_bao/index.component';
 import { user_menuComponent } from './auth/user_menu/user_menu.component';
+// import {
+//   NgxMatDatetimePickerModule,
+//   NgxMatNativeDateModule,
+//   NgxMatTimepickerModule
+// } from '@angular-material-components/datetime-picker';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -157,12 +164,16 @@ import { user_menuComponent } from './auth/user_menu/user_menu.component';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
+    // NgxMatDatetimePickerModule,
+    // NgxMatTimepickerModule,
+    // NgxMatNativeDateModule
   ],
   providers: [sys_user_service, {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true
-  }],
+  }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

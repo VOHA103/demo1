@@ -1,3 +1,4 @@
+import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
 import {
   MatDialog,
   MatDialogRef,
@@ -15,6 +16,7 @@ import { sys_giang_vien_model } from '@/app/model/sys_giang_vien.model';
   selector: 'sys_giang_vien_popup',
   templateUrl: './popupAdd.component.html',
   styleUrls: ['./popupAdd.component.scss'],
+
 })
 export class sys_giang_vien_popupComponent {
   public sys_giang_vien_model = new sys_giang_vien_model();
@@ -22,6 +24,7 @@ export class sys_giang_vien_popupComponent {
   public lst_khoa: any = [];
   public lst_chuc_vu: any = [];
   public check_error: any = [];
+  today = new Date();
   constructor(
     private http: HttpClient,
     private sys_giang_vien_service: sys_giang_vien_service,
@@ -33,7 +36,11 @@ export class sys_giang_vien_popupComponent {
   ) {
     //this.sys_giang_vien = data;
     this.sys_giang_vien_model = data;
-    if (this.sys_giang_vien_model.db.id == '0') this.Save();
+    if (this.sys_giang_vien_model.db.id == '0'){
+       this.Save();
+       debugger
+       this.sys_giang_vien_model.db.ngay_sinh=this.today.toString();
+    }
     this.get_list_chuc_vu();
     this.get_list_khoa();
   }
