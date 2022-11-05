@@ -16,10 +16,6 @@ namespace WebAPI.Part
             {
                 list_error.Add(set_error.set("db.id_cong_viec", "Bắt buộc"));
             }
-            if (string.IsNullOrEmpty(item.db.id_giang_vien))
-            {
-                list_error.Add(set_error.set("db.id_giang_vien", "Bắt buộc"));
-            }
             return list_error;
         }
     }

@@ -1,18 +1,18 @@
-import { sys_cong_viec_giang_vien_service } from '../../service/sys_cong_viec_giang_vien.service';
+import { sys_user_service } from './../../service/sys_user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { sys_user_popupComponent } from './sys_user_popup.component';
 import { user_model } from '@/app/model/user.model';
 import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
-import { sys_cong_viec_giang_vien_popupComponent } from './popupAdd.component';
 @Component({
-  selector: 'sys_cong_viec_giang_vien_index',
-  templateUrl: './index.component.html',
-  styleUrls: ['./index.component.scss'],
+  selector: 'sys_user_index',
+  templateUrl: './sys_user.component.html',
+  styleUrls: ['./sys_user.component.scss'],
 })
-export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
+export class sys_user_indexComponent implements OnInit {
   public foods: any = [];
   public listData: any = [];
   public lst_status: any = [];
@@ -25,11 +25,11 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
   searchKey: string;
   constructor(
     private http: HttpClient,
-    private sys_cong_viec_giang_vien_service: sys_cong_viec_giang_vien_service,
+    private sys_user_service: sys_user_service,
     public dialog: MatDialog
   ) {}
   openDialogDetail(item): void {
-    const dialogRef = this.dialog.open(sys_cong_viec_giang_vien_popupComponent, {
+    const dialogRef = this.dialog.open(sys_user_popupComponent, {
       width: '850px',
       data: item,
     });
@@ -71,13 +71,13 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
   }
 
   openDialogAdd(): void {
-    const dialogRef = this.dialog.open(sys_cong_viec_giang_vien_popupComponent, {
+    const dialogRef = this.dialog.open(sys_user_popupComponent, {
       width: '850px',
       data: {
         db: {
           id: '0',
         },
-        list_giang_vien:null
+        lst_cong_viec: null,
       },
     });
 
@@ -88,7 +88,7 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
   }
   loadAPI() {
     this.loading = false;
-    this.sys_cong_viec_giang_vien_service.getAll().subscribe((resp) => {
+    this.sys_user_service.DataHandel().subscribe((resp) => {
       this.listData=resp;
       // var result:any;
       // result = resp;
@@ -99,25 +99,13 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
       this.loading = true;
     });
   }
-   delete(id): void {
-    this.sys_cong_viec_giang_vien_service.delete(id).subscribe((result) => {
+  delete(id): void {
+    this.sys_user_service.deleteUser(id).subscribe((result) => {
       Swal.fire({
         icon: 'success',
         title: 'Thành công',
         showConfirmButton: false,
-        timer: 1500,
-      }).then((result) => {
-        this.loadAPI();
-      });
-    });
-  }
-  reven_status(id): void {
-    this.sys_cong_viec_giang_vien_service.reven_status(id).subscribe((result) => {
-      Swal.fire({
-        icon: 'success',
-        title: 'Thành công',
-        showConfirmButton: false,
-        timer: 1500,
+        timer: 2000,
       }).then((result) => {
         this.loadAPI();
       });

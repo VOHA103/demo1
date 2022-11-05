@@ -30,7 +30,7 @@ export class sys_cong_viec_service {
   }
   //lấy danh sách sys_cong_viec
   public getAll(): Observable<sys_cong_viec_model[]> {
-    const url = 'https://localhost:44334/sys_cong_viec/GetAll';
+    const url = this.REST_API_URL + '/sys_cong_viec/GetAll';
     return this.http.get<sys_cong_viec_model[]>(url);
   }
   // thêm sys_cong_viec
@@ -52,5 +52,12 @@ export class sys_cong_viec_service {
   public reven_status(id: string) {
     const url = this.REST_API_URL + '/sys_cong_viec/reven_status?id=' + id;
     return this.http.get(url);
+  }
+  // get_list_cong_viec
+
+  //lấy danh sách sys_cong_viec
+  public get_list_cong_viec(): Observable<sys_cong_viec_model[]> {
+    const url = this.REST_API_URL + '/sys_cong_viec/get_list_cong_viec';
+    return this.http.get<sys_cong_viec_model[]>(url);
   }
 }

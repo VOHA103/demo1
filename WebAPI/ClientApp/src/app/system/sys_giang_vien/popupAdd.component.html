@@ -63,6 +63,7 @@
             </span>
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
+            <!-- [(ngModel)]="sys_giang_vien_model.db.id_chuc_vu"== [value]="item.id" -->
             <mat-select [(ngModel)]="sys_giang_vien_model.db.id_chuc_vu">
               <mat-option *ngFor="let item of lst_chuc_vu" [value]="item.id">
                 {{ item.name }}
@@ -132,7 +133,7 @@
             <!-- <input matInput type="date" [(ngModel)]="sys_giang_vien_model.db.ngay_sinh"> -->
 
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker ></mat-datepicker>
+            <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
 
         </div>

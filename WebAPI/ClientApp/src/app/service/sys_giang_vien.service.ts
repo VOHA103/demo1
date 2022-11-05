@@ -30,7 +30,7 @@ export class sys_giang_vien_service {
   }
   //lấy danh sách sys_giang_vien
   public getAll(): Observable<sys_giang_vien_model[]> {
-    const url = 'https://localhost:44334/sys_giang_vien/GetAll';
+    const url =  this.REST_API_URL + '/sys_giang_vien/GetAll';
     return this.http.get<sys_giang_vien_model[]>(url);
   }
   // thêm sys_giang_vien
@@ -53,5 +53,10 @@ export class sys_giang_vien_service {
   public reven_status(id: string) {
     const url = this.REST_API_URL + '/sys_giang_vien/reven_status?id=' + id;
     return this.http.get(url);
+  }
+  //lấy danh sách sys_giang_vien
+  public get_list_giang_vien(): Observable<sys_giang_vien_model[]> {
+    const url =  this.REST_API_URL + '/sys_giang_vien/get_list_giang_vien';
+    return this.http.get<sys_giang_vien_model[]>(url);
   }
 }

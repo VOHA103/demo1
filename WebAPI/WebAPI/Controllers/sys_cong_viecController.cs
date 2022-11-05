@@ -33,6 +33,17 @@ namespace WebAPI.Controllers
             this._context = _context;
         }
         [HttpGet("[action]")]
+        public IActionResult get_list_cong_viec()
+        {
+            var result = _context.sys_cong_viec
+              .Select(d => new 
+              {
+                  id=d.id,
+                  name=d.ten_cong_viec,
+              }).ToList();
+            return Ok(result);
+        }
+        [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
         {
             var result = _context.sys_cong_viec.Where(q => q.id == id).SingleOrDefault();

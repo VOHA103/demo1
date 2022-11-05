@@ -56,6 +56,19 @@ namespace WebAPI.Controllers
             _context.SaveChanges();
             return Ok(result);
         }
+
+        [HttpGet("[action]")]
+        public IActionResult get_id_id([FromQuery] string id, string id_2)
+        {
+            var result = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(id)).SingleOrDefault();
+            // xoá khỏi database
+            //_context.sys_khoa.Remove(result);
+
+            //cập nhập trạng thái sử dụng
+            result.status_del = 1;
+            _context.SaveChanges();
+            return Ok(result);
+        }
         [HttpGet("[action]")]
         public IActionResult GetAll()
         {

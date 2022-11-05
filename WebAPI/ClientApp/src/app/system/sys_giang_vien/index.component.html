@@ -45,11 +45,11 @@
       <th class=" text-base" style="height: 60px">Tên giảng viên</th>
       <th class=" text-base" style="height: 60px">Mã giảng viên</th>
       <th class=" text-base" style="height: 60px">Tài khoản</th>
-      <th class=" text-base" style="height: 60px">Chức vụ</th>
-      <th class=" text-base" style="height: 60px">Khoa</th>
+      <th class=" text-base" style="height: 60px">Thông tin</th>
+      <!-- <th class=" text-base" style="height: 60px">Khoa</th>
       <th class=" text-base" style="height: 60px">Số điện thoại</th>
       <th class=" text-base" style="height: 60px">Email</th>
-      <th class=" text-base" style="height: 60px">Địa chỉ</th>
+      <th class=" text-base" style="height: 60px">Địa chỉ</th>-->
       <th class=" text-base" style="height: 60px">Ngày sinh</th>
       <th class=" text-base" style="height: 60px">Người tạo</th>
       <th class=" text-base" style="height: 60px">Ngày tạo</th>
@@ -73,14 +73,19 @@
         <td class="">{{ item.db.ten_giang_vien }}</td>
         <td class="">{{ item.db.ma_giang_vien }}</td>
         <td class="">{{ item.db.username }}</td>
-        <td class="">{{ item.ten_chuc_vu }}</td>
-        <td class="">{{ item.ten_khoa }}</td>
+        <td class="">
+          <span>Chức vụ: </span> <span>{{ item.ten_chuc_vu }}</span><br>
+          <span>Tên khoa: </span> <span>{{ item.ten_khoa }}</span><br>
+          <span>Email: </span> <span>{{ item.db.email }}</span><br>
+          <span>Địa chỉ: </span> <span>{{ item.db.dia_chi }}</span><br>
+        </td>
+        <!-- <td class="">{{ item.ten_khoa }}</td>
         <td class="">{{ item.db.sdt }}</td>
         <td class="">{{ item.db.email }}</td>
-        <td class="">{{ item.db.dia_chi }}</td>
-        <td class="">{{ item.db.ngay_sinh  | date :'dd/MM/YYYY HH:mm' }}</td>
+        <td class="">{{ item.db.dia_chi }}</td>-->
+        <td class="">{{ item.db.ngay_sinh  | date :'dd/MM/YYYY' }}</td>
         <td class="">{{ item.create_name }}</td>
-        <td class="">{{ item.db.create_date  | date :'dd/MM/YYYY HH:mm' }}</td>
+        <td class="">{{ item.db.create_date  | date :'dd/MM/YYYY' }}</td>
       </tr>
     </tbody>
 

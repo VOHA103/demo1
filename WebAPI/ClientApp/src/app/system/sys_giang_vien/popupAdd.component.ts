@@ -43,11 +43,13 @@ export class sys_giang_vien_popupComponent {
     }
     this.get_list_chuc_vu();
     this.get_list_khoa();
+    console.log(this.lst_khoa);
   }
   get_list_khoa(): void {
     this.sys_khoa_service
       .get_list_khoa()
-      .subscribe((data) => (this.lst_khoa = data));
+      .subscribe((data) => (this.lst_khoa = data)
+      );
   }
   get_list_chuc_vu(): void {
     this.sys_chuc_vu_service
