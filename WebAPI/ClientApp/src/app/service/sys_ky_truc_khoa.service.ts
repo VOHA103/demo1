@@ -48,4 +48,13 @@ export class sys_ky_truc_khoa_service {
     const url = this.REST_API_URL + '/sys_ky_truc_khoa/delete?id=' + id;
     return this.http.get(url);
   }
+  // reven status sys_ky_truc_khoa
+  public reven_status(id: string) {
+    const url = this.REST_API_URL + '/sys_ky_truc_khoa/reven_status?id=' + id;
+    return this.http.get(url);
+  }
+  public get_list_ky_truc_khoa(): Observable<any[]> {
+    const url = this.REST_API_URL + '/sys_ky_truc_khoa/get_list_ky_truc_khoa';
+    return this.http.get<any[]>(url);
+  }
 }

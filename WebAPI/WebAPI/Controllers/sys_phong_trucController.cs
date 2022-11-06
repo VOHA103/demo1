@@ -18,6 +18,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using WebAPI.Services.Interfaces;
+using WebAPI.Part;
 
 namespace WebAPI.Controllers
 {
@@ -31,12 +32,37 @@ namespace WebAPI.Controllers
             this._context = _context;
         }
         [HttpGet("[action]")]
+        public IActionResult get_list_phong_truc()
+        {
+            var result = _context.sys_phong_truc.Select(q => new {
+                id = q.id,
+                name = q.ten_phong_truc,
+            }).ToList();
+            return Ok(result);
+        }
+        [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
         {
-            var result = _context.sys_phong_truc.Find(id);
-            _context.sys_phong_truc.Remove(result);
+            var result = _context.sys_phong_truc.Where(q => q.id == Int32.Parse(id)).SingleOrDefault();
+            // xoá khỏi database
+            //_context.sys_phong_truc.Remove(result);
+
+            //cập nhập trạng thái sử dụng
+            result.status_del = 2;
             _context.SaveChanges();
             return Ok();
+        }
+        [HttpGet("[action]")]
+        public IActionResult reven_status([FromQuery] string id)
+        {
+            var result = _context.sys_phong_truc.Where(q => q.id == Int32.Parse(id)).SingleOrDefault();
+            // xoá khỏi database
+            //_context.sys_phong_truc.Remove(result);
+
+            //cập nhập trạng thái sử dụng
+            result.status_del = 1;
+            _context.SaveChanges();
+            return Ok(result);
         }
         [HttpGet("[action]")]
         public IActionResult GetAll()
@@ -51,19 +77,65 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
         [HttpPost("edit")]
-        public async Task<IActionResult> edit([FromBody] user_model users)
+        public async Task<IActionResult> edit([FromBody] sys_phong_truc_model sys_phong_truc)
         {
-            var model =await _context.sys_phong_truc.FindAsync(users.db.id);
-            _context.SaveChanges();
-            return Ok(users);
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            try
+            {
+                var error = sys_phong_truc_part.check_error_insert_update(sys_phong_truc);
+                if (error.Count() == 0)
+                {
+                    var model = _context.sys_phong_truc.Where(q => q.id == sys_phong_truc.db.id).SingleOrDefault();
+                    model.update_date = DateTime.Now;
+                    model.update_by = user_id;
+                    model.ten_phong_truc = sys_phong_truc.db.ten_phong_truc;
+                    model.so_phong = sys_phong_truc.db.so_phong;
+                    model.note = sys_phong_truc.db.note;
+                    model.status_del = 1;
+                    await _context.SaveChangesAsync();
+                }
+                var result = new
+                {
+                    data = sys_phong_truc,
+                    error = error,
+                };
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
         }
         [HttpPost("create")]
         public async Task<IActionResult> create([FromBody] sys_phong_truc_model sys_phong_truc)
         {
-            sys_phong_truc.db.id = 0;
-            _context.sys_phong_truc.Add(sys_phong_truc.db);
-           await _context.SaveChangesAsync();
-            return Ok(sys_phong_truc);
+            try
+            {
+
+                string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+                var error = sys_phong_truc_part.check_error_insert_update(sys_phong_truc);
+                if (error.Count() == 0)
+                {
+                    sys_phong_truc.db.id = 0;
+                    sys_phong_truc.db.update_date = DateTime.Now;
+                    sys_phong_truc.db.create_date = DateTime.Now;
+                    sys_phong_truc.db.create_by = user_id;
+                    sys_phong_truc.db.update_by = user_id;
+                    sys_phong_truc.db.status_del = 1;
+                    _context.sys_phong_truc.Add(sys_phong_truc.db);
+                    await _context.SaveChangesAsync();
+                }
+                var result = new
+                {
+                    data = sys_phong_truc,
+                    error = error,
+                };
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
         }
     }
 }

@@ -57,8 +57,9 @@ export class sys_bo_mon_popupComponent {
     this.sys_bo_mon_service.add(this.sys_bo_mon_model).subscribe((result) => {
       var data: any = result;
       this.check_error = data.error;
-      this.Close();
       if (this.check_error.length === 0) {
+
+      this.Close();
         Swal.fire({
           icon: 'success',
           title: 'Thành công',
@@ -70,8 +71,8 @@ export class sys_bo_mon_popupComponent {
   }
   Edit(): void {
     this.sys_bo_mon_service.edit(this.sys_bo_mon_model).subscribe((result) => {
-      this.Close();
       if (this.check_error.length === 0) {
+        this.Close();
         Swal.fire({
           icon: 'success',
           title: 'Thành công',

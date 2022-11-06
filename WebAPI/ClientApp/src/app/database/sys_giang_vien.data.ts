@@ -2,6 +2,7 @@ export class sys_giang_vien {
   id: string;
   id_chuc_vu: number;
   id_khoa: number;
+  id_bo_mon: string;
   ten_giang_vien: string;
   ma_giang_vien: string;
   sdt: string;

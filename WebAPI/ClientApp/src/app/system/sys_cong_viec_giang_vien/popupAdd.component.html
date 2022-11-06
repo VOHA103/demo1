@@ -20,6 +20,52 @@
           </mat-form-field>
         </div>
         <div class="flex-1 px-2">
+          <mat-label>Khoa
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.id_khoa'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="sys_cong_viec_giang_vien_model.db.id_khoa">
+              <mat-option *ngFor="let item of lst_khoa" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Chức vụ
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.id_chuc_vu'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="sys_cong_viec_giang_vien_model.db.id_chuc_vu">
+              <mat-option *ngFor="let item of lst_chuc_vu" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex-1 px-2">
+        <mat-label>Bộ môn
+          <span *ngFor="let key of check_error">
+            <span style="color:red" *ngIf="key.key=='db.id_bo_mon'">({{key.value}})</span>
+          </span>
+        </mat-label>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-select [(ngModel)]="sys_cong_viec_giang_vien_model.db.id_bo_mon">
+            <mat-option *ngFor="let item of lst_bo_mon" [value]="item.id">
+              {{ item.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
           <mat-label class="mb-5">Giảng viên
             <span *ngFor="let key of check_error">
               <span style="color:red" *ngIf="key.key=='list_giang_vien'">({{key.value}})</span>
@@ -34,22 +80,22 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="flex pl-6 pt-6 justify-end">
-        <div class="flex mr-3">
-          <button mat-raised-button (click)="Close()">Close</button>
-        </div>
-        <div>
-          <button mat-raised-button color="primary" *ngIf="sys_cong_viec_giang_vien_model.db.id == '0'"
-            (click)="Save()">
-            Save
-          </button>
-        </div>
-        <div>
-          <button mat-raised-button color="primary" *ngIf="sys_cong_viec_giang_vien_model.db.id != '0'"
-            (click)="Edit()">
-            Edit
-          </button>
-        </div>
+
+    </div>
+    <div class="flex pl-6 pt-6 justify-end">
+      <div class="flex mr-3">
+        <button mat-raised-button (click)="Close()">Close</button>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" *ngIf="sys_cong_viec_giang_vien_model.db.id == '0'" (click)="Save()">
+          Save
+        </button>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" *ngIf="sys_cong_viec_giang_vien_model.db.id != '0'" (click)="Edit()">
+          Edit
+        </button>
       </div>
     </div>
   </div>
+</div>

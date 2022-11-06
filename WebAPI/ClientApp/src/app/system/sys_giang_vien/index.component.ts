@@ -77,7 +77,7 @@ export class sys_giang_vien_indexComponent implements OnInit {
         db: {
           id: '0',
         },
-        lst_cong_viec: null,
+        list_bo_mon: null,
       },
     });
 

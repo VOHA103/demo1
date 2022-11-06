@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { user_model } from '@/app/model/user.model';
+import { sys_ky_truc_khoa_model } from '@/app/model/sys_ky_truc_khoa.model';
 import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
 import { sys_ky_truc_khoa_popupComponent } from './popupAdd.component';
@@ -13,10 +13,11 @@ import { sys_ky_truc_khoa_popupComponent } from './popupAdd.component';
   styleUrls: ['./index.component.scss'],
 })
 export class sys_ky_truc_khoa_indexComponent implements OnInit {
+
   public foods: any = [];
   public listData: any = [];
   public lst_status: any = [];
-  public model: user_model;
+  public model: sys_ky_truc_khoa_model;
   public loading = false;
   total = 0;
   page = 1;
@@ -75,7 +76,7 @@ export class sys_ky_truc_khoa_indexComponent implements OnInit {
       width: '850px',
       data: {
         db: {
-          id: '0',
+          id: 0,
         },
         lst_cong_viec: null,
       },
@@ -100,27 +101,39 @@ export class sys_ky_truc_khoa_indexComponent implements OnInit {
     });
   }
    delete(id): void {
-  //   this.sys_ky_truc_khoa_service.deleteUser(id).subscribe((result) => {
-  //     Swal.fire({
-  //       icon: 'success',
-  //       title: 'Thành công',
-  //       showConfirmButton: false,
-  //       timer: 2000,
-  //     }).then((result) => {
-  //       this.loadAPI();
-  //     });
-  //   });
+    this.sys_ky_truc_khoa_service.delete(id).subscribe((result) => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        showConfirmButton: false,
+        timer: 2000,
+      }).then((result) => {
+        this.loadAPI();
+      });
+    });
+  }
+  reven_status(id): void {
+    this.sys_ky_truc_khoa_service.reven_status(id).subscribe((result) => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        showConfirmButton: false,
+        timer: 2000,
+      }).then((result) => {
+        this.loadAPI();
+      });
+    });
   }
   ngOnInit(): void {
     this.loadAPI();
     this.lst_status = [
       {
         id: '1',
-        name: 'Thành viên',
+        name: 'Sử dụng',
       },
       {
         id: '2',
-        name: 'Công việc',
+        name: 'Ngưng sử dụng',
       },
     ];
   }

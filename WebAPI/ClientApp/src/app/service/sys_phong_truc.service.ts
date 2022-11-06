@@ -48,4 +48,15 @@ export class sys_phong_truc_service {
     const url = this.REST_API_URL + '/sys_phong_truc/delete?id=' + id;
     return this.http.get(url);
   }
+  // reven_status sys_phong_truc
+  public reven_status(id: string) {
+    const url = this.REST_API_URL + '/sys_phong_truc/reven_status?id=' + id;
+    return this.http.get(url);
+  }
+  // get list sys_phong_truc
+public get_list_phong_truc():Observable<any[]>{
+  const url=this.REST_API_URL+'/sys_phong_truc/get_list_phong_truc';
+  return this.http.get<any[]>(url);
+}
+
 }

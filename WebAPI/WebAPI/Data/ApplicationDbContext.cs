@@ -16,7 +16,7 @@ namespace WebAPI.Data
         public DbSet<sys_khoa> sys_khoa { get; set; }
         public DbSet<sys_chuc_vu> sys_chuc_vu { get; set; }
         public DbSet<sys_hoat_dong> sys_hoat_dong { get; set; }
-        public DbSet<sys_ky_truc_khoa> sys_ky_truc_khoa { get; set; }
+        public DbSet<sys_ky_truc_khoa> sys_ky_truc_khoas { get; set; }
         public DbSet<sys_phong_truc> sys_phong_truc { get; set; }
         public DbSet<sys_thong_bao> sys_thong_bao { get; set; }
         public DbSet<sys_cong_viec> sys_cong_viec { get; set; }

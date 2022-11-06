@@ -6,32 +6,21 @@
     </div>
     <mat-card>
       <div class="flex">
-        <div class="flex-1  px-2">
-          <mat-label>Tên khoa</mat-label>
-          <mat-form-field appearance="outline" class="w-full">
-            <mat-select>
-              <mat-option *ngFor="let food of lst_status" [value]="food.id" (onSelectionChange)="openDialogAdd()">
-                {{ food.name }}
-              </mat-option>
-            </mat-select>
+
+        <div class="flex-1 px-2">
+          <mat-label>Tìm kiếm</mat-label>
+          <mat-form-field class="w-full" appearance="outline" class="w-full">
+            <input [(ngModel)]="filter.search" matInput>
           </mat-form-field>
         </div>
         <div class="flex-1  px-2">
           <mat-label>Trạng thái</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select  [(ngModel)]="filter.search">
-              <mat-option *ngFor="let item of lst_status" [value]="item.id" (onSelectionChange)="openDialogAdd()">
+            <mat-select  [(ngModel)]="filter.status_del"  (onSelectionChange)="DataHanlder()">
+              <mat-option *ngFor="let item of lst_status" [value]="item.id">
                 {{ item.name }}
               </mat-option>
             </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="flex">
-        <div class="flex-1 px-2">
-          <mat-label>Tìm kiếm</mat-label>
-          <mat-form-field class="w-full" appearance="outline" class="w-full">
-            <input [(ngModel)]="filter.search" matInput>
           </mat-form-field>
         </div>
       </div>
@@ -39,7 +28,7 @@
 
     <div class="flex justify-end mt-5">
       <div class="flex justify-end mr-10">
-        <button mat-raised-button (click)="loadAPI()">Tìm kiếm</button>
+        <button mat-raised-button (click)="DataHanlder()">Tìm kiếm</button>
       </div>
       <div class="flex justify-end mr-10">
         <button mat-raised-button color="primary" (click)="openDialogAdd()">
@@ -47,7 +36,7 @@
         </button>
       </div>
     </div>
-    <div class="flex mt-10 p-6">
+    <div class="flex mt-10">
       <mat-card class="w-full">
         <table class="w-full table_admin">
           <thead class="">

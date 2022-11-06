@@ -16,6 +16,9 @@ namespace WebAPI.System
         public string update_by { get; set; }
         public DateTime? update_date { get; set; }
         public int? status_del { get; set; }
+        public int? id_chuc_vu { get; set; }
+        public int? id_bo_mon { get; set; }
+        public int? id_khoa { get; set; }
         public string note { get; set; }
     }
 }

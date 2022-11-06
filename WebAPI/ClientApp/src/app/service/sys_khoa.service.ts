@@ -59,4 +59,10 @@ export class sys_khoa_service {
     const url = this.REST_API_URL + '/sys_khoa/get_list_khoa';
     return this.http.get<any[]>(url);
   }
+
+  //lấy danh sách sys_khoa
+  public DataHanlder(filter:any){
+    const url = this.REST_API_URL + '/sys_khoa/DataHanlder';
+    return this.http.post(url,filter);
+  }
 }

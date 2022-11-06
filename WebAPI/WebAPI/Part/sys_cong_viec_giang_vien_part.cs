@@ -16,6 +16,22 @@ namespace WebAPI.Part
             {
                 list_error.Add(set_error.set("db.id_cong_viec", "Bắt buộc"));
             }
+            if (item.db.id_chuc_vu==null)
+            {
+                list_error.Add(set_error.set("db.id_chuc_vu", "Bắt buộc"));
+            }
+            if (item.db.id_khoa== null)
+            {
+                list_error.Add(set_error.set("db.id_khoa", "Bắt buộc"));
+            }
+            if (item.db.id_bo_mon== null)
+            {
+                list_error.Add(set_error.set("db.id_bo_mon", "Bắt buộc"));
+            }
+            if (item.list_giang_vien== null)
+            {
+                list_error.Add(set_error.set("list_giang_vien", "Bắt buộc"));
+            }
             return list_error;
         }
     }

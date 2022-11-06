@@ -7,6 +7,7 @@ import { user_model } from '@/app/model/user.model';
 import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
 import { sys_khoa_popupComponent } from './popupAdd.component';
+import { filter_data_khoa } from '../../model/sys_khoa.model';
 @Component({
   selector: 'sys_khoa_index',
   templateUrl: './index.component.html',
@@ -21,13 +22,16 @@ export class sys_khoa_indexComponent implements OnInit {
   total = 0;
   page = 1;
   limit = 10;
-  filter = { search: '',total: 0, page: 0, limit:10};
+  filter = { search: '', total: '0', page: '0', limit: '10', status_del: '1' };
   searchKey: string;
   constructor(
     private http: HttpClient,
     private sys_khoa_service: sys_khoa_service,
     public dialog: MatDialog
-  ) {}
+  ) {
+    console.log(this.filter);
+
+  }
   openDialogDetail(item): void {
     const dialogRef = this.dialog.open(sys_khoa_popupComponent, {
       width: '850px',
@@ -50,12 +54,10 @@ export class sys_khoa_indexComponent implements OnInit {
     this.page--;
     this.getOrders();
   }
-
   goToNext(): void {
     this.page++;
     this.getOrders();
   }
-
   goToPage(n: number): void {
     this.page = n;
     this.getOrders();
@@ -88,7 +90,7 @@ export class sys_khoa_indexComponent implements OnInit {
   loadAPI() {
     this.loading = false;
     this.sys_khoa_service.getAll().subscribe((resp) => {
-      this.listData=resp;
+      this.listData = resp;
       // var result:any;
       // result = resp;
       // this.listData=result.data_list;
@@ -98,7 +100,20 @@ export class sys_khoa_indexComponent implements OnInit {
       this.loading = true;
     });
   }
-   delete(id): void {
+  DataHanlder(): void {
+    this.loading = false;
+    this.sys_khoa_service.DataHanlder(this.filter).subscribe((resp) => {
+      this.listData = resp;
+      // var result:any;
+      // result = resp;
+      // this.listData=result.data_list;
+      // this.total=result.total,
+      // this.page = result.page,
+      // this.limit = result.limit,
+      this.loading = true;
+    });
+  }
+  delete(id): void {
     this.sys_khoa_service.delete(id).subscribe((result) => {
       Swal.fire({
         icon: 'success',
@@ -111,19 +126,20 @@ export class sys_khoa_indexComponent implements OnInit {
     });
   }
   reven_status(id): void {
-   this.sys_khoa_service.reven_status(id).subscribe((result) => {
-     Swal.fire({
-       icon: 'success',
-       title: 'Thành công',
-       showConfirmButton: false,
-       timer: 2000,
-     }).then((result) => {
-       this.loadAPI();
-     });
-   });
- }
+    this.sys_khoa_service.reven_status(id).subscribe((result) => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        showConfirmButton: false,
+        timer: 2000,
+      }).then((result) => {
+        this.loadAPI();
+      });
+    });
+  }
   ngOnInit(): void {
     this.loadAPI();
+    this.DataHanlder();
     this.lst_status = [
       {
         id: '1',

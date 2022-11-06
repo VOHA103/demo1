@@ -8,5 +8,8 @@ export class sys_cong_viec_giang_vien {
   update_by: string;
   update_date: string | null;
   status_del: number | null;
+  id_chuc_vu: number | null;
+  id_bo_mon: number | null;
+  id_khoa: number | null;
   note: string;
 }

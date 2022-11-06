@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { sys_chuc_vu_service } from '../../service/sys_chuc_vu.service';
 import { sys_giang_vien_service } from '../../service/sys_giang_vien.service';
 import { sys_khoa_service } from '../../service/sys_khoa.service';
+import { sys_bo_mon_service } from '../../service/sys_bo_mon.service';
 import Swal from 'sweetalert2';
 import { sys_giang_vien_model } from '@/app/model/sys_giang_vien.model';
 @Component({
@@ -23,6 +24,7 @@ export class sys_giang_vien_popupComponent {
   public lst_status: any = [];
   public lst_khoa: any = [];
   public lst_chuc_vu: any = [];
+  public lst_bo_mon: any = [];
   public check_error: any = [];
   today = new Date();
   constructor(
@@ -30,6 +32,7 @@ export class sys_giang_vien_popupComponent {
     private sys_giang_vien_service: sys_giang_vien_service,
     private sys_chuc_vu_service: sys_chuc_vu_service,
     private sys_khoa_service: sys_khoa_service,
+    private sys_bo_mon_service: sys_bo_mon_service,
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<sys_giang_vien_popupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: sys_giang_vien_model
@@ -43,12 +46,19 @@ export class sys_giang_vien_popupComponent {
     }
     this.get_list_chuc_vu();
     this.get_list_khoa();
+    this.get_list_bo_mon();
     console.log(this.lst_khoa);
   }
   get_list_khoa(): void {
     this.sys_khoa_service
       .get_list_khoa()
       .subscribe((data) => (this.lst_khoa = data)
+      );
+  }
+  get_list_bo_mon(): void {
+    this.sys_bo_mon_service
+      .get_list_bo_mon()
+      .subscribe((data) => (this.lst_bo_mon = data)
       );
   }
   get_list_chuc_vu(): void {

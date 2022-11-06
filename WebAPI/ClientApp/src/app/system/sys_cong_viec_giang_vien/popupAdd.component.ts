@@ -9,6 +9,9 @@ import { Observable } from 'rxjs';
 import { sys_cong_viec_giang_vien_service } from '../../service/sys_cong_viec_giang_vien.service';
 import { sys_giang_vien_service } from '../../service/sys_giang_vien.service';
 import { sys_cong_viec_service } from '../../service/sys_cong_viec.service';
+import { sys_chuc_vu_service } from '../../service/sys_chuc_vu.service';
+import { sys_khoa_service } from '../../service/sys_khoa.service';
+import { sys_bo_mon_service } from '../../service/sys_bo_mon.service';
 import Swal from 'sweetalert2';
 import { sys_cong_viec_giang_vien_model } from '@/app/model/sys_cong_viec_giang_vien.model';
 @Component({
@@ -22,11 +25,17 @@ export class sys_cong_viec_giang_vien_popupComponent {
   public list_giang_vien: any;
   public list_cong_viec: any;
   public check_error: any = [];
+  public lst_khoa: any = [];
+  public lst_chuc_vu: any = [];
+  public lst_bo_mon: any = [];
   constructor(
     private http: HttpClient,
     private sys_cong_viec_giang_vien_service: sys_cong_viec_giang_vien_service,
     private sys_giang_vien_service: sys_giang_vien_service,
-    private sys_cong_viec_service:sys_cong_viec_service,
+    private sys_cong_viec_service: sys_cong_viec_service,
+    private sys_chuc_vu_service: sys_chuc_vu_service,
+    private sys_khoa_service: sys_khoa_service,
+    private sys_bo_mon_service: sys_bo_mon_service,
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<sys_cong_viec_giang_vien_popupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: sys_cong_viec_giang_vien_model
@@ -34,6 +43,9 @@ export class sys_cong_viec_giang_vien_popupComponent {
     //this.sys_cong_viec_giang_vien = data;
     this.sys_cong_viec_giang_vien_model = data;
     if (this.sys_cong_viec_giang_vien_model.db.id == '0') this.Save();
+    this.get_list_chuc_vu();
+    this.get_list_khoa();
+    this.get_list_bo_mon();
   }
   Close(): void {
     this.dialogRef.close();
@@ -74,14 +86,28 @@ export class sys_cong_viec_giang_vien_popupComponent {
     this.sys_giang_vien_service.get_list_giang_vien().subscribe((result) => {
       this.list_giang_vien = result;
       console.log(this.list_giang_vien);
-
     });
   }
   get_list_cong_viec(): void {
     this.sys_cong_viec_service.get_list_cong_viec().subscribe((result) => {
-      (this.list_cong_viec = result)
-      console.log(this.list_cong_viec)
+      this.list_cong_viec = result;
+      console.log(this.list_cong_viec);
     });
+  }
+  get_list_khoa(): void {
+    this.sys_khoa_service
+      .get_list_khoa()
+      .subscribe((data) => (this.lst_khoa = data));
+  }
+  get_list_bo_mon(): void {
+    this.sys_bo_mon_service
+      .get_list_bo_mon()
+      .subscribe((data) => (this.lst_bo_mon = data));
+  }
+  get_list_chuc_vu(): void {
+    this.sys_chuc_vu_service
+      .get_list_chuc_vu()
+      .subscribe((data) => (this.lst_chuc_vu = data));
   }
   ngOnInit(): void {
     this.get_list_cong_viec();

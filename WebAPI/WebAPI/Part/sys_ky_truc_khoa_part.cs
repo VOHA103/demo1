@@ -22,7 +22,7 @@ namespace WebAPI.Part
             }
             if (string.IsNullOrEmpty(item.db.thoi_gian_ket_thuc.ToString()))
             {
-                list_error.Add(set_error.set("db.thoi_gian_bat_dau", "Bắt buộc"));
+                list_error.Add(set_error.set("db.thoi_gian_ket_thuc", "Bắt buộc"));
             }
             return list_error;
         }

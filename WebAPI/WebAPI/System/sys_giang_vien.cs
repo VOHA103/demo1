@@ -10,6 +10,7 @@ namespace WebAPI.System
         public string id { get; set; }
         public int id_chuc_vu { get; set; }
         public int id_khoa { get; set; }
+        public string id_bo_mon { get; set; }
         public string ten_giang_vien { get; set; }
         public string ma_giang_vien { get; set; }
         public string sdt { get; set; }

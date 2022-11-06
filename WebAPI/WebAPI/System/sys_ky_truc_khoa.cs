@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace WebAPI.System
 {
+    [Table("sys_ky_truc_khoa")]
     public class sys_ky_truc_khoa
     {
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public string ten_ky { get; set; }
         public DateTime? thoi_gian_bat_dau { get; set; }

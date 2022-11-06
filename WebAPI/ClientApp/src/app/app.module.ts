@@ -55,8 +55,6 @@ import { sys_khoa_popupComponent } from './system/sys_khoa/popupAdd.component';
 import { sys_khoa_indexComponent } from './system/sys_khoa/index.component';
 import { sys_bo_mon_indexComponent } from './system/sys_bo_mon/index.component';
 import { sys_bo_mon_popupComponent } from './system/sys_bo_mon/popupAdd.component';
-import { sys_bo_mon_giang_vien_indexComponent } from './system/sys_bo_mon_giang_vien/index.component';
-import { sys_bo_mon_giang_vien_popupComponent } from './system/sys_bo_mon_giang_vien/popupAdd.component';
 import { sys_chuc_vu_popupComponent } from './system/sys_chuc_vu/popupAdd.component';
 import { sys_chuc_vu_indexComponent } from './system/sys_chuc_vu/index.component';
 import { sys_cong_viec_popupComponent } from './system/sys_cong_viec/popupAdd.component';
@@ -67,8 +65,6 @@ import { sys_giang_vien_popupComponent } from './system/sys_giang_vien/popupAdd.
 import { sys_giang_vien_indexComponent } from './system/sys_giang_vien/index.component';
 import { sys_giang_vien_truc_khoa_popupComponent } from './system/sys_giang_vien_truc_khoa/popupAdd.component';
 import { sys_giang_vien_truc_khoa_indexComponent } from './system/sys_giang_vien_truc_khoa/index.component';
-import { sys_hoat_dong_popupComponent } from './system/sys_hoat_dong/popupAdd.component';
-import { sys_hoat_dong_indexComponent } from './system/sys_hoat_dong/index.component';
 import { sys_hoat_dong_giang_vien_popupComponent } from './system/sys_hoat_dong_giang_vien/popupAdd.component';
 import { sys_hoat_dong_giang_vien_indexComponent } from './system/sys_hoat_dong_giang_vien/index.component';
 import { sys_loai_cong_viec_popupComponent } from './system/sys_loai_cong_viec/popupAdd.component';
@@ -78,6 +74,10 @@ import { sys_phong_truc_indexComponent } from './system/sys_phong_truc/index.com
 import { sys_thong_bao_popupComponent } from './system/sys_thong_bao/popupAdd.component';
 import { sys_thong_bao_indexComponent } from './system/sys_thong_bao/index.component';
 import { user_menuComponent } from './auth/user_menu/user_menu.component';
+import { sys_hoat_dong_popupComponent } from './system/sys_hoat_dong/popupAdd.component';
+import { sys_hoat_dong_indexComponent } from './system/sys_hoat_dong/index.component';
+import { sys_ky_truc_khoa_popupComponent } from './system/sys_ky_truc_khoa/popupAdd.component';
+import { sys_ky_truc_khoa_indexComponent } from './system/sys_ky_truc_khoa/index.component';
 // import {
 //   NgxMatDatetimePickerModule,
 //   NgxMatNativeDateModule,
@@ -96,8 +96,6 @@ import { user_menuComponent } from './auth/user_menu/user_menu.component';
     sys_khoa_indexComponent,
     sys_bo_mon_indexComponent,
     sys_bo_mon_popupComponent,
-    sys_bo_mon_giang_vien_indexComponent,
-    sys_bo_mon_giang_vien_popupComponent,
     sys_chuc_vu_popupComponent,
     sys_chuc_vu_indexComponent,
     sys_cong_viec_popupComponent,
@@ -119,6 +117,8 @@ import { user_menuComponent } from './auth/user_menu/user_menu.component';
     sys_thong_bao_popupComponent,
     sys_thong_bao_indexComponent,
     user_menuComponent,
+    sys_ky_truc_khoa_popupComponent,
+    sys_ky_truc_khoa_indexComponent,
   ],
   imports: [
     CommonModule,
