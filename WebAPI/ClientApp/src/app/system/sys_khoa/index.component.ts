@@ -7,7 +7,6 @@ import { user_model } from '@/app/model/user.model';
 import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
 import { sys_khoa_popupComponent } from './popupAdd.component';
-import { filter_data_khoa } from '../../model/sys_khoa.model';
 @Component({
   selector: 'sys_khoa_index',
   templateUrl: './index.component.html',

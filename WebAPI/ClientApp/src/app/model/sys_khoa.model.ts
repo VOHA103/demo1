@@ -5,9 +5,3 @@ export class sys_khoa_model {
   create_name: string;
   update_name: string;
 }
-export class filter_data_khoa {
-  search: string;
-  total: number | null;
-  page: number | null;
-  limit: number | null;
-}
