@@ -22,9 +22,9 @@ export class sys_loai_cong_viec_service {
   };
   constructor(private http: HttpClient) {}
   //lấy danh sách sys_loai_cong_viec
-  public DataHandel(): Observable<sys_loai_cong_viec_model[]> {
-    const url = this.REST_API_URL + '/sys_loai_cong_viec/DataHandel';
-    return this.http.get<sys_loai_cong_viec_model[]>(url);
+  public DataHanlder(filter:any){
+    const url = this.REST_API_URL + '/sys_loai_cong_viec/DataHanlder';
+    return this.http.post(url,filter);
   }
   //lấy danh sách sys_loai_cong_viec
   public getAll(): Observable<sys_loai_cong_viec_model[]> {

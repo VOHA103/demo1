@@ -22,13 +22,26 @@ export class sys_ky_truc_khoa_indexComponent implements OnInit {
   total = 0;
   page = 1;
   limit = 10;
-  filter = { search: '',total: 0, page: 0, limit:10};
+  filter = { search: '', total: '0', page: '0', limit: '10', status_del: '1' };
   searchKey: string;
   constructor(
     private http: HttpClient,
     private sys_ky_truc_khoa_service: sys_ky_truc_khoa_service,
     public dialog: MatDialog
-  ) {}
+  ) {
+    this.DataHanlder();
+  }
+ DataHanlder(): void {
+    this.loading = false;
+    this.sys_ky_truc_khoa_service.DataHanlder(this.filter).subscribe((resp) => {
+      var model:any;
+      model=resp;
+      this.listData = model.data;
+      this.total=model.total,
+      this.loading = true;
+    });
+  }
+
   openDialogDetail(item): void {
     const dialogRef = this.dialog.open(sys_ky_truc_khoa_popupComponent, {
       width: '850px',
@@ -36,7 +49,7 @@ export class sys_ky_truc_khoa_indexComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.loadAPI();
+      this.DataHanlder();
     });
   }
   getOrders(): void {
@@ -84,7 +97,7 @@ export class sys_ky_truc_khoa_indexComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
-      this.loadAPI();
+      this.DataHanlder();
     });
   }
   loadAPI() {
@@ -108,7 +121,7 @@ export class sys_ky_truc_khoa_indexComponent implements OnInit {
         showConfirmButton: false,
         timer: 2000,
       }).then((result) => {
-        this.loadAPI();
+        this.DataHanlder();
       });
     });
   }
@@ -120,12 +133,12 @@ export class sys_ky_truc_khoa_indexComponent implements OnInit {
         showConfirmButton: false,
         timer: 2000,
       }).then((result) => {
-        this.loadAPI();
+        this.DataHanlder();
       });
     });
   }
   ngOnInit(): void {
-    this.loadAPI();
+    this.DataHanlder();
     this.lst_status = [
       {
         id: '1',

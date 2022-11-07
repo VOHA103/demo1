@@ -54,9 +54,12 @@ export class sys_phong_truc_service {
     return this.http.get(url);
   }
   // get list sys_phong_truc
-public get_list_phong_truc():Observable<any[]>{
-  const url=this.REST_API_URL+'/sys_phong_truc/get_list_phong_truc';
-  return this.http.get<any[]>(url);
-}
-
+  public get_list_phong_truc(): Observable<any[]> {
+    const url = this.REST_API_URL + '/sys_phong_truc/get_list_phong_truc';
+    return this.http.get<any[]>(url);
+  } //lấy danh sách sys_phong_truc
+  public DataHanlder(filter: any) {
+    const url = this.REST_API_URL + '/sys_phong_truc/DataHanlder';
+    return this.http.post(url, filter);
+  }
 }

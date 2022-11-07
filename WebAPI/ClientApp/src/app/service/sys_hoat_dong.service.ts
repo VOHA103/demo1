@@ -14,7 +14,7 @@ import { sys_hoat_dong_model } from '../model/sys_hoat_dong.model';
   providedIn: 'root',
 })
 export class sys_hoat_dong_service {
- 
+
   private REST_API_URL = environment.api;
   private httpOptions = {
     headers: new HttpHeaders({
@@ -56,5 +56,10 @@ export class sys_hoat_dong_service {
   public get_list_hoat_dong():Observable<any[]>{
     const url=this.REST_API_URL+'/sys_hoat_dong/get_list_hoat_dong';
     return this.http.get<any[]>(url);
+  }
+  //lấy danh sách sys_hoat_dong
+  public DataHanlder(filter:any){
+    const url = this.REST_API_URL + '/sys_hoat_dong/DataHanlder';
+    return this.http.post(url,filter);
   }
 }

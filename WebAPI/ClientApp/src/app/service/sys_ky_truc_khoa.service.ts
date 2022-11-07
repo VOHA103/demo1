@@ -57,4 +57,9 @@ export class sys_ky_truc_khoa_service {
     const url = this.REST_API_URL + '/sys_ky_truc_khoa/get_list_ky_truc_khoa';
     return this.http.get<any[]>(url);
   }
+  //lấy danh sách sys_ky_truc_khoa
+  public DataHanlder(filter:any){
+    const url = this.REST_API_URL + '/sys_ky_truc_khoa/DataHanlder';
+    return this.http.post(url,filter);
+  }
 }

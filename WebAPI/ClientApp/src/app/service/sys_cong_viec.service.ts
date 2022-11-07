@@ -60,4 +60,9 @@ export class sys_cong_viec_service {
     const url = this.REST_API_URL + '/sys_cong_viec/get_list_cong_viec';
     return this.http.get<sys_cong_viec_model[]>(url);
   }
+  //lấy danh sách sys_cong_viec
+  public DataHanlder(filter:any){
+    const url = this.REST_API_URL + '/sys_cong_viec/DataHanlder';
+    return this.http.post(url,filter);
+  }
 }

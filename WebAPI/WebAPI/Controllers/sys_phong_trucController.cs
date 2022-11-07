@@ -31,6 +31,28 @@ namespace WebAPI.Controllers
         public sys_phong_trucController(ApplicationDbContext _context) {
             this._context = _context;
         }
+        [HttpPost("[action]")]
+        public IActionResult DataHanlder([FromBody] filter_data_phong_truc filter)
+        {
+            var status_del = Int32.Parse(filter.status_del);
+            var result = _context.sys_phong_truc
+              .Select(d => new sys_phong_truc_model()
+              {
+                  db = d,
+                  create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                  update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+              })
+              .Where(q => q.db.ten_phong_truc.Contains(filter.search) || filter.search == "")
+              .Where(q => q.db.status_del == status_del)
+              .ToList();
+            result = result.OrderByDescending(q => q.db.update_date).ToList();
+            var model = new
+            {
+                data = result,
+                total = result.Count(),
+            };
+            return Ok(model);
+        }
         [HttpGet("[action]")]
         public IActionResult get_list_phong_truc()
         {

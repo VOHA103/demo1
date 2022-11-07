@@ -11,7 +11,7 @@
           <mat-label>Tên thành viên</mat-label>
           <mat-form-field appearance="outline" class="w-full">
             <mat-select>
-              <mat-option *ngFor="let food of lst_status" [value]="food.id" (onSelectionChange)="openDialogAdd()">
+              <mat-option *ngFor="let food of lst_status" [value]="food.id">
                 {{ food.name }}
               </mat-option>
             </mat-select>
@@ -21,7 +21,7 @@
           <mat-label>Trạng thái</mat-label>
           <mat-form-field appearance="outline" class="w-full">
             <mat-select>
-              <mat-option *ngFor="let food of lst_status" [value]="food.id" (onSelectionChange)="openDialogAdd()">
+              <mat-option *ngFor="let food of lst_status" [value]="food.id">
                 {{ food.name }}
               </mat-option>
             </mat-select>

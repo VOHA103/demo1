@@ -31,6 +31,28 @@ namespace WebAPI.Controllers
         public sys_loai_cong_viecController(ApplicationDbContext _context) {
             this._context = _context;
         }
+        [HttpPost("[action]")]
+        public IActionResult DataHanlder([FromBody] filter_data_loai_cong_viec filter)
+        {
+            var status_del = Int32.Parse(filter.status_del);
+            var result = _context.sys_loai_cong_viec
+              .Select(d => new sys_loai_cong_viec_model()
+              {
+                  db = d,
+                  create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                  update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+              })
+              .Where(q => q.db.ten_loai_cong_viec.Contains(filter.search) || filter.search == "")
+              .Where(q => q.db.status_del == status_del)
+              .ToList();
+            result = result.OrderByDescending(q => q.db.update_date).ToList();
+            var model = new
+            {
+                data = result,
+                total = result.Count(),
+            };
+            return Ok(model);
+        }
         [HttpGet("[action]")]
         public IActionResult get_list_use()
         {

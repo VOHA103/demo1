@@ -16,8 +16,8 @@
         <div class="flex-1  px-2">
           <mat-label>Trạng thái</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select>
-              <mat-option *ngFor="let food of lst_status" [value]="food.id" (onSelectionChange)="openDialogAdd()">
+            <mat-select  [(ngModel)]="filter.status_del" >
+              <mat-option *ngFor="let food of lst_status" [value]="food.id" >
                 {{ food.name }}
               </mat-option>
             </mat-select>
@@ -28,7 +28,7 @@
 
     <div class="flex justify-end mt-5">
       <div class="flex justify-end mr-10">
-        <button mat-raised-button (click)="loadAPI()">Tìm kiếm</button>
+        <button mat-raised-button (click)="DataHanlder()">Tìm kiếm</button>
       </div>
       <div class="flex justify-end mr-10">
         <button mat-raised-button color="primary" (click)="openDialogAdd()">

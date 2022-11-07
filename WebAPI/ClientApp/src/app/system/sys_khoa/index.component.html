@@ -16,7 +16,7 @@
         <div class="flex-1  px-2">
           <mat-label>Trạng thái</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select  [(ngModel)]="filter.status_del"  (onSelectionChange)="DataHanlder()">
+            <mat-select  [(ngModel)]="filter.status_del" >
               <mat-option *ngFor="let item of lst_status" [value]="item.id">
                 {{ item.name }}
               </mat-option>

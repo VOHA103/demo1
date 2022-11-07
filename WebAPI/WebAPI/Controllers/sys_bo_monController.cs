@@ -32,6 +32,28 @@ namespace WebAPI.Controllers
         {
             this._context = _context;
         }
+        [HttpPost("[action]")]
+        public IActionResult DataHanlder([FromBody] filter_data_bo_mon filter)
+        {
+            var status_del = Int32.Parse(filter.status_del);
+            var result = _context.sys_bo_mon
+              .Select(d => new sys_bo_mon_model()
+              {
+                  db = d,
+                  create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                  update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+              })
+              .Where(q => q.db.ten_bo_mon.Contains(filter.search) || filter.search == "")
+              .Where(q => q.db.status_del == status_del)
+              .ToList();
+            result = result.OrderByDescending(q => q.db.update_date).ToList();
+            var model = new
+            {
+                data = result,
+                total = result.Count(),
+            };
+            return Ok(model);
+        }
         [HttpGet("[action]")]
         public IActionResult get_list_bo_mon()
         {

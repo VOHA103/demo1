@@ -53,9 +53,14 @@ export class sys_bo_mon_service {
     const url = this.REST_API_URL + '/sys_bo_mon/reven_status?id=' + id;
     return this.http.get(url);
   }
-  // lấy danh sách sys_hoat_dong
+  // lấy danh sách sys_bo_mon
   public get_list_bo_mon():Observable<any[]>{
     const url=this.REST_API_URL+'/sys_bo_mon/get_list_bo_mon';
     return this.http.get<any[]>(url);
+  }
+  //lấy danh sách sys_bo_mon
+  public DataHanlder(filter:any){
+    const url = this.REST_API_URL + '/sys_bo_mon/DataHanlder';
+    return this.http.post(url,filter);
   }
 }

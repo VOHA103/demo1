@@ -40,7 +40,7 @@
             </span>
           </mat-label>
           <mat-form-field class="w-full" appearance="outline">
-            <input matInput [(ngModel)]="sys_giang_vien_model.db.ma_giang_vien" />
+            <input matInput [(ngModel)]="sys_giang_vien_model.db.ma_giang_vien" onkeypress=bind_data(this)/>
           </mat-form-field>
         </div>
         <div class="flex-1 px-2">
@@ -51,7 +51,7 @@
 
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <input matInput [(ngModel)]="sys_giang_vien_model.db.ma_giang_vien" />
+            <input matInput [(ngModel)]="sys_giang_vien_model.db.username" />
           </mat-form-field>
         </div>
       </div>
@@ -82,6 +82,23 @@
               <mat-option *ngFor="let item of lst_khoa" [value]="item.id">{{
                 item.name
                 }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Chuyên nghành
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.id_chuyen_nghanh'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <!-- [(ngModel)]="sys_giang_vien_model.db.id_chuc_vu"== [value]="item.id" -->
+            <mat-select [(ngModel)]="sys_giang_vien_model.db.id_chuyen_nghanh">
+              <mat-option *ngFor="let item of lst_chuyen_nghanh" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -149,6 +166,23 @@
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
 
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Giới tính
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.id_chuyen_nghanh'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <!-- [(ngModel)]="sys_giang_vien_model.db.id_chuc_vu"== [value]="item.id" -->
+            <mat-select [(ngModel)]="sys_giang_vien_model.db.gioi_tinh">
+              <mat-option *ngFor="let item of lst_gioi_tinh" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
       <div class="flex pl-6 pt-6 justify-end">

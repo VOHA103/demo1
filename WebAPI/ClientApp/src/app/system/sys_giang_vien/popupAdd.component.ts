@@ -26,6 +26,8 @@ export class sys_giang_vien_popupComponent {
   public lst_chuc_vu: any = [];
   public lst_bo_mon: any = [];
   public check_error: any = [];
+  public lst_chuyen_nghanh: any = [];
+  public lst_gioi_tinh: any = [];
   today = new Date();
   constructor(
     private http: HttpClient,
@@ -48,6 +50,9 @@ export class sys_giang_vien_popupComponent {
     this.get_list_khoa();
     this.get_list_bo_mon();
     console.log(this.lst_khoa);
+  }
+  bind_data(): void {
+    this.sys_giang_vien_model.db.username=this.sys_giang_vien_model.db.ma_giang_vien;
   }
   get_list_khoa(): void {
     this.sys_khoa_service
@@ -113,6 +118,30 @@ export class sys_giang_vien_popupComponent {
         id: '2',
         name: 'Ngưng sử dụng',
       },
+    ];
+    this.lst_gioi_tinh = [
+      {
+        id: '1',
+        name: 'Nam',
+      },
+      {
+        id: '2',
+        name: 'Nữ',
+      },
+      {
+        id: '3',
+        name: 'Khác',
+      },
+    ];
+    this.lst_chuyen_nghanh = [
+      {
+        id: '1',
+        name: 'Công Nghệ Thông Tin',
+      },
+      {
+        id: '2',
+        name: 'An Toàn Thông Tin',
+      }
     ];
   }
 }

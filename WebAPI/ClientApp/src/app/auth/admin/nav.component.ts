@@ -55,6 +55,10 @@ export class nav_indexComponent implements OnInit {
     console.log(localStorage.getItem('token'));
 
     this.menu = [
+      {
+        link: 'sys_bo_mon_index',
+        label: 'Bộ môn',
+      },
       // {
       //   link:"sys_user_index",
       //   label:"Thành viên"
@@ -62,10 +66,6 @@ export class nav_indexComponent implements OnInit {
       {
         link: 'sys_khoa_index',
         label: 'Khoa',
-      },
-      {
-        link: 'sys_bo_mon_index',
-        label: 'Bộ môn',
       },
       {
         link: 'sys_ky_truc_khoa_index',

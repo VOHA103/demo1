@@ -34,6 +34,32 @@ namespace WebAPI.Controllers
         {
             this._context = _context;
         }
+        [HttpPost("[action]")]
+        public IActionResult DataHanlder([FromBody] filter_data_giang_vien filter)
+        {
+            var status_del = Int32.Parse(filter.status_del);
+            var id_chuc_vu = Int32.Parse(filter.id_chuc_vu);
+            var id_khoa = Int32.Parse(filter.id_khoa);
+            var result = _context.sys_giang_vien
+              .Select(d => new sys_giang_vien_model()
+              {
+                  db = d,
+                  create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                  update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+              })
+              .Where(q => q.db.ten_giang_vien.Contains(filter.search) || filter.search == "")
+              .Where(q => q.db.status_del == status_del)
+              .Where(q => q.db.status_del == id_chuc_vu || id_chuc_vu==-1)
+              .Where(q => q.db.status_del == id_khoa || id_khoa == -1)
+              .ToList();
+            result = result.OrderByDescending(q => q.db.update_date).ToList();
+            var model = new
+            {
+                data = result,
+                total = result.Count(),
+            };
+            return Ok(model);
+        }
         [HttpGet("[action]")]
         public IActionResult get_list_giang_vien()
         {

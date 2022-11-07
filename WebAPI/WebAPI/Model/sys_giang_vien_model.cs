@@ -21,4 +21,16 @@ namespace WebAPI.Model
         public string ten_bo_mon { get; set; }
         public List<string> list_bo_mon { get; set; }
     }
+    public class filter_data_giang_vien
+    {
+        public string search { get; set; }
+        public string total { get; set; }
+        public string page { get; set; }
+        public string limit { get; set; }
+        public string status_del { get; set; }
+        public string id_chuc_vu { get; set; }
+        public string id_khoa { get; set; }
+        public string id_bo_mon { get; set; }
+
+    }
 }

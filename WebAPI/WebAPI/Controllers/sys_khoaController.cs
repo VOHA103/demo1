@@ -90,8 +90,13 @@ namespace WebAPI.Controllers
               .Where(q=>q.db.ten_khoa.Contains(filter.search) || filter.search=="")
               .Where(q=>q.db.status_del== status_del)
               .ToList();
-            result = result.OrderBy(q => q.db.update_date).ToList();
-            return Ok(result);
+            result = result.OrderByDescending(q => q.db.update_date).ToList();
+            var model = new
+            {
+                data = result,
+                total = result.Count(),
+            };
+            return Ok(model);
         }
         [HttpPost("edit")]
         public async Task<IActionResult> edit([FromBody] sys_khoa_model sys_khoa)
