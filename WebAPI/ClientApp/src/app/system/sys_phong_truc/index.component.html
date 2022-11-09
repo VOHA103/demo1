@@ -59,6 +59,15 @@
             <tr>
               <td class="">
                 <div class="flex justify-center item-center">
+                  <!-- <button mat-raised-button [matMenuTriggerFor]="menu">Chức năng</button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="openDialogDetail(item)">
+                      Sửa
+                    </button>
+                    <button mat-menu-item *ngIf="item.db.status_del==1" (click)="delete(item.db.id)">Xoá</button>
+                    <button mat-menu-item *ngIf="item.db.status_del==2" (click)="reven_status(item.db.id)"> sử
+                      dụng</button>
+                  </mat-menu> -->
                   <button mat-raised-button [matMenuTriggerFor]="menu">Chức năng</button>
                   <mat-menu #menu="matMenu">
                     <button mat-menu-item (click)="openDialogDetail(item)">

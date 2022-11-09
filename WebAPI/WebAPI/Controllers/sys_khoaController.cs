@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
         public IActionResult get_list_khoa()
         {
             var result = _context.sys_khoa.Select(q => new {
-                id = q.id,
+                id = q.id.ToString(),
                 name = q.ten_khoa,
             }).ToList();
             return Ok(result);

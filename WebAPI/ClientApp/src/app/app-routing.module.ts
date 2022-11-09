@@ -18,12 +18,17 @@ import { sys_phong_truc_indexComponent } from './system/sys_phong_truc/index.com
 import { sys_thong_bao_indexComponent } from './system/sys_thong_bao/index.component';
 import { sys_ky_truc_khoa_indexComponent } from './system/sys_ky_truc_khoa/index.component';
 import { sys_chuyen_nganh_indexComponent } from './system/sys_chuyen_nganh/index.component';
+import { sys_cau_hinh_admin_indexComponent } from './system/sys_cau_hinh_admin/index.component';
 
 const routes: Routes = [
   { path: "login", component: login_indexComponent },
   { path: "", component: login_indexComponent },
   { path: "home", component: nav_indexComponent,canActivate:[AuthGuard] },
   { path: "", component: nav_indexComponent ,children: [
+    {
+      path: "sys_cau_hinh_giao_dien_index",
+      component: sys_cau_hinh_admin_indexComponent
+    },
     {
       path: "sys_user_index",
       component: sys_user_indexComponent

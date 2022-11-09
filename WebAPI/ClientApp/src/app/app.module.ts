@@ -80,6 +80,8 @@ import { sys_ky_truc_khoa_popupComponent } from './system/sys_ky_truc_khoa/popup
 import { sys_ky_truc_khoa_indexComponent } from './system/sys_ky_truc_khoa/index.component';
 import { sys_chuyen_nganh_popupComponent } from './system/sys_chuyen_nganh/popupAdd.component';
 import { sys_chuyen_nganh_indexComponent } from './system/sys_chuyen_nganh/index.component';
+import { sys_cau_hinh_admin_popupComponent } from './system/sys_cau_hinh_admin/popupAdd.component';
+import { sys_cau_hinh_admin_indexComponent } from './system/sys_cau_hinh_admin/index.component';
 // import {
 //   NgxMatDatetimePickerModule,
 //   NgxMatNativeDateModule,
@@ -123,6 +125,8 @@ import { sys_chuyen_nganh_indexComponent } from './system/sys_chuyen_nganh/index
     sys_ky_truc_khoa_indexComponent,
     sys_chuyen_nganh_popupComponent,
     sys_chuyen_nganh_indexComponent,
+    sys_cau_hinh_admin_indexComponent,
+    sys_cau_hinh_admin_popupComponent,
   ],
   imports: [
     CommonModule,

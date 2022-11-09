@@ -1,4 +1,5 @@
 import { sys_user_service } from '../../service/sys_user.service';
+import { sys_cau_hinh_admin_service } from '../../service/sys_cau_hinh_admin.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -15,11 +16,13 @@ export class nav_indexComponent implements OnInit {
   public currentYear: Date;
   public userDetails: any;
   public id_user: any;
+  public cau_hinh: any;
   anio: number = new Date().getFullYear();
   constructor(
     private router: Router,
     private http: HttpClient,
     private sys_user_service: sys_user_service,
+    private sys_cau_hinh_admin_service: sys_cau_hinh_admin_service,
     public dialog: MatDialog
   ) {
     this.currentYear = new Date('YYYY');
@@ -28,6 +31,11 @@ export class nav_indexComponent implements OnInit {
     debugger;
     if (this.opened == false) this.opened = true;
     else this.opened = false;
+  }
+  public get_cau_hinh_admin(){
+this.sys_cau_hinh_admin_service.get_cau_hinh_admin().subscribe(data=>{
+this.cau_hinh=data;
+});
   }
   public get_profile_user(): void {
     this.sys_user_service.get_profile_user().subscribe(
@@ -52,9 +60,14 @@ export class nav_indexComponent implements OnInit {
   ngOnInit(): void {
     this.get_profile_user();
     this.get_id_user();
+    this.get_cau_hinh_admin();
     console.log(localStorage.getItem('token'));
 
     this.menu = [
+      {
+        link: 'sys_cau_hinh_giao_dien_index',
+        label: 'Cấu hình giao diện',
+      },
       {
         link: 'sys_bo_mon_index',
         label: 'Bộ môn',

@@ -25,27 +25,26 @@ namespace WebAPI.Controllers
     [ApiController]
     [EnableCors("LeThanhThai")]
     [Route("[controller]")]
-    public class sys_chuc_vuController : ControllerBase
+    public class sys_cau_hinh_adminController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        public sys_chuc_vuController(ApplicationDbContext _context)
+        public sys_cau_hinh_adminController(ApplicationDbContext _context)
         {
             this._context = _context;
         }
         [HttpPost("[action]")]
-        public IActionResult DataHanlder([FromBody] filter_data_chuc_vu filter)
+        public IActionResult DataHanlder([FromBody] filter_data_bo_mon filter)
         {
             var status_del = Int32.Parse(filter.status_del);
-            var result = _context.sys_chuc_vu
-              .Select(d => new sys_chuc_vu_model()
+            var result = _context.sys_cau_hinh_admin
+              .Select(d => new sys_cau_hinh_admin_model()
               {
                   db = d,
                   create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
                   update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
               })
-              .Where(q => q.db.ten_chuc_vu.Contains(filter.search) || filter.search == "")
               .Where(q => q.db.status_del == status_del)
-              .ToList(); 
+              .ToList();
             result = result.OrderByDescending(q => q.db.update_date).ToList();
             var model = new
             {
@@ -55,22 +54,19 @@ namespace WebAPI.Controllers
             return Ok(model);
         }
         [HttpGet("[action]")]
-        public IActionResult get_list_chuc_vu()
+        public IActionResult get_cau_hinh_admin()
         {
-            var result = _context.sys_chuc_vu.Select(q=>new { 
-            id=q.id.ToString(),
-            name=q.ten_chuc_vu,
-            }).ToList();
+            var result = _context.sys_cau_hinh_admin.Where(q=>q.type_==1).SingleOrDefault();
             return Ok(result);
         }
         [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
         {
-            var result = _context.sys_chuc_vu.Where(q => q.id == Int32.Parse(id)).SingleOrDefault();
+            var result = _context.sys_cau_hinh_admin.Where(q => q.id == Int32.Parse(id)).SingleOrDefault();
             // xoá khỏi database
             //_context.sys_khoa.Remove(result);
 
-            //cập nhập trạng thái sử dụng
+            //cập nhập trạng thái ngưng sử dụng
             result.status_del = 2;
             _context.SaveChanges();
             return Ok();
@@ -78,7 +74,20 @@ namespace WebAPI.Controllers
         [HttpGet("[action]")]
         public IActionResult reven_status([FromQuery] string id)
         {
-            var result = _context.sys_chuc_vu.Where(q => q.id == Int32.Parse(id)).SingleOrDefault();
+            var result = _context.sys_cau_hinh_admin.Where(q => q.id == Int32.Parse(id)).SingleOrDefault();
+            // xoá khỏi database
+            //_context.sys_khoa.Remove(result);
+
+            //cập nhập trạng thái sử dụng
+            result.status_del = 1;
+            _context.SaveChanges();
+            return Ok(result);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult get_id_id([FromQuery] string id, string id_2)
+        {
+            var result = _context.sys_cau_hinh_admin.Where(q => q.id == Int32.Parse(id)).SingleOrDefault();
             // xoá khỏi database
             //_context.sys_khoa.Remove(result);
 
@@ -90,8 +99,8 @@ namespace WebAPI.Controllers
         [HttpGet("[action]")]
         public IActionResult GetAll()
         {
-            var result = _context.sys_chuc_vu
-              .Select(d => new sys_chuc_vu_model()
+            var result = _context.sys_cau_hinh_admin
+              .Select(d => new sys_cau_hinh_admin_model()
               {
                   db = d,
                   create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
@@ -100,25 +109,28 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
         [HttpPost("edit")]
-        public async Task<IActionResult> edit([FromBody] sys_chuc_vu_model sys_chuc_vu)
+        public async Task<IActionResult> edit([FromBody] sys_cau_hinh_admin_model sys_cau_hinh_admin)
         {
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+
+
             try
             {
-                var error = sys_chuc_vu_part.check_error_insert_update(sys_chuc_vu);
+                var error = sys_cau_hinh_admin_part.check_error_insert_update(sys_cau_hinh_admin);
                 if (error.Count() == 0)
                 {
-                    var model = _context.sys_chuc_vu.Where(q => q.id == sys_chuc_vu.db.id).SingleOrDefault();
+                    var model = _context.sys_cau_hinh_admin.Where(q => q.id == sys_cau_hinh_admin.db.id).SingleOrDefault();
                     model.update_date = DateTime.Now;
                     model.update_by = user_id;
-                    model.note = sys_chuc_vu.db.note;
-                    model.ten_chuc_vu = sys_chuc_vu.db.ten_chuc_vu;
-                    model.status_del = 1;
+                    model.note = sys_cau_hinh_admin.db.note;
+                    model.title = sys_cau_hinh_admin.db.title;
+                    model.name_footer = sys_cau_hinh_admin.db.name_footer;
+                    model.title_footer = sys_cau_hinh_admin.db.title_footer;
                     await _context.SaveChangesAsync();
                 }
                 var result = new
                 {
-                    data = sys_chuc_vu,
+                    data = sys_cau_hinh_admin,
                     error = error,
                 };
                 return Ok(result);
@@ -129,27 +141,25 @@ namespace WebAPI.Controllers
             }
         }
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromBody] sys_chuc_vu_model sys_chuc_vu)
+        public async Task<IActionResult> create([FromBody] sys_cau_hinh_admin_model sys_cau_hinh_admin)
         {
             try
             {
-
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
-                var error = sys_chuc_vu_part.check_error_insert_update(sys_chuc_vu);
+                var error = sys_cau_hinh_admin_part.check_error_insert_update(sys_cau_hinh_admin);
                 if (error.Count() == 0)
                 {
-                    sys_chuc_vu.db.id = 0;
-                    sys_chuc_vu.db.update_date = DateTime.Now;
-                    sys_chuc_vu.db.create_date = DateTime.Now;
-                    sys_chuc_vu.db.create_by = user_id;
-                    sys_chuc_vu.db.update_by = user_id;
-                    sys_chuc_vu.db.status_del = 1;
-                    _context.sys_chuc_vu.Add(sys_chuc_vu.db);
+                    sys_cau_hinh_admin.db.id = 0;
+                    sys_cau_hinh_admin.db.update_date = DateTime.Now;
+                    sys_cau_hinh_admin.db.create_date = DateTime.Now;
+                    sys_cau_hinh_admin.db.update_by = user_id;
+                    sys_cau_hinh_admin.db.status_del = 1;
+                    _context.sys_cau_hinh_admin.Add(sys_cau_hinh_admin.db);
                     await _context.SaveChangesAsync();
                 }
                 var result = new
                 {
-                    data = sys_chuc_vu,
+                    data = sys_cau_hinh_admin,
                     error = error,
                 };
                 return Ok(result);

@@ -6,13 +6,13 @@ using WebAPI.System;
 
 namespace WebAPI.Model
 {
-    public class sys_bo_mon_giang_vien_model
+    public class sys_cau_hinh_admin_model
     {
-        public sys_bo_mon_giang_vien_model()
+        public sys_cau_hinh_admin_model()
         {
-            db = new sys_bo_mon_giang_vien();
+            db = new sys_cau_hinh_admin();
         }
-        public sys_bo_mon_giang_vien db { get; set; }
+        public sys_cau_hinh_admin db { get; set; }
         public string create_name { get; set; }
         public string update_name { get; set; }
     }

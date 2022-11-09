@@ -3,11 +3,11 @@
 
   <div class="flex flex-col p-4" *ngIf="loading==true">
     <div class="flex">
-      <h1 class="font-bold text-xl">Kỳ trực khoa</h1>
+      <h1 class="font-bold text-xl">Cấu hình giao diện</h1>
     </div>
     <mat-card>
       <div class="flex">
-        <div class="flex-1  px-2">
+        <div class="flex-1 px-2">
           <mat-label>Tìm kiếm</mat-label>
           <mat-form-field class="w-full" appearance="outline" class="w-full">
             <input [(ngModel)]="filter.search" matInput>
@@ -15,8 +15,8 @@
         </div>
         <div class="flex-1  px-2">
           <mat-label>Trạng thái</mat-label>
-          <mat-form-field appearance="outline" class="w-full">
-            <mat-select  [(ngModel)]="filter.status_del">
+          <mat-form-field appearance="outline" class="w-full"  >
+            <mat-select [(ngModel)]="filter.status_del">
               <mat-option *ngFor="let item of lst_status" [value]="item.id">
                 {{ item.name }}
               </mat-option>
@@ -30,14 +30,12 @@
       <div class="flex justify-end mr-10">
         <button mat-raised-button (click)="DataHanlder()">Tìm kiếm</button>
       </div>
-
       <div class="flex justify-end mr-10">
         <button mat-raised-button color="primary" (click)="openDialogAdd()">
           <mat-icon>add</mat-icon>Thêm
         </button>
       </div>
     </div>
-
     <div class="flex mt-10">
       <mat-card class="w-full">
         <table class="w-full table_admin">
@@ -47,13 +45,13 @@
               No.
             </th>
             <th class=" text-base" style="height: 60px">
-              Tên kỳ
+              Tiêu đề
             </th>
             <th class=" text-base" style="height: 60px">
-              Thời gian bắt đầu
+              Copyright
             </th>
             <th class=" text-base" style="height: 60px">
-              Thời gian kết thúc
+              Powered
             </th>
             <th class=" text-base" style="height: 60px">Người tạo</th>
             <th class=" text-base" style="height: 60px">Ngày tạo</th>
@@ -69,8 +67,7 @@
                       Sửa
                     </button>
                     <button mat-menu-item *ngIf="item.db.status_del==1" (click)="delete(item.db.id)">Xoá</button>
-                    <button mat-menu-item *ngIf="item.db.status_del==2" (click)="reven_status(item.db.id)"> Sử dụng
-                      lại</button>
+                    <button mat-menu-item *ngIf="item.db.status_del==2" (click)="reven_status(item.db.id)">Sử dụng</button>
                   </mat-menu> -->
                   <div class="flex justify-center items-center ng-star-inserted"   *ngIf="item.db.status_del==1" (click)="delete(item.db.id)"><span
                     class="material-icons" style="color: rgb(255, 0, 0);">cancel</span></div>
@@ -90,29 +87,27 @@
                 </span>
               </td>
               <td class="">
-                {{ item.db.ten_ky }}
+                {{ item.db.title }}
               </td>
               <td class="">
-                {{ item.db.thoi_gian_bat_dau|date:'dd/MM/YYYY HH:mm'  }}
+                {{ item.db.title_footer }}
               </td>
               <td class="">
-                {{ item.db.thoi_gian_ket_thuc|date:'dd/MM/YYYY HH:mm'  }}
+                {{ item.db.name_footer }}
               </td>
               <td class="">
                 {{ item.create_name }}
               </td>
-
               <td class="">
-                {{ item.db.create_date|date:'dd/MM/YYYY HH:mm' }}
+                {{ item.db.create_date | date :'dd/MM/YYYY HH:mm' }}
               </td>
-              <td class="">{{item.db.note}}</td>
+              <td class="">{{ item.db.note }}</td>
             </tr>
           </tbody>
 
         </table>
       </mat-card>
     </div>
-
     <app-pagination (goPage)="goToPage($event)" (goPrev)="goToPrevious()" (goNext)="goToNext()" [page]="page"
       [perPage]="limit" [count]="total">
     </app-pagination>

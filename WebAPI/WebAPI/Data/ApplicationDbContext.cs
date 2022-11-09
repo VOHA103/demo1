@@ -22,6 +22,7 @@ namespace WebAPI.Data
         public DbSet<sys_thong_bao> sys_thong_bao { get; set; }
         public DbSet<sys_cong_viec> sys_cong_viec { get; set; }
         public DbSet<sys_giang_vien> sys_giang_vien { get; set; }
+        public DbSet<sys_cau_hinh_admin> sys_cau_hinh_admin { get; set; }
         public DbSet<sys_cap_nhat_tt_giang_vien> sys_cap_nhat_tt_giang_vien { get; set; }
         public DbSet<sys_hoat_dong_giang_vien> sys_hoat_dong_giang_vien { get; set; }
         public DbSet<sys_bo_mon_giang_vien> sys_bo_mon_giang_vien { get; set; }

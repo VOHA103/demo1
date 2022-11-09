@@ -31,6 +31,7 @@ namespace WebAPI.Model
         public string id_chuc_vu { get; set; }
         public string id_khoa { get; set; }
         public string id_bo_mon { get; set; }
+        public string id_chuyen_nghanh { get; set; }
 
     }
 }

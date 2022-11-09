@@ -55,7 +55,7 @@
             <tr>
               <td class="">
                 <div class="flex justify-center item-center">
-                  <button mat-raised-button [matMenuTriggerFor]="menu">Chức năng</button>
+                  <!-- <button mat-raised-button [matMenuTriggerFor]="menu">Chức năng</button>
                   <mat-menu #menu="matMenu">
                     <button mat-menu-item (click)="openDialogDetail(item)">
                       Sửa
@@ -63,7 +63,17 @@
                     <button mat-menu-item *ngIf="item.db.status_del==1" (click)="delete(item.db.id)">Xoá</button>
                     <button mat-menu-item *ngIf="item.db.status_del==2" (click)="reven_status(item.db.id)">Sử
                       dụng</button>
-                  </mat-menu>
+                  </mat-menu> -->
+                  <div class="flex justify-center items-center ng-star-inserted"   *ngIf="item.db.status_del==1" (click)="delete(item.db.id)"><span
+                    class="material-icons" style="color: rgb(255, 0, 0);">cancel</span></div>
+                   <div class="flex justify-center items-center ng-star-inserted"  *ngIf="item.db.status_del==2" (click)="delete(item.db.id)"><span
+                     class="material-icons" style="color: rgb(16, 222, 36)">
+                     <mat-icon>done_outline</mat-icon>
+                    </span></div>
+                 <div class="flex justify-center items-center ng-star-inserted" (click)="openDialogDetail(item)"><span
+                    class="material-icons">
+                     <mat-icon>build</mat-icon>
+                   </span></div>
                 </div>
               </td>
               <td class="">

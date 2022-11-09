@@ -1,10 +1,10 @@
 export interface sys_giang_vien {
   id: string;
-  id_chuc_vu: number;
-  id_khoa: number;
-  gioi_tinh: number;
+  id_chuc_vu: number | null;
+  id_khoa: number | null;
+  gioi_tinh: number | null;
   id_bo_mon: string;
-  id_chuyen_nghanh: string;
+  id_chuyen_nghanh: number | null;
   ten_giang_vien: string;
   ma_giang_vien: string;
   sdt: string;

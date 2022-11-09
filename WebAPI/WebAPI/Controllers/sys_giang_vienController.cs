@@ -40,18 +40,36 @@ namespace WebAPI.Controllers
             var status_del = Int32.Parse(filter.status_del);
             var id_chuc_vu = Int32.Parse(filter.id_chuc_vu);
             var id_khoa = Int32.Parse(filter.id_khoa);
+            var id_chuyen_nghanh = Int32.Parse(filter.id_chuyen_nghanh);
             var result = _context.sys_giang_vien
               .Select(d => new sys_giang_vien_model()
               {
                   db = d,
                   create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
                   update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                  ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == d.id_chuc_vu).Select(q => q.ten_chuc_vu).SingleOrDefault(),
+                  ten_khoa = _context.sys_khoa.Where(q => q.id == d.id_khoa).Select(q => q.ten_khoa).SingleOrDefault(),
+
               })
               .Where(q => q.db.ten_giang_vien.Contains(filter.search) || filter.search == "")
               .Where(q => q.db.status_del == status_del)
-              .Where(q => q.db.status_del == id_chuc_vu || id_chuc_vu==-1)
-              .Where(q => q.db.status_del == id_khoa || id_khoa == -1)
+              .Where(q => q.db.id_chuc_vu == id_chuc_vu || id_chuc_vu==-1)
+              .Where(q => q.db.id_khoa == id_khoa || id_khoa == -1)
+              .Where(q => q.db.id_chuyen_nghanh == id_chuyen_nghanh || id_chuyen_nghanh == -1)
               .ToList();
+            result.ForEach(q =>
+            {
+                q.list_bo_mon = q.db.id_bo_mon.Split(",").ToList();
+                foreach (var item in q.list_bo_mon)
+                {
+                    var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
+                    q.ten_bo_mon += name;
+                    if (!item.Equals(q.list_bo_mon.Last()))
+                    {
+                        q.ten_bo_mon +=  ", ";
+                    }
+                }
+            });
             result = result.OrderByDescending(q => q.db.update_date).ToList();
             var model = new
             {
@@ -75,7 +93,8 @@ namespace WebAPI.Controllers
         public IActionResult delete([FromQuery] string id)
         {
             var result = _context.sys_giang_vien.Find(id);
-            _context.sys_giang_vien.Remove(result);
+            //_context.sys_giang_vien.Remove(result);
+            result.status_del = 2;
             _context.SaveChanges();
             return Ok();
         }

@@ -1,0 +1,72 @@
+<div class="flex flex-col flex-auto w-full  h-fit overflow-y-visible">
+  <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8">
+    <span class="text-lg font-medium">Cấu hình giao diện</span>
+  </div>
+  <div class="w-full p-6 sm:p-8 space-y-1 overflow-y-auto">
+    <div class="flex flex-col">
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Tiêu đề
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.ten_bo_mon'">({{key.value}})</span>
+            </span>
+
+          </mat-label>
+          <mat-form-field class="w-full" appearance="outline">
+            <input matInput [(ngModel)]="sys_cau_hinh_admin_model.db.title" />
+          </mat-form-field>
+        </div>
+        <div class="flex-1 px-2">
+          <mat-label>Copyright
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.name_footer'">({{key.value}})</span>
+            </span>
+
+          </mat-label>
+          <mat-form-field class="w-full" appearance="outline">
+            <input matInput [(ngModel)]="sys_cau_hinh_admin_model.db.name_footer" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Powered by
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.title_footer'">({{key.value}})</span>
+            </span>
+
+          </mat-label>
+          <mat-form-field class="w-full" appearance="outline">
+            <input matInput [(ngModel)]="sys_cau_hinh_admin_model.db.title_footer" />
+          </mat-form-field>
+        </div>
+        <div class="flex-1 px-2">
+          <mat-label>Ghi chú
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.note'">({{key.value}})</span>
+            </span>
+
+          </mat-label>
+          <mat-form-field class="w-full" appearance="outline">
+            <input matInput [(ngModel)]="sys_cau_hinh_admin_model.db.note" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex pl-6 pt-6 justify-end">
+        <div class="flex mr-3">
+          <button mat-raised-button (click)="Close()">Close</button>
+        </div>
+        <div>
+          <button mat-raised-button color="primary" *ngIf="sys_cau_hinh_admin_model.db.id == 0" (click)="Save()">
+            Save
+          </button>
+        </div>
+        <div>
+          <button mat-raised-button color="primary" *ngIf="sys_cau_hinh_admin_model.db.id != 0" (click)="Edit()">
+            Edit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
