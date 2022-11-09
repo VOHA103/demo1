@@ -68,6 +68,10 @@ export class nav_indexComponent implements OnInit {
         label: 'Khoa',
       },
       {
+        link: 'sys_chuyen_nganh_index',
+        label: 'Chuyên nghành',
+      },
+      {
         link: 'sys_ky_truc_khoa_index',
         label: 'Kỳ trực khoa',
       },

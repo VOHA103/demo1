@@ -78,6 +78,8 @@ import { sys_hoat_dong_popupComponent } from './system/sys_hoat_dong/popupAdd.co
 import { sys_hoat_dong_indexComponent } from './system/sys_hoat_dong/index.component';
 import { sys_ky_truc_khoa_popupComponent } from './system/sys_ky_truc_khoa/popupAdd.component';
 import { sys_ky_truc_khoa_indexComponent } from './system/sys_ky_truc_khoa/index.component';
+import { sys_chuyen_nganh_popupComponent } from './system/sys_chuyen_nganh/popupAdd.component';
+import { sys_chuyen_nganh_indexComponent } from './system/sys_chuyen_nganh/index.component';
 // import {
 //   NgxMatDatetimePickerModule,
 //   NgxMatNativeDateModule,
@@ -119,6 +121,8 @@ import { sys_ky_truc_khoa_indexComponent } from './system/sys_ky_truc_khoa/index
     user_menuComponent,
     sys_ky_truc_khoa_popupComponent,
     sys_ky_truc_khoa_indexComponent,
+    sys_chuyen_nganh_popupComponent,
+    sys_chuyen_nganh_indexComponent,
   ],
   imports: [
     CommonModule,

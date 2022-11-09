@@ -17,6 +17,7 @@ import { sys_loai_cong_viec_indexComponent } from './system/sys_loai_cong_viec/i
 import { sys_phong_truc_indexComponent } from './system/sys_phong_truc/index.component';
 import { sys_thong_bao_indexComponent } from './system/sys_thong_bao/index.component';
 import { sys_ky_truc_khoa_indexComponent } from './system/sys_ky_truc_khoa/index.component';
+import { sys_chuyen_nganh_indexComponent } from './system/sys_chuyen_nganh/index.component';
 
 const routes: Routes = [
   { path: "login", component: login_indexComponent },
@@ -30,6 +31,10 @@ const routes: Routes = [
     {
       path: "sys_khoa_index",
       component: sys_khoa_indexComponent
+    },
+    {
+      path: "sys_chuyen_nganh_index",
+      component: sys_chuyen_nganh_indexComponent
     },
     {
       path: "sys_bo_mon_index",
