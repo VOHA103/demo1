@@ -16,9 +16,15 @@ namespace WebAPI.Services
         {
             this._db = db;
         }
-        public async Task<User> GetUserAsync(string Id)
+
+        public Task<string> GetProfileUser(string Id)
         {
-            var user =await _db.Users.FindAsync(Id);
+            throw new NotImplementedException();
+        }
+
+        public async Task<sys_giang_vien> GetUserAsync(string Id)
+        {
+            var user =await _db.sys_giang_vien.FindAsync(Id);
             return user;
         }
     }

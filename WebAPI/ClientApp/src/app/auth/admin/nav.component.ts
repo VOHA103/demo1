@@ -14,7 +14,7 @@ export class nav_indexComponent implements OnInit {
   opened = false;
   panelOpenState = false;
   public currentYear: Date;
-  public userDetails: any;
+  public profile: any;
   public id_user: any;
   public cau_hinh: any;
   anio: number = new Date().getFullYear();
@@ -40,7 +40,7 @@ this.cau_hinh=data;
   public get_profile_user(): void {
     this.sys_user_service.get_profile_user().subscribe(
       (res: any) => {
-        this.userDetails = res;
+        this.profile = res;
       },
       (err) => {
         console.log(err);
@@ -58,10 +58,10 @@ this.cau_hinh=data;
     );
   }
   ngOnInit(): void {
+    console.log(localStorage.getItem('token'));
     this.get_profile_user();
     this.get_id_user();
     this.get_cau_hinh_admin();
-    console.log(localStorage.getItem('token'));
 
     this.menu = [
       {

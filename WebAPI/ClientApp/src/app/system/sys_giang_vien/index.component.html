@@ -69,9 +69,6 @@
             <th class=" text-base" style="height: 60px">Tài khoản</th>
             <th class=" text-base" style="height: 60px">Thông tin</th>
             <th class=" text-base" style="height: 60px">Bộ môn</th>
-            <!-- <th class=" text-base" style="height: 60px">Số điện thoại</th>
-      <th class=" text-base" style="height: 60px">Email</th>
-      <th class=" text-base" style="height: 60px">Địa chỉ</th>-->
             <th class=" text-base" style="height: 60px">Ngày sinh</th>
             <th class=" text-base" style="height: 60px">Người tạo</th>
             <th class=" text-base" style="height: 60px">Ngày tạo</th>
@@ -80,14 +77,15 @@
             <tr>
               <td class="">
                 <div class="flex flex-row justify-center item-center">
-                  <div class="flex justify-center items-center ng-star-inserted"   *ngIf="item.db.status_del==1" (click)="delete(item.db.id)"><span
-                     class="material-icons" style="color: rgb(255, 0, 0);">cancel</span></div>
-                    <div class="flex justify-center items-center ng-star-inserted"  *ngIf="item.db.status_del==2" (click)="delete(item.db.id)"><span
-                      class="material-icons" style="color: rgb(16, 222, 36)">
+                  <div class="flex justify-center items-center ng-star-inserted" *ngIf="item.db.status_del==1"
+                    (click)="delete(item.db.id)"><span class="material-icons"
+                      style="color: rgb(255, 0, 0);">cancel</span></div>
+                  <div class="flex justify-center items-center ng-star-inserted" *ngIf="item.db.status_del==2"
+                    (click)="delete(item.db.id)"><span class="material-icons" style="color: rgb(16, 222, 36)">
                       <mat-icon>done_outline</mat-icon>
-                     </span></div>
+                    </span></div>
                   <div class="flex justify-center items-center ng-star-inserted" (click)="openDialogDetail(item)"><span
-                     class="material-icons">
+                      class="material-icons">
                       <mat-icon>build</mat-icon>
                     </span></div>
                 </div>
@@ -104,9 +102,6 @@
                 <span>Địa chỉ: </span> <span>{{ item.db.dia_chi }}</span><br>
               </td>
               <td class="">{{ item.ten_bo_mon }}</td>
-              <!-- <td class="">{{ item.db.sdt }}</td>
-        <td class="">{{ item.db.email }}</td>
-        <td class="">{{ item.db.dia_chi }}</td>-->
               <td class="">{{ item.db.ngay_sinh | date :'dd/MM/YYYY' }}</td>
               <td class="">{{ item.create_name }}</td>
               <td class="">{{ item.db.create_date | date :'dd/MM/YYYY' }}</td>

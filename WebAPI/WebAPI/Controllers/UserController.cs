@@ -20,6 +20,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using WebAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
+using MailKit.Net.Smtp;
+using WebAPI.Services;
 
 namespace WebAPI.Controllers
 {
@@ -29,13 +32,38 @@ namespace WebAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IOptions<EmailConfiguration> _email;
         private readonly ApplicationSettings _appSettings;
         private readonly IUsersServices usersServices;
-        public UserController(ApplicationDbContext _context, IOptions<ApplicationSettings> appSettings, IUsersServices usersServices)
+        public UserController(ApplicationDbContext _context, IOptions<ApplicationSettings> appSettings, IUsersServices usersServices, IOptions<EmailConfiguration> email)
         {
             this._context = _context;
             _appSettings = appSettings.Value;
             this.usersServices = usersServices;
+            this._email = email;
+        }
+        [HttpGet("[action]")]
+        public IActionResult sendMail(string email,string content)
+        {
+            int check = Mail.sendMail(email,content);
+            //var title = "Trường đại học Công Nghiệp Thực Phẩm Thành phố Hồ Chí Minh";
+            //var message = new MimeMessage();
+            //message.From.Add(new MailboxAddress(title, _email.Value.From));
+            //message.To.Add(new MailboxAddress("", email));
+            //message.Subject = title;
+            //message.Body = new TextPart("plain")
+            //{
+            //    Text = "hello"
+            //};
+            //using (var client=new SmtpClient())
+            //{
+            //    client.Connect(_email.Value.SmtpServer, (int)_email.Value.Port, _email.Value.emailIsSSL);
+            //    client.Authenticate(_email.Value.Username, _email.Value.Password);
+
+            //    client.Send(message);
+            //    client.Disconnect(true);
+            //}
+            return Ok();
         }
         [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
@@ -69,7 +97,7 @@ namespace WebAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> login(User users)
         {
-            var model = _context.Users.SingleOrDefault(q => q.name == users.name);
+            var model = _context.sys_giang_vien.Where(q=>q.username.Trim()==users.name.Trim() && q.pass_word.Trim()==users.pass.Trim()).SingleOrDefault();
 
             if (model != null)
             {
@@ -80,7 +108,7 @@ namespace WebAPI.Controllers
                 return BadRequest(new { message = "Username or password is incorrect." });
         }
 
-        private string GenerateToken(User model)
+        private string GenerateToken(sys_giang_vien model)
         {
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -103,7 +131,13 @@ namespace WebAPI.Controllers
         {
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
             var user = await usersServices.GetUserAsync(user_id);
-            return Ok(user);
+            var profile = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => new
+            {
+                id=q.id,
+                name=q.ten_giang_vien,
+                type=q.id_chuc_vu,
+            }).SingleOrDefault();
+            return Ok(profile);
         }
         [HttpGet("[action]")]
         [Authorize]

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.Data;
 using WebAPI.Model;
 using WebAPI.System;
 
@@ -9,6 +10,7 @@ namespace WebAPI.Part
 {
     public static class user_part
     {
+        private static readonly ApplicationDbContext _context;
         public static List<check_error> check_error_insert_update(user_model item)
         {
             List<check_error> list_error = new List<check_error>();
@@ -19,7 +21,7 @@ namespace WebAPI.Part
             if (string.IsNullOrEmpty(item.db.pass))
             {
                 list_error.Add(set_error.set("db.pass", "Bắt buộc"));
-            }
+            }    
             return list_error;
         }
     }

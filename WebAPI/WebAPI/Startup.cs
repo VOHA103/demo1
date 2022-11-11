@@ -35,10 +35,12 @@ namespace WebAPI
         {
             //Inject AppSettings
             services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
+            //config email
+            services.Configure<EmailConfiguration>(Configuration.GetSection(EmailConfiguration.SectionName));
             //Config Cois
             //LeThanhThai là tên config
             //từ bulder trở đi là config
-            services.AddCors(options => options.AddPolicy("LeThanhThai", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            services.AddCors(options => options.AddPolicy("LeThanhThai", builder => builder.WithOrigins("http//localhost:4200").AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSwaggerGen(c =>
             {

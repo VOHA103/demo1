@@ -9,6 +9,7 @@ namespace WebAPI.Services.Interfaces
 {
     public interface IUsersServices
     {
-        Task<User> GetUserAsync(string Id);
+        Task<sys_giang_vien> GetUserAsync(string Id);
+        Task<String> GetProfileUser(string Id);
     }
 }

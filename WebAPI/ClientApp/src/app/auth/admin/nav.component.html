@@ -13,7 +13,7 @@
     <div class="flex item-container justify-center w-full">
       <div class="item-container flex justify-center p-4">
         <span class="font-bold text-lg text-white">
-          {{ userDetails.name }}
+          {{ profile.ten_giang_vien }}
         </span>
       </div>
     </div>
@@ -48,7 +48,7 @@
         class="relative flex flex-0 items-center w-full h-16 px-4 md:px-6 z-49 shadow dark:shadow-none dark:border-b bg-card dark:bg-transparent"
         style="width: 100% !important; height: 5% !important">
         <div style="border-radius: 1.25rem!important;background-color:#2c2727;color: #fff !important">
-          <user_menu [user_name]="userDetails.name"></user_menu>
+          <user_menu [user_name]="profile.name"></user_menu>
         </div>
       </div>
       <div class="flex flex-col flex-auto">

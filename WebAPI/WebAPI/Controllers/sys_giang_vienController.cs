@@ -34,6 +34,22 @@ namespace WebAPI.Controllers
         {
             this._context = _context;
         }
+        [HttpGet("[action]")]
+        public IActionResult get_user_login()
+        {
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var result = _context.sys_giang_vien.Where(q => q.id == user_id)
+                .Select(d => new sys_giang_vien_model()
+                {
+                    db = d,
+                    create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                    update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                    ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == d.id_chuc_vu).Select(q => q.ten_chuc_vu).SingleOrDefault(),
+                    ten_khoa = _context.sys_khoa.Where(q => q.id == d.id_khoa).Select(q => q.ten_khoa).SingleOrDefault(),
+
+                }).SingleOrDefault();
+            return Ok(result);
+        }
         [HttpPost("[action]")]
         public IActionResult DataHanlder([FromBody] filter_data_giang_vien filter)
         {
@@ -176,6 +192,7 @@ namespace WebAPI.Controllers
         {
             try
             {
+                sys_giang_vien.db.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var error = sys_giang_vien_part.get_list_error(sys_giang_vien);
                 if (error.Count() == 0)
@@ -183,6 +200,7 @@ namespace WebAPI.Controllers
                     sys_giang_vien.db.id = get_id_primary_key();
                     sys_giang_vien.db.update_date = DateTime.Now;
                     sys_giang_vien.db.create_date = DateTime.Now;
+                    sys_giang_vien.db.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
                     sys_giang_vien.db.update_by = user_id;
                     sys_giang_vien.db.create_by = user_id;
                     sys_giang_vien.db.username = sys_giang_vien.db.ma_giang_vien;

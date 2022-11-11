@@ -24,9 +24,9 @@ export class sys_giang_vien_service {
   };
   constructor(private http: HttpClient) {}
   //lấy danh sách sys_giang_vien
-  public DataHandel(): Observable<sys_giang_vien_model[]> {
-    const url = this.REST_API_URL + '/sys_giang_vien/DataHandel';
-    return this.http.get<sys_giang_vien_model[]>(url);
+  public get_user_login(): Observable<any> {
+    const url =  this.REST_API_URL + '/sys_giang_vien/get_user_login';
+    return this.http.get<any>(url);
   }
   //lấy danh sách sys_giang_vien
   public getAll(): Observable<sys_giang_vien_model[]> {

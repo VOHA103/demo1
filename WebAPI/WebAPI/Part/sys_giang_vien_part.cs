@@ -10,6 +10,7 @@ namespace WebAPI.Part
 {
     public static class sys_giang_vien_part
     {
+        private static readonly ApplicationDbContext _context;
         //private ApplicationDbContext _context;
         //public sys_giang_vien_part(ApplicationDbContext _context)
         //{

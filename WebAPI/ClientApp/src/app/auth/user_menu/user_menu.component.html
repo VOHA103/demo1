@@ -1,9 +1,19 @@
 <button mat-button [matMenuTriggerFor]="menu">Xin chào {{ user_name }}</button>
 <mat-menu #menu="matMenu">
   <button mat-menu-item>
+    <div class="flex item-container justify-center w-full" (click)="get_user_login()">
+      <div class="item-container justify-center">
+        <button mat-raised-button color="primary">
+
+          Thông tin cá nhân
+        </button>
+      </div>
+    </div>
+  </button>
+  <button mat-menu-item>
     <div class="flex item-container justify-center w-full" (click)="onLogout()">
       <div class="item-container justify-center">
-        <button mat-raised-button color="primary" (click)="onLogout()">
+        <button mat-raised-button color="primary">
           Logout
         </button>
       </div>
@@ -11,11 +21,10 @@
   </button>
   <button mat-menu-item>Item 2</button>
   <button mat-menu-item>Item 2</button>
-  <button mat-menu-item>Item 2</button>
 </mat-menu>
 <style>
-  .mat-menu-panel{
-  width: 170px !important;
-  min-width: 170px !important;
-}
+  .mat-menu-panel {
+    width: 170px !important;
+    min-width: 170px !important;
+  }
 </style>
