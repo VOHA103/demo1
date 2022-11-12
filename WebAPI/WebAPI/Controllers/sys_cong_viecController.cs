@@ -35,16 +35,17 @@ namespace WebAPI.Controllers
         [HttpPost("[action]")]
         public IActionResult DataHanlder([FromBody] filter_data_cong_viec filter)
         {
-            var status_del = Int32.Parse(filter.status_del);
             var result = _context.sys_cong_viec
               .Select(d => new sys_cong_viec_model()
               {
                   db = d,
                   create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
                   update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                  ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(q => q.id == d.id_loai_cong_viec).Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
               })
               .Where(q => q.db.ten_cong_viec.Contains(filter.search) || filter.search == "")
-              .Where(q => q.db.status_del == status_del)
+              .Where(q => q.db.status_del == filter.status_del)
+              .Where(q => q.db.id_loai_cong_viec == filter.id_loai_cong_viec|| filter.id_loai_cong_viec==-1)
               .ToList();
             result = result.OrderByDescending(q => q.db.update_date).ToList();
             var model = new
@@ -58,10 +59,10 @@ namespace WebAPI.Controllers
         public IActionResult get_list_cong_viec()
         {
             var result = _context.sys_cong_viec
-              .Select(d => new 
+              .Select(d => new
               {
-                  id=d.id,
-                  name=d.ten_cong_viec,
+                  id = d.id,
+                  name = d.ten_cong_viec,
               }).ToList();
             return Ok(result);
         }
@@ -142,8 +143,10 @@ namespace WebAPI.Controllers
                 if (error.Count() == 0)
                 {
                     sys_cong_viec.db.id = get_id_primary_key();
+                    sys_cong_viec.db.ngay_bat_dau = sys_cong_viec.db.ngay_bat_dau.Value.AddDays(1);
                     sys_cong_viec.db.update_date = DateTime.Now;
                     sys_cong_viec.db.create_date = DateTime.Now;
+                    sys_cong_viec.db.gio_bat_dau = sys_cong_viec.gio + ":" + sys_cong_viec.phut;
                     sys_cong_viec.db.create_by = user_id;
                     sys_cong_viec.db.update_by = user_id;
                     sys_cong_viec.db.status_del = 1;

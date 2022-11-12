@@ -82,8 +82,8 @@ export class sys_cong_viec_giang_vien_popupComponent {
         });
       });
   }
-  get_list_giang_vien(): void {
-    this.sys_giang_vien_service.get_list_giang_vien().subscribe((result) => {
+  get_list_giang_vien(id_chuc_vu:any,id_khoa:any ): void {
+    this.sys_giang_vien_service.get_list_giang_vien_change(id_chuc_vu,id_khoa).subscribe((result) => {
       this.list_giang_vien = result;
       console.log(this.list_giang_vien);
     });
@@ -97,7 +97,10 @@ export class sys_cong_viec_giang_vien_popupComponent {
   get_list_khoa(): void {
     this.sys_khoa_service
       .get_list_khoa()
-      .subscribe((data) => (this.lst_khoa = data));
+      .subscribe((data) => {
+        this.lst_khoa = data
+        this.sys_cong_viec_giang_vien_model.db.id_khoa=this.lst_khoa[0].id;
+      });
   }
   get_list_bo_mon(): void {
     this.sys_bo_mon_service
@@ -107,11 +110,14 @@ export class sys_cong_viec_giang_vien_popupComponent {
   get_list_chuc_vu(): void {
     this.sys_chuc_vu_service
       .get_list_chuc_vu()
-      .subscribe((data) => (this.lst_chuc_vu = data));
+      .subscribe((data) => {
+        this.lst_chuc_vu = data
+        this.sys_cong_viec_giang_vien_model.db.id_chuc_vu=this.lst_chuc_vu[0].id;
+        this.get_list_giang_vien(this.sys_cong_viec_giang_vien_model.db.id_chuc_vu,this.sys_cong_viec_giang_vien_model.db.id_khoa);
+      });
   }
   ngOnInit(): void {
     this.get_list_cong_viec();
-    this.get_list_giang_vien();
     this.lst_status = [
       {
         id: '1',

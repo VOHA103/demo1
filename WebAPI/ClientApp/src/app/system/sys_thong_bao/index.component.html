@@ -11,9 +11,7 @@
           <mat-label>Tên thành viên</mat-label>
           <mat-form-field appearance="outline" class="w-full">
             <mat-select>
-              <mat-option *ngFor="let food of lst_status" [value]="food.id">
-                {{ food.name }}
-              </mat-option>
+              <input [(ngModel)]="filter.search" matInput (keyup.enter)="loadAPI()">
             </mat-select>
           </mat-form-field>
         </div>

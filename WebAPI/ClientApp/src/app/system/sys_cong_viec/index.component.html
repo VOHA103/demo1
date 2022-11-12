@@ -10,14 +10,26 @@
         <div class="flex-1 px-2">
           <mat-label>Tên công việc</mat-label>
           <mat-form-field class="w-full" appearance="outline" class="w-full">
-            <input [(ngModel)]="filter.search" matInput>
+            <input [(ngModel)]="filter.search" matInput (keyup.enter)="DataHanlder()">
           </mat-form-field>
         </div>
         <div class="flex-1  px-2">
           <mat-label>Trạng thái</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select  [(ngModel)]="filter.status_del" >
+            <mat-select  [(ngModel)]="filter.status_del"  (selectionChange)="DataHanlder()">
               <mat-option *ngFor="let item of lst_status" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1  px-2">
+          <mat-label>Loại công việc</mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select  [(ngModel)]="filter.status_del"  (selectionChange)="DataHanlder()">
+              <mat-option *ngFor="let item of list_loai_cong_viec" [value]="item.id">
                 {{ item.name }}
               </mat-option>
             </mat-select>

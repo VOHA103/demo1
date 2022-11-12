@@ -43,9 +43,9 @@ namespace WebAPI.Controllers
             this._email = email;
         }
         [HttpGet("[action]")]
-        public IActionResult sendMail(string email,string content)
+        public IActionResult sendMail(string email, string content)
         {
-            int check = Mail.sendMail(email,content);
+            int check = Mail.sendMail(email, content);
             //var title = "Trường đại học Công Nghiệp Thực Phẩm Thành phố Hồ Chí Minh";
             //var message = new MimeMessage();
             //message.From.Add(new MailboxAddress(title, _email.Value.From));
@@ -97,7 +97,11 @@ namespace WebAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> login(User users)
         {
-            var model = _context.sys_giang_vien.Where(q=>q.username.Trim()==users.name.Trim() && q.pass_word.Trim()==users.pass.Trim()).SingleOrDefault();
+            if (users.name != "administrator" && users.pass != "123456@#")
+            {
+                users.pass = Libary.EncodeMD5(users.pass);
+            }
+            var model = _context.sys_giang_vien.Where(q => q.username.Trim() == users.name.Trim() && q.pass_word.Trim() == users.pass.Trim()).SingleOrDefault();
 
             if (model != null)
             {
@@ -133,9 +137,9 @@ namespace WebAPI.Controllers
             var user = await usersServices.GetUserAsync(user_id);
             var profile = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => new
             {
-                id=q.id,
-                name=q.ten_giang_vien,
-                type=q.id_chuc_vu,
+                id = q.id,
+                name = q.ten_giang_vien,
+                type = q.id_chuc_vu,
             }).SingleOrDefault();
             return Ok(profile);
         }
@@ -196,14 +200,15 @@ namespace WebAPI.Controllers
                 return Ok(ex.Message);
             }
         }
-        private string get_id_primary_key() {
+        private string get_id_primary_key()
+        {
             var id = "";
             var check_id = 0;
             do
             {
                 id = RandomExtension.getStringID();
                 check_id = _context.Users.Where(q => q.id == id).Count();
-            } while (check_id!=0);
+            } while (check_id != 0);
             return id;
         }
     }

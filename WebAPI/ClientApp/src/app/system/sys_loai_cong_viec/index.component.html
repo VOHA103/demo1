@@ -10,13 +10,13 @@
         <div class="flex-1 px-2">
           <mat-label>Tìm kiếm</mat-label>
         <mat-form-field class="w-full" appearance="outline" class="w-full">
-          <input [(ngModel)]="filter.search" matInput >
+          <input [(ngModel)]="filter.search" matInput  (keyup.enter)="DataHanlder()">
         </mat-form-field>
       </div>
         <div class="flex-1  px-2">
             <mat-label>Trạng thái</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select  [(ngModel)]="filter.status_del" >
+            <mat-select  [(ngModel)]="filter.status_del" (selectionChange)="DataHanlder()">
               <mat-option *ngFor="let item of lst_status" [value]="item.id">
                 {{ item.name }}
               </mat-option>
@@ -66,7 +66,7 @@
                   </mat-menu> -->
                   <div class="flex justify-center items-center ng-star-inserted"   *ngIf="item.db.status_del==1" (click)="delete(item.db.id)"><span
                     class="material-icons" style="color: rgb(255, 0, 0);">cancel</span></div>
-                   <div class="flex justify-center items-center ng-star-inserted"  *ngIf="item.db.status_del==2" (click)="delete(item.db.id)"><span
+                   <div class="flex justify-center items-center ng-star-inserted"  *ngIf="item.db.status_del==2" (click)="reven_status(item.db.id)"><span
                      class="material-icons" style="color: rgb(16, 222, 36)">
                      <mat-icon>done_outline</mat-icon>
                     </span></div>

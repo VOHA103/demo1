@@ -4,35 +4,17 @@
   </div>
   <div class="w-full p-6 sm:p-8 space-y-1 overflow-y-auto">
     <div class="flex flex-col">
-      <div class="flex pl-6 pb-6 pt-6 justify-end">
-        <div class="flex mr-3">
-          <button mat-raised-button (click)="Close()">Close</button>
-        </div>
-        <div>
-          <button mat-raised-button color="primary" *ngIf="sys_cong_viec_model.db.id == '0'" (click)="Save()">
-            Save
-          </button>
-        </div>
-        <div>
-          <button mat-raised-button color="primary" *ngIf="sys_cong_viec_model.db.id != '0'" (click)="Edit()">
-            Edit
-          </button>
-        </div>
-      </div>
       <div class="flex">
         <div class="flex-1 px-2">
           <mat-label>Tên công việc
             <span *ngFor="let key of check_error">
               <span style="color:red" *ngIf="key.key=='db.ten_cong_viec'">({{key.value}})</span>
             </span>
-
           </mat-label>
           <mat-form-field class="w-full" appearance="outline">
             <input matInput [(ngModel)]="sys_cong_viec_model.db.ten_cong_viec" />
           </mat-form-field>
         </div>
-      </div>
-      <div class="flex">
         <div class="flex-1 px-2">
           <mat-label>Loại công việc
             <span *ngFor="let key of check_error">
@@ -51,41 +33,76 @@
       </div>
       <div class="flex">
         <div class="flex-1 px-2">
-          <mat-label>Ghi chú
+          <mat-label>Định mức
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.id_loai_cong_viec'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput type="number" [(ngModel)]="sys_cong_viec_model.db.so_gio" />
+          </mat-form-field>
+        </div>
+        <div class="flex-1 px-2">
+          <mat-label>Loại
             <span *ngFor="let key of check_error">
               <span style="color:red" *ngIf="key.key=='db.note'">({{key.value}})</span>
             </span>
 
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <input matInput [(ngModel)]="sys_cong_viec_model.db.note" />
+            <mat-select [(ngModel)]="sys_cong_viec_model.db.loai">
+              <mat-option *ngFor="let food of lst_loai" [value]="food.id">{{
+                food.name
+                }}</mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
       </div>
-
-
-      <!-- <div class="flex">
+      <div class="flex">
         <div class="flex-1 px-2">
-          <mat-label>Tên thành viên</mat-label>
+          <mat-label>Ngày bắt đầu
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.email'">({{key.value}})</span>
+            </span>
+          </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="sys_cong_viec_model.db.id" name="food">
-              <mat-option *ngFor="let food of lst_status" [value]="food.id">
-                {{ food.name }}
-              </mat-option>
-            </mat-select>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="sys_cong_viec_model.db.ngay_bat_dau">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </div>
         <div class="flex-1 px-2">
-          <mat-label class="mb-5">Toppings</mat-label>
+          <mat-label>Giờ
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.note'">({{key.value}})</span>
+            </span>
+
+          </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="sys_cong_viec_model.lst_cong_viec" multiple>
-              <mat-option *ngFor="let food of lst_status" [value]="food.id">{{
+            <mat-select [(ngModel)]="sys_cong_viec_model.gio">
+              <mat-option *ngFor="let food of lst_gio" [value]="food.id">{{
                 food.name
-              }}</mat-option>
+                }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
-      </div> -->
+
+        <div class="flex-1 px-2">
+          <mat-label>Phút
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.note'">({{key.value}})</span>
+            </span>
+
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="sys_cong_viec_model.phut">
+              <mat-option *ngFor="let food of lst_phut" [value]="food.id">{{
+                food.name
+                }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
       <div class="flex pl-6 pt-6 justify-end">
         <div class="flex mr-3">
           <button mat-raised-button (click)="Close()">Close</button>

@@ -3,14 +3,14 @@
 
   <div class="flex flex-col p-4" *ngIf="loading==true">
     <div class="flex">
-      <h1 class="font-bold text-xl">Thành viên</h1>
+      <h1 class="font-bold text-xl uppercase">Công Việc giảng viên</h1>
     </div>
     <mat-card>
       <div class="flex">
         <div class="flex-1  px-2">
-          <mat-label>Tên thành viên</mat-label>
+          <mat-label>Giảng viên</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select>
+            <mat-select (selectionChange)="loadAPI()">
               <mat-option *ngFor="let food of lst_status" [value]="food.id">
                 {{ food.name }}
               </mat-option>
@@ -20,7 +20,7 @@
         <div class="flex-1  px-2">
           <mat-label>Trạng thái</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select>
+            <mat-select (selectionChange)="loadAPI()">
               <mat-option *ngFor="let food of lst_status" [value]="food.id">
                 {{ food.name }}
               </mat-option>
@@ -42,6 +42,12 @@
       <div class="flex justify-end mr-10">
         <button mat-raised-button (click)="loadAPI()">Tìm kiếm</button>
       </div>
+      <div class="flex justify-end mr-10">
+        <button mat-raised-button color="primary"  (click)="exportAsExcel()">
+          <mat-icon>cloud_download</mat-icon>  Export Excel
+        </button>
+      </div>
+
       <div class="flex justify-end mr-10">
         <button mat-raised-button color="primary" (click)="openDialogAdd()">
           <mat-icon>add</mat-icon>Thêm
@@ -116,8 +122,8 @@
         </table>
       </mat-card>
     </div>
-    <app-pagination (goPage)="goToPage($event)" (goPrev)="goToPrevious()" (goNext)="goToNext()" [page]="page"
-      [perPage]="limit" [count]="total">
+    <app-pagination (goPage)="goToPage($event)" (goPrev)="goToPrevious()" (goNext)="goToNext()" [page]="filter.page"
+      [perPage]="filter.limit" [count]="filter.total">
     </app-pagination>
   </div>
 </div>

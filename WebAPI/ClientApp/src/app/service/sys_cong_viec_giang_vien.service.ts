@@ -23,14 +23,14 @@ export class sys_cong_viec_giang_vien_service {
     }),
   };
   constructor(private http: HttpClient) {}
-  //lấy danh sách sys_cong_viec_giang_vien
-  public DataHandel(): Observable<sys_cong_viec_giang_vien_model[]> {
-    const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/DataHandel';
-    return this.http.get<sys_cong_viec_giang_vien_model[]>(url);
+  //lấy danh sách sys_khoa
+  public DataHanlder(filter:any){
+    const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/DataHanlder';
+    return this.http.post(url,filter);
   }
   //lấy danh sách sys_cong_viec_giang_vien
   public getAll(): Observable<sys_cong_viec_giang_vien_model[]> {
-    const url = 'https://localhost:44334/sys_cong_viec_giang_vien/GetAll';
+    const url =  this.REST_API_URL + '/sys_cong_viec_giang_vien/GetAll';
     return this.http.get<sys_cong_viec_giang_vien_model[]>(url);
   }
   // thêm sys_cong_viec_giang_vien

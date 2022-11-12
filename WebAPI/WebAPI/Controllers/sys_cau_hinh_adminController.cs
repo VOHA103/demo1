@@ -19,6 +19,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using WebAPI.Services.Interfaces;
 using WebAPI.Part;
+using System.IO;
+using System.Net.Http.Headers;
 
 namespace WebAPI.Controllers
 {
@@ -32,6 +34,35 @@ namespace WebAPI.Controllers
         {
             this._context = _context;
         }
+        [HttpPost, DisableRequestSizeLimit]
+        public IActionResult Upload()
+        {
+            try
+            {
+                var file = Request.Form.Files[0];
+                var folderName = Path.Combine("UploadedFiles", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                if (file.Length > 0)
+                {
+                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                    return Ok(new { dbPath });
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
         [HttpPost("[action]")]
         public IActionResult DataHanlder([FromBody] filter_data_bo_mon filter)
         {
@@ -44,6 +75,7 @@ namespace WebAPI.Controllers
                   update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
               })
               .Where(q => q.db.status_del == status_del)
+              .Where(q => q.db.title == filter.search || filter.search=="")
               .ToList();
             result = result.OrderByDescending(q => q.db.update_date).ToList();
             var model = new
@@ -83,19 +115,6 @@ namespace WebAPI.Controllers
             _context.SaveChanges();
             return Ok(result);
         }
-
-        [HttpGet("[action]")]
-        public IActionResult get_id_id([FromQuery] string id, string id_2)
-        {
-            var result = _context.sys_cau_hinh_admin.Where(q => q.id == Int32.Parse(id)).SingleOrDefault();
-            // xoá khỏi database
-            //_context.sys_khoa.Remove(result);
-
-            //cập nhập trạng thái sử dụng
-            result.status_del = 1;
-            _context.SaveChanges();
-            return Ok(result);
-        }
         [HttpGet("[action]")]
         public IActionResult GetAll()
         {
@@ -124,6 +143,7 @@ namespace WebAPI.Controllers
                     model.update_by = user_id;
                     model.note = sys_cau_hinh_admin.db.note;
                     model.title = sys_cau_hinh_admin.db.title;
+                    model.image = sys_cau_hinh_admin.db.image;
                     model.name_footer = sys_cau_hinh_admin.db.name_footer;
                     model.title_footer = sys_cau_hinh_admin.db.title_footer;
                     await _context.SaveChangesAsync();

@@ -12,6 +12,7 @@ namespace WebAPI.System
         public string name_footer { get; set; }
         public string title_footer { get; set; }
         public int type_ { get; set; }
+        public string image { get; set; }
         public string create_by { get; set; }
         public DateTime? create_date { get; set; }
         public string update_by { get; set; }

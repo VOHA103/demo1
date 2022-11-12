@@ -3,20 +3,20 @@
 
   <div class="flex flex-col p-4" *ngIf="loading==true">
     <div class="flex">
-      <h1 class="font-bold text-xl">Giảng viên</h1>
+      <h1 class="font-bold text-xl uppercase">Giảng viên</h1>
     </div>
     <mat-card>
       <div class="flex">
         <div class="flex-1 px-2">
           <mat-label>Tên giảng viên</mat-label>
           <mat-form-field class="w-full" appearance="outline" class="w-full">
-            <input [(ngModel)]="filter.search" matInput>
+            <input [(ngModel)]="filter.search" matInput (keyup.enter)="DataHanlder()">
           </mat-form-field>
         </div>
         <div class="flex-1  px-2">
           <mat-label>Trạng thái</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="filter.status_del">
+            <mat-select [(ngModel)]="filter.status_del" (selectionChange)="DataHanlder()">
               <mat-option *ngFor="let item of lst_status" [value]="item.id">
                 {{ item.name }}
               </mat-option>
@@ -28,7 +28,7 @@
         <div class="flex-1  px-2">
           <mat-label>Khoa</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="filter.id_khoa">
+            <mat-select [(ngModel)]="filter.id_khoa" (selectionChange)="DataHanlder()">
               <mat-option *ngFor="let item of lst_khoa" [value]="item.id">
                 {{ item.name }}
               </mat-option>
@@ -38,7 +38,7 @@
         <div class="flex-1  px-2">
           <mat-label>Chức vụ</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="filter.id_chuc_vu">
+            <mat-select [(ngModel)]="filter.id_chuc_vu" (selectionChange)="DataHanlder()">
               <mat-option *ngFor="let item of lst_chuc_vu" [value]="item.id">
                 {{ item.name }}
               </mat-option>

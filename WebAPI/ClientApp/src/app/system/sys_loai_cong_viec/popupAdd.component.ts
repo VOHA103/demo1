@@ -18,6 +18,7 @@ import { sys_loai_cong_viec_model } from '@/app/model/sys_loai_cong_viec.model';
 export class sys_loai_cong_viec_popupComponent {
   public sys_loai_cong_viec_model = new sys_loai_cong_viec_model();
   public lst_status: any = [];
+  public lst_loai: any = [];
   public check_error: any = [];
   constructor(
     private http: HttpClient,
@@ -69,6 +70,16 @@ export class sys_loai_cong_viec_popupComponent {
   }
 
   ngOnInit(): void {
+    this.lst_loai=[
+      {
+        id: 1,
+        name: 'Cá nhân',
+      },
+      {
+        id: 2,
+        name: 'Tập thể',
+      },
+    ];
     this.lst_status = [
       {
         id: '1',

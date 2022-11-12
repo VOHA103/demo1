@@ -64,4 +64,9 @@ export class sys_giang_vien_service {
     const url = this.REST_API_URL + '/sys_giang_vien/DataHanlder';
     return this.http.post(url,filter);
   }
+  //lấy danh sách sys_giang_vien
+  public get_list_giang_vien_change(id_chuc_vu:number,id_khoa:number): Observable<sys_giang_vien_model[]> {
+    const url =  this.REST_API_URL + '/sys_giang_vien/get_list_giang_vien_change?id_chuc_vu='+id_chuc_vu+'&id_khoa='+id_khoa;
+    return this.http.get<sys_giang_vien_model[]>(url);
+  }
 }

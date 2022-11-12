@@ -69,7 +69,6 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-
           "configurations": {
             "production": {
               "browserTarget": "ClientApp:build:production"
@@ -99,7 +98,6 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -109,6 +107,6 @@
     }
   },
   "cli": {
-    "analytics": "07475b81-e38f-4968-a289-bffd48fc7344"
+    "analytics": false
   }
 }

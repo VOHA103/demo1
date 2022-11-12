@@ -1,14 +1,16 @@
-export class sys_cong_viec {
+
+export interface sys_cong_viec {
   id: string;
   ten_cong_viec: string;
   id_loai_cong_viec: number;
-  gio_bat_dau: string | null;
-  gio_ket_thuc: string | null;
+  so_gio: number | null;
+  ngay_bat_dau: string | null;
+  gio_bat_dau: string;
   create_by: string;
   create_date: string | null;
   update_by: string;
   update_date: string | null;
   status_del: number | null;
-  trang_thai: number | null;
+  loai: number | null;
   note: string;
 }

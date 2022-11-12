@@ -7,6 +7,7 @@ import { user_model } from '@/app/model/user.model';
 import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
 import { sys_cong_viec_popupComponent } from './popupAdd.component';
+import { sys_loai_cong_viec_service } from '../../service/sys_loai_cong_viec.service';
 @Component({
   selector: 'sys_cong_viec_index',
   templateUrl: './index.component.html',
@@ -16,21 +17,24 @@ export class sys_cong_viec_indexComponent implements OnInit {
   public foods: any = [];
   public listData: any = [];
   public lst_status: any = [];
+  public list_loai_cong_viec: any = [];
   public model: user_model;
   public loading = false;
   total = 0;
   page = 1;
   limit = 10;
-  filter = { search: '', total: '0', page: '0', limit: '10', status_del: '1' };
+  filter = { search: '', total: '0', page: '0', limit: '10', status_del: 1,id_loai_cong_viec:-1 };
   searchKey: string;
   constructor(
     private http: HttpClient,
     private sys_cong_viec_service: sys_cong_viec_service,
+    private sys_loai_cong_viec_service: sys_loai_cong_viec_service,
     public dialog: MatDialog
   ) {
     this.DataHanlder();
   }
   DataHanlder(): void {
+    debugger
      this.loading = false;
      this.sys_cong_viec_service.DataHanlder(this.filter).subscribe((resp) => {
       var model:any;
@@ -135,15 +139,22 @@ export class sys_cong_viec_indexComponent implements OnInit {
       });
     });
   }
+  get_list_loai_cong_viec(): void {
+    debugger;
+    this.sys_loai_cong_viec_service.get_list_use().subscribe((result) => {
+      this.list_loai_cong_viec = result;
+    });
+  }
   ngOnInit(): void {
     this.DataHanlder();
+    this.get_list_loai_cong_viec();
     this.lst_status = [
       {
-        id: '1',
+        id: 1,
         name: 'Đang sử dụng',
       },
       {
-        id: '2',
+        id: 2,
         name: 'Ngưng sử dụng',
       },
 

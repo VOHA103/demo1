@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Support
 {
-    public class Libary
+    public static class Libary
     {
-        public string EncodeMD5(string pass)
+        public static string EncodeMD5(string pass)
         {
             MD5 md5Hasher = MD5.Create();
             byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(pass));
@@ -21,8 +21,21 @@ namespace WebAPI.Support
             }
             return sBuilder.ToString();
         }
+        public static string GetMD5(string str)
+        {
+            MD5 md5 = new MD5CryptoServiceProvider();
+            byte[] fromData = Encoding.UTF8.GetBytes(str);
+            byte[] targetData = md5.ComputeHash(fromData);
+            string byte2String = null;
 
-        public string convertToUnSign3(string s)
+            for (int i = 0; i < targetData.Length; i++)
+            {
+                byte2String += targetData[i].ToString("x2");
+
+            }
+            return byte2String;
+        }
+        public static string convertToUnSign3(string s)
         {
             Regex regex = new Regex("\\p{IsCombiningDiacriticalMarks}+");
             string temp = s.Normalize(NormalizationForm.FormD);

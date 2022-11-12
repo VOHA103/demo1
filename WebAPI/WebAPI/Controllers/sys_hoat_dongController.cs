@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
         [HttpPost("[action]")]
         public IActionResult DataHanlder([FromBody] filter_data_cong_viec filter)
         {
-            var status_del = Int32.Parse(filter.status_del);
+            var status_del = filter.status_del;
             var result = _context.sys_cong_viec
               .Select(d => new sys_cong_viec_model()
               {

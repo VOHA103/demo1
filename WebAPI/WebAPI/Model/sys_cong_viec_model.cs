@@ -16,14 +16,17 @@ namespace WebAPI.Model
         public string create_name { get; set; }
         public string update_name { get; set; }
         public string ten_loai_cong_viec { get; set; }
+        public string gio { get; set; }
+        public string phut { get; set; }
     }
     public class filter_data_cong_viec
     {
         public string search { get; set; }
+        public int id_loai_cong_viec { get; set; }
         public string total { get; set; }
         public string page { get; set; }
         public string limit { get; set; }
-        public string status_del { get; set; }
+        public int status_del { get; set; }
 
     }
 }

@@ -22,6 +22,7 @@ export class sys_cau_hinh_admin_popupComponent {
   public lst_status: any = [];
   public check_error: any = [];
   public id_user: any;
+  selectedFile: any;
   constructor(
     private http: HttpClient,
     private sys_cau_hinh_admin_service: sys_cau_hinh_admin_service,
@@ -34,6 +35,22 @@ export class sys_cau_hinh_admin_popupComponent {
     this.sys_cau_hinh_admin_model = data;
     this.get_profile_user();
   }
+  onFileSelected(event) {
+    this.selectedFile = event.target.files;
+  }
+
+    onUpload() {
+      const fd = new FormData();
+      for (var i = 0; i < this.selectedFile.length; i++) {
+        fd.append('image', this.selectedFile, this.selectedFile.name);
+      }
+      this.http
+        .post('https://localhost:44334/sys_cau_hinh_admin/Upload', fd)
+        .subscribe((event) => {
+          console.log(event);
+        });
+    }
+
   public get_profile_user(): void {
     this.sys_user_service.get_profile_user().subscribe(
       (res: any) => {

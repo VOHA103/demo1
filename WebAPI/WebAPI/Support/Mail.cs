@@ -38,6 +38,27 @@ namespace WebAPI.Support
             }
             return 1;
         }
+        public static int send_password(string email, string pass)
+        {
+            var title = "Trường đại học Công Nghiệp Thực Phẩm Thành phố Hồ Chí Minh";
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(title, From));
+            message.To.Add(new MailboxAddress("", email));
+            message.Subject = title;
+            message.Body = new TextPart("plain")
+            {
+                Text = pass
+            };
+            using (var client = new SmtpClient())
+            {
+                client.Connect(SmtpServer, Port, emailIsSSL);
+                client.Authenticate(Username, Password);
+
+                client.Send(message);
+                client.Disconnect(true);
+            }
+            return 1;
+        }
         //public static int sendMail(string email)
         //{
         //    var title = "Trường đại học Công Nghiệp Thực Phẩm Thành phố Hồ Chí Minh";

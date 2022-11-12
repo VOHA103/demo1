@@ -69,7 +69,7 @@ namespace WebAPI.Controllers
               })
               .Where(q => q.db.ten_giang_vien.Contains(filter.search) || filter.search == "")
               .Where(q => q.db.status_del == status_del)
-              .Where(q => q.db.id_chuc_vu == id_chuc_vu || id_chuc_vu==-1)
+              .Where(q => q.db.id_chuc_vu == id_chuc_vu || id_chuc_vu == -1)
               .Where(q => q.db.id_khoa == id_khoa || id_khoa == -1)
               .Where(q => q.db.id_chuyen_nghanh == id_chuyen_nghanh || id_chuyen_nghanh == -1)
               .ToList();
@@ -82,7 +82,7 @@ namespace WebAPI.Controllers
                     q.ten_bo_mon += name;
                     if (!item.Equals(q.list_bo_mon.Last()))
                     {
-                        q.ten_bo_mon +=  ", ";
+                        q.ten_bo_mon += ", ";
                     }
                 }
             });
@@ -98,11 +98,23 @@ namespace WebAPI.Controllers
         public IActionResult get_list_giang_vien()
         {
             var result = _context.sys_giang_vien
-              .Select(d => new 
+              .Select(d => new
               {
-                  id=d.id,
-                  name=d.ten_giang_vien
+                  id = d.id,
+                  name = d.ten_giang_vien
               }).ToList();
+            return Ok(result);
+        }
+        [HttpGet("[action]")]
+        public IActionResult get_list_giang_vien_change(int id_chuc_vu,int id_khoa)
+        {
+            var result = _context.sys_giang_vien.Where(q=>q.id_chuc_vu==id_chuc_vu && q.id_khoa==id_khoa)
+              .Select(d => new
+              {
+                  id = d.id,
+                  name = d.ten_giang_vien
+              })
+              .ToList();
             return Ok(result);
         }
         [HttpGet("[action]")]
@@ -137,7 +149,7 @@ namespace WebAPI.Controllers
                   update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
                   ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == d.id_chuc_vu).Select(q => q.ten_chuc_vu).SingleOrDefault(),
                   ten_khoa = _context.sys_khoa.Where(q => q.id == d.id_khoa).Select(q => q.ten_khoa).SingleOrDefault(),
-                  
+
               }).ToList();
             result.ForEach(q =>
             {
@@ -145,7 +157,7 @@ namespace WebAPI.Controllers
                 foreach (var item in q.list_bo_mon)
                 {
                     var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
-                    q.ten_bo_mon += name+", ";
+                    q.ten_bo_mon += name + ", ";
                 }
             });
             return Ok(result);
@@ -198,6 +210,7 @@ namespace WebAPI.Controllers
                 if (error.Count() == 0)
                 {
                     sys_giang_vien.db.id = get_id_primary_key();
+                    sys_giang_vien.db.pass_word = chang_password(sys_giang_vien.db.email);
                     sys_giang_vien.db.update_date = DateTime.Now;
                     sys_giang_vien.db.create_date = DateTime.Now;
                     sys_giang_vien.db.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
@@ -220,7 +233,20 @@ namespace WebAPI.Controllers
             {
                 return Ok(ex.Message);
             }
-            
+
+        }
+        private string chang_password(string email)
+        {
+            string pass = generate_password();
+            Mail.send_password(email,pass);
+            pass = Libary.EncodeMD5(pass);
+            return pass;
+        }
+        private string generate_password()
+        {
+            var pass = "";
+            pass = RandomExtension.get_string_password();
+            return pass;
         }
         private string get_id_primary_key()
         {

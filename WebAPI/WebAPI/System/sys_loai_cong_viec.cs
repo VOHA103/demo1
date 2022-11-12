@@ -14,6 +14,11 @@ namespace WebAPI.System
         public string update_by { get; set; }
         public DateTime? update_date { get; set; }
         public int? status_del { get; set; }
+        public int? so_gio { get; set; }
+        //loại == 1 => loại công việc dành cho cá nhân
+        //loại == 2 => loại công việc dành cho team nhóm
+        // nếu loại bằng 2 
+        public int? loai { get; set; }
         public string note { get; set; }
     }
 }

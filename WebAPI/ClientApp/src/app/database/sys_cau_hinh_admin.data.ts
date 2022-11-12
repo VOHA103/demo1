@@ -3,6 +3,7 @@ export interface sys_cau_hinh_admin {
   title: string;
   name_footer: string;
   title_footer: string;
+  image: string;
   type_: number;
   create_by: string;
   create_date: string | null;
