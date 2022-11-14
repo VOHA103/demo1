@@ -5,13 +5,20 @@ import {
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { Component, OnInit, Input, Inject } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpClientModule,
+  HttpErrorResponse,
+  HttpEventType,
+  HttpRequest,
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { sys_cau_hinh_admin_service } from '../../service/sys_cau_hinh_admin.service';
 import Swal from 'sweetalert2';
 import { User } from '@/app/database/user.data';
 import { sys_cau_hinh_admin_model } from '@/app/model/sys_cau_hinh_admin.model';
 import { sys_user_service } from '../../service/sys_user.service';
+import { environment } from '@/environments/environment';
 @Component({
   selector: 'sys_cau_hinh_admin_popup',
   templateUrl: './popupAdd.component.html',
@@ -22,12 +29,13 @@ export class sys_cau_hinh_admin_popupComponent {
   public lst_status: any = [];
   public check_error: any = [];
   public id_user: any;
-  selectedFile: any;
+  private REST_API_URL = environment.api;
+  progress: number;
+  message: string;
   constructor(
     private http: HttpClient,
     private sys_cau_hinh_admin_service: sys_cau_hinh_admin_service,
     public dialog: MatDialog,
-
     private sys_user_service: sys_user_service,
     public dialogRef: MatDialogRef<sys_cau_hinh_admin_popupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: sys_cau_hinh_admin_model
@@ -35,22 +43,38 @@ export class sys_cau_hinh_admin_popupComponent {
     this.sys_cau_hinh_admin_model = data;
     this.get_profile_user();
   }
-  onFileSelected(event) {
-    this.selectedFile = event.target.files;
+  // public createImgPath(serverPath: string) {
+  //   debugger
+  //   return this.REST_API_URL + `/${serverPath}`;
+  // }
+  uploadFinished = (event) => {
+    debugger
+    this.sys_cau_hinh_admin_model.db.image = event;
   }
-
-    onUpload() {
-      const fd = new FormData();
-      for (var i = 0; i < this.selectedFile.length; i++) {
-        fd.append('image', this.selectedFile, this.selectedFile.name);
-      }
-      this.http
-        .post('https://localhost:44334/sys_cau_hinh_admin/Upload', fd)
-        .subscribe((event) => {
-          console.log(event);
-        });
+  uploadFile = (files) => {
+    if (files.length === 0) {
+      return;
     }
-
+    debugger
+    let fileToUpload = <File>files[0];
+    const formData = new FormData();
+    formData.append('file', fileToUpload, fileToUpload.name);
+    this.http
+      .post(this.REST_API_URL + '/sys_cau_hinh_admin/Upload', formData, {
+        reportProgress: true,
+        observe: 'events',
+      })
+      .subscribe({
+        next: (event: any) => {
+          if (event.type === HttpEventType.UploadProgress)
+            this.progress = Math.round((100 * event.loaded) / event.total);
+          else if (event.type === HttpEventType.Response) {
+            this.message = 'Upload success.';
+          }
+        },
+        error: (err: HttpErrorResponse) => console.log(err),
+      });
+  };
   public get_profile_user(): void {
     this.sys_user_service.get_profile_user().subscribe(
       (res: any) => {
@@ -71,33 +95,36 @@ export class sys_cau_hinh_admin_popupComponent {
     this.dialogRef.close();
   }
   Save(): void {
-    this.sys_cau_hinh_admin_service.add(this.sys_cau_hinh_admin_model).subscribe((result) => {
-      var data: any = result;
-      this.check_error = data.error;
-      if (this.check_error.length === 0) {
-
-      this.Close();
-        Swal.fire({
-          icon: 'success',
-          title: 'Thành công',
-          showConfirmButton: false,
-          timer: 2000,
-        }).then((result) => {});
-      }
-    });
+    this.sys_cau_hinh_admin_service
+      .add(this.sys_cau_hinh_admin_model)
+      .subscribe((result) => {
+        var data: any = result;
+        this.check_error = data.error;
+        if (this.check_error.length === 0) {
+          this.Close();
+          Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            showConfirmButton: false,
+            timer: 2000,
+          }).then((result) => {});
+        }
+      });
   }
   Edit(): void {
-    this.sys_cau_hinh_admin_service.edit(this.sys_cau_hinh_admin_model).subscribe((result) => {
-      if (this.check_error.length === 0) {
-        this.Close();
-        Swal.fire({
-          icon: 'success',
-          title: 'Thành công',
-          showConfirmButton: false,
-          timer: 2000,
-        }).then((result) => {});
-      }
-    });
+    this.sys_cau_hinh_admin_service
+      .edit(this.sys_cau_hinh_admin_model)
+      .subscribe((result) => {
+        if (this.check_error.length === 0) {
+          this.Close();
+          Swal.fire({
+            icon: 'success',
+            title: 'Thành công',
+            showConfirmButton: false,
+            timer: 2000,
+          }).then((result) => {});
+        }
+      });
   }
 
   ngOnInit(): void {

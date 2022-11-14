@@ -1,17 +1,21 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,6 +70,13 @@ namespace WebAPI
             services.AddControllers().AddXmlDataContractSerializerFormatters();
             services.AddControllers();
 
+            ///để tránh lỗi Để tránh lỗi MultiPartBodyLength
+            services.Configure<FormOptions>(o =>
+            {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
+            });
 
             //Jwt Authentication
             //Đưa về mảng bytes để mã hoá
@@ -119,9 +130,10 @@ namespace WebAPI
                 c.RoutePrefix = string.Empty;
             });
             app.UseHttpsRedirection();
-
             app.UseRouting();
             app.UseCors("LeThanhThai");
+
+
             //Use cors có thể dùng 2 cách
             //1. Dùng lại config có sẵn từ addCors
             //2. Tự config trực tiếp trong useCors
@@ -134,6 +146,20 @@ namespace WebAPI
             {
                 endpoints.MapControllers();
             });
+            ///hình ảnh đã tải lên của chúng tôi sẽ được lưu trữ trong thư mục Resources Tài nguyên
+            ///và do đó, chúng tôi cũng cần cung cấp cho nó
+            app.UseStaticFiles();
+            //app.UseStaticFiles(new StaticFileOptions()
+            //{
+            //    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+            //    RequestPath = new PathString("/Resources")
+            //});
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
+
         }
     }
 }

@@ -34,6 +34,25 @@ namespace WebAPI.Controllers
         {
             this._context = _context;
         }
+
+        [HttpGet("[action]")]
+        public IActionResult reset_pass(string pass, string pass_new, string pass_new_reset)
+        {
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+
+            var user = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => new sys_giang_vien_model
+            {
+                db = q,
+            }).SingleOrDefault();
+            var error = sys_giang_vien_part.get_list_error_pass(pass, pass_new, pass_new_reset, user);
+            if (error.Count() == 0)
+            {
+                user.db.pass_word = Libary.EncodeMD5(pass_new);
+
+                _context.SaveChangesAsync();
+            }
+            return Ok(error);
+        }
         [HttpGet("[action]")]
         public IActionResult get_user_login()
         {
@@ -46,8 +65,18 @@ namespace WebAPI.Controllers
                     update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
                     ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == d.id_chuc_vu).Select(q => q.ten_chuc_vu).SingleOrDefault(),
                     ten_khoa = _context.sys_khoa.Where(q => q.id == d.id_khoa).Select(q => q.ten_khoa).SingleOrDefault(),
-
                 }).SingleOrDefault();
+
+            result.list_bo_mon = result.db.id_bo_mon.Split(",").ToList();
+            foreach (var item in result.list_bo_mon)
+            {
+                var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
+                result.ten_bo_mon += name;
+                if (!item.Equals(result.list_bo_mon.Last()))
+                {
+                    result.ten_bo_mon += ", ";
+                }
+            }
             return Ok(result);
         }
         [HttpPost("[action]")]
@@ -106,9 +135,9 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
         [HttpGet("[action]")]
-        public IActionResult get_list_giang_vien_change(int id_chuc_vu,int id_khoa)
+        public IActionResult get_list_giang_vien_change(int id_chuc_vu, int id_khoa)
         {
-            var result = _context.sys_giang_vien.Where(q=>q.id_chuc_vu==id_chuc_vu && q.id_khoa==id_khoa)
+            var result = _context.sys_giang_vien.Where(q => q.id_chuc_vu == id_chuc_vu && q.id_khoa == id_khoa)
               .Select(d => new
               {
                   id = d.id,
@@ -204,8 +233,9 @@ namespace WebAPI.Controllers
         {
             try
             {
+                sys_giang_vien.db.pass_word = chang_password(sys_giang_vien.db.email);
                 sys_giang_vien.db.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
-                string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+                //string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var error = sys_giang_vien_part.get_list_error(sys_giang_vien);
                 if (error.Count() == 0)
                 {
@@ -214,8 +244,8 @@ namespace WebAPI.Controllers
                     sys_giang_vien.db.update_date = DateTime.Now;
                     sys_giang_vien.db.create_date = DateTime.Now;
                     sys_giang_vien.db.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
-                    sys_giang_vien.db.update_by = user_id;
-                    sys_giang_vien.db.create_by = user_id;
+                    //sys_giang_vien.db.update_by = user_id;
+                    //sys_giang_vien.db.create_by = user_id;
                     sys_giang_vien.db.username = sys_giang_vien.db.ma_giang_vien;
                     sys_giang_vien.db.id_bo_mon = sys_giang_vien.list_bo_mon.Join(",");
                     sys_giang_vien.db.status_del = 1;
@@ -238,7 +268,7 @@ namespace WebAPI.Controllers
         private string chang_password(string email)
         {
             string pass = generate_password();
-            Mail.send_password(email,pass);
+            Mail.send_password(email, pass);
             pass = Libary.EncodeMD5(pass);
             return pass;
         }

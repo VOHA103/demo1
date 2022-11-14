@@ -6,9 +6,14 @@ import { Observable } from 'rxjs';
 import { user_model } from '@/app/model/user.model';
 import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
-import { sys_cong_viec_giang_vien_popupComponent } from './popupAdd.component';
 import * as XLSX from 'xlsx';
 import { ExcelServicesService } from '@/app/service/ExcelService';
+import { sys_giang_vien_service } from '../../service/sys_giang_vien.service';
+import { sys_cong_viec_service } from '../../service/sys_cong_viec.service';
+import { sys_chuc_vu_service } from '../../service/sys_chuc_vu.service';
+import { sys_khoa_service } from '../../service/sys_khoa.service';
+import { sys_bo_mon_service } from '../../service/sys_bo_mon.service';
+import { sys_cong_viec_giang_vien_popupComponent } from './popupAdd.component';
 @Component({
   selector: 'sys_cong_viec_giang_vien_index',
   templateUrl: './index.component.html',
@@ -18,6 +23,10 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
   public foods: any = [];
   public listData: any = [];
   public lst_status: any = [];
+  public lst_khoa: any = [];
+  public lst_giang_vien: any = [];
+  public lst_cong_viec: any = [];
+  public lst_chuc_vu: any = [];
   public model: user_model;
   public loading = false;
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
@@ -46,6 +55,11 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
   searchKey: string;
   constructor(
     private http: HttpClient,
+    private sys_giang_vien_service: sys_giang_vien_service,
+    private sys_cong_viec_service: sys_cong_viec_service,
+    private sys_chuc_vu_service: sys_chuc_vu_service,
+    private sys_khoa_service: sys_khoa_service,
+    private sys_bo_mon_service: sys_bo_mon_service,
     private sys_cong_viec_giang_vien_service: sys_cong_viec_giang_vien_service,
     public dialog: MatDialog,
     private excelServicesService: ExcelServicesService
@@ -62,20 +76,6 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.DataHanlder();
     });
-  }
-  goToPrevious(): void {
-    this.filter.page--;
-    this.DataHanlder();
-  }
-
-  goToNext(): void {
-    this.filter.page++;
-    this.DataHanlder();
-  }
-
-  goToPage(n: number): void {
-    this.filter.page = n;
-    this.DataHanlder();
   }
   openDialogAdd(): void {
     const dialogRef = this.dialog.open(
@@ -96,12 +96,30 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
       this.DataHanlder();
     });
   }
-  loadAPI() {
-    this.loading = false;
-    this.sys_cong_viec_giang_vien_service.getAll().subscribe((resp) => {
-      this.listData = resp;
-      this.loading = true;
-    });
+  goToPrevious(): void {
+    this.filter.page--;
+    this.DataHanlder();
+  }
+  goToNext(): void {
+    this.filter.page++;
+    this.DataHanlder();
+  }
+  goToPage(n: number): void {
+    this.filter.page = n;
+    this.DataHanlder();
+  }
+  exportAsExcel(): void {
+    this.excelServicesService.exportAsExcelFile(this.listData, 'CVGiangVien');
+  }
+  export() {
+    let element = document.getElementById('excel-table');
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'CongViecGVienSheer');
+
+    // save to file
+    XLSX.writeFile(wb, 'CongViecGiangVien.xlsx');
   }
   delete(id): void {
     this.sys_cong_viec_giang_vien_service.delete(id).subscribe((result) => {
@@ -129,22 +147,6 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
         });
       });
   }
-
-  exportAsExcel(): void {
-    this.excelServicesService.exportAsExcelFile(this.listData, 'CVGiangVien');
-  }
-
-  export() {
-    let element = document.getElementById('excel-table');
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
-
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'CongViecGVienSheer');
-
-    // save to file
-    XLSX.writeFile(wb, 'CongViecGiangVien.xlsx');
-  }
-
   DataHanlder(): void {
     debugger;
     this.loading = false;
@@ -158,8 +160,39 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
         this.loading = true;
       });
   }
+
+
+
+
+  get_list_giang_vien(): void {
+    this.sys_giang_vien_service.get_list_giang_vien_change(this.filter.id_chuc_vu,this.filter.id_khoa).subscribe((result) => {
+      this.lst_giang_vien = result;
+    });
+  }
+  get_list_cong_viec(): void {
+    this.sys_cong_viec_service.get_list_cong_viec().subscribe((result) => {
+      this.lst_cong_viec = result;
+    });
+  }
+  get_list_khoa(): void {
+    this.sys_khoa_service
+      .get_list_khoa()
+      .subscribe((data) => {
+        this.lst_khoa = data
+      });
+  }
+  get_list_chuc_vu(): void {
+    this.sys_chuc_vu_service
+      .get_list_chuc_vu()
+      .subscribe((data) => {
+        this.lst_chuc_vu = data;
+      });
+  }
   ngOnInit(): void {
     this.DataHanlder();
+    this.get_list_chuc_vu();
+    this.get_list_khoa();
+    this.get_list_cong_viec();
     this.lst_status = [
       {
         id: '1',

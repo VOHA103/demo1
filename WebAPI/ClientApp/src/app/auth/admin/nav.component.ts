@@ -65,6 +65,10 @@ this.cau_hinh=data;
 
     this.menu = [
       {
+        link: 'sys_thong_ke_index',
+        label: 'Thống kê',
+      },
+      {
         link: 'sys_cau_hinh_giao_dien_index',
         label: 'Cấu hình giao diện',
       },

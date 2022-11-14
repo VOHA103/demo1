@@ -4,6 +4,7 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { sys_giang_vien_popupComponent } from '@/app/system/sys_giang_vien/popupAdd.component';
+import { reset_password_popupComponent } from '../reset_password/popupAdd.component';
 @Component({
   selector: 'user_menu',
   templateUrl: './user_menu.component.html',
@@ -18,22 +19,27 @@ export class user_menuComponent implements OnInit {
     public dialog: MatDialog
   ) {}
 
-onLogout() {
-  localStorage.removeItem('token');
-  this.router.navigate(['/login']);
-}
-get_user_login(): void {
-this.sys_giang_vien_service.get_user_login().subscribe((result) => {
-  const dialogRef = this.dialog.open(sys_giang_vien_popupComponent, {
-    width: '850px',
-    data: result,
-  });
-
-  dialogRef.afterClosed().subscribe((result) => {
-  });
-})
-}
-  ngOnInit(): void {
-
+  onLogout() {
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
+  get_user_login(): void {
+    this.sys_giang_vien_service.get_user_login().subscribe((result) => {
+      debugger
+      const dialogRef = this.dialog.open(sys_giang_vien_popupComponent, {
+        width: '850px',
+        data: result,
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {});
+    });
+  }
+  go_to_popup_reset_password(): void {
+      const dialogRef = this.dialog.open(reset_password_popupComponent, {
+        width: '850px',
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {});
+  }
+  ngOnInit(): void {}
 }

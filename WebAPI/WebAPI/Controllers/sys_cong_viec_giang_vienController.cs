@@ -32,6 +32,13 @@ namespace WebAPI.Controllers
         {
             this._context = _context;
         }
+        [HttpGet("[action]")]
+        public IActionResult get_thong_ke_cong_viec(string id_cong_viec,int id_khoa,int id_chuc_vu)
+        {
+            var result = _context.sys_cong_viec_giang_vien.Where(q => q.id_chuc_vu == id_chuc_vu && q.id_cong_viec == id_cong_viec && q.id_khoa == id_khoa)
+                .Distinct().ToList();
+            return Ok();
+        }
         [HttpPost("[action]")]
         public IActionResult DataHanlder([FromBody] filter_data_cong_viec_giang_vien filter)
         {
@@ -39,16 +46,42 @@ namespace WebAPI.Controllers
               .Select(d => new sys_cong_viec_giang_vien_model()
               {
                   db = d,
-                  create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
-                  update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                  create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
                   ten_giang_vien = _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  ten_chuc_vu = _context.sys_chuc_vu.Where(q=>q.id== _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.id_chuc_vu).SingleOrDefault()).Select(q=>q.ten_chuc_vu).SingleOrDefault(),
+                  ten_khoa = _context.sys_khoa.Where(q=>q.id== _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.id_khoa).SingleOrDefault()).Select(q=>q.ten_khoa).SingleOrDefault(),
                   ten_cong_viec = _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.ten_cong_viec).SingleOrDefault(),
                   ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(q => q.id == _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.id_loai_cong_viec).SingleOrDefault()).Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
               })
               .Where(q => q.db.status_del == filter.status_del)
+              .Where(q => q.db.id_giang_vien == filter.id_giang_vien || filter.id_giang_vien == "")
+              .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
+              .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
+              .Where(q => q.ten_giang_vien.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
+              .Where(q => q.db.id_chuc_vu == filter.id_chuc_vu || filter.id_chuc_vu==0)
+              .Where(q => q.db.id_khoa == filter.id_khoa || filter.id_khoa == 0)
               .ToList();
+            result.ForEach(q =>
+            {
+                var time_work = _context.sys_cong_viec.Where(d => d.id == q.db.id_cong_viec).Select(q => q.ngay_bat_dau).SingleOrDefault();
+                var time_now = DateTime.Now;
+                //trang_thai => 1 đã xong 2 chưa thực hiện 3 đang thực hiện
+                if (time_work>time_now)
+                {
+                    q.trang_thai = 2;
+                }
+                else if (time_now==time_work)
+                {
+                    q.trang_thai = 3;
+                }
+                else
+                {
+                    q.trang_thai = 1;
+                }
+            });
             var count = result.Count();
-            result = result.OrderByDescending(q => q.db.update_date).Skip(filter.page).Take(10).ToList();
+            result = result.OrderByDescending(q => q.db.update_date).Skip(filter.page-1).Take(10).ToList();
             var model = new
             {
                 data = result,
@@ -127,8 +160,11 @@ namespace WebAPI.Controllers
                     var list_giang_vien = sys_cong_viec_giang_vien.list_giang_vien;
                     for (int i = 0; i < list_giang_vien.Count(); i++)
                     {
+                        var id_giang_vien = list_giang_vien[i];
                         sys_cong_viec_giang_vien.db.id = get_id_primary_key();
-                        sys_cong_viec_giang_vien.db.id_giang_vien = list_giang_vien[i];
+                        sys_cong_viec_giang_vien.db.id_giang_vien = id_giang_vien;
+                        var giang_vien = _context.sys_giang_vien.Where(q => q.id == id_giang_vien).Select(q => q.email).SingleOrDefault();
+                        Mail.send_work(giang_vien, work.ten_cong_viec);
                         _context.sys_cong_viec_giang_vien.Add(sys_cong_viec_giang_vien.db);
                         _context.SaveChanges();
                     }

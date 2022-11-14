@@ -10,8 +10,6 @@ import { Observable } from 'rxjs/internal/Observable';
 import { catchError, throwError } from 'rxjs';
 import { sys_bo_mon } from '../database/sys_bo_mon.data';
 import { sys_bo_mon_model } from '../model/sys_bo_mon.model';
-// type products = productModel.product_model;
-
 @Injectable({
   providedIn: 'root',
 })

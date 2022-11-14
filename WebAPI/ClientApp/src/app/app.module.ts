@@ -88,6 +88,11 @@ import { sys_cau_hinh_admin_indexComponent } from './system/sys_cau_hinh_admin/i
 //   NgxMatTimepickerModule
 // } from '@angular-material-components/datetime-picker';
 
+import * as CanvasJSAngularChart from '../assets/canvasjs.angular.component';
+import { sys_thong_ke_indexComponent } from './system/sys_thong_ke_admin/index.component';
+import { reset_password_popupComponent } from './auth/reset_password/popupAdd.component';
+import { UploadImageComponent } from './component/upload_image/index.component';
+var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
 @NgModule({
   declarations: [
     AppComponent,
@@ -127,6 +132,10 @@ import { sys_cau_hinh_admin_indexComponent } from './system/sys_cau_hinh_admin/i
     sys_chuyen_nganh_indexComponent,
     sys_cau_hinh_admin_indexComponent,
     sys_cau_hinh_admin_popupComponent,
+    CanvasJSChart,
+    sys_thong_ke_indexComponent,
+    reset_password_popupComponent,
+    UploadImageComponent,
   ],
   imports: [
     CommonModule,

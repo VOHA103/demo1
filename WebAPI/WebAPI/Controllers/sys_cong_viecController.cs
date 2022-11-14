@@ -59,7 +59,7 @@ namespace WebAPI.Controllers
         public IActionResult get_list_cong_viec()
         {
             var result = _context.sys_cong_viec
-              .Select(d => new
+              .OrderByDescending(q => q.update_date).Select(d => new
               {
                   id = d.id,
                   name = d.ten_cong_viec,
@@ -119,6 +119,7 @@ namespace WebAPI.Controllers
                     model.id_loai_cong_viec = sys_cong_viec.db.id_loai_cong_viec;
                     model.ten_cong_viec = sys_cong_viec.db.ten_cong_viec;
                     model.status_del = 1;
+                    model.loai = sys_cong_viec.db.loai;
                     await _context.SaveChangesAsync();
                 }
                 var result = new

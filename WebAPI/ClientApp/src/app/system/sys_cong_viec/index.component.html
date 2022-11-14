@@ -16,7 +16,7 @@
         <div class="flex-1  px-2">
           <mat-label>Trạng thái</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select  [(ngModel)]="filter.status_del"  (selectionChange)="DataHanlder()">
+            <mat-select [(ngModel)]="filter.status_del" (selectionChange)="DataHanlder()">
               <mat-option *ngFor="let item of lst_status" [value]="item.id">
                 {{ item.name }}
               </mat-option>
@@ -28,7 +28,7 @@
         <div class="flex-1  px-2">
           <mat-label>Loại công việc</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select  [(ngModel)]="filter.status_del"  (selectionChange)="DataHanlder()">
+            <mat-select [(ngModel)]="filter.status_del" (selectionChange)="DataHanlder()">
               <mat-option *ngFor="let item of list_loai_cong_viec" [value]="item.id">
                 {{ item.name }}
               </mat-option>
@@ -62,6 +62,9 @@
             <th class=" text-base" style="height: 60px">
               Tên loại công việc
             </th>
+            <th class=" text-base" style="height: 60px">
+              Loại
+            </th>
             <th class=" text-base" style="height: 60px">Người tạo</th>
             <th class=" text-base" style="height: 60px">Ngày tạo</th>
             <th class=" text-base" style="height: 60px">Ghi chú</th>
@@ -79,16 +82,17 @@
                     <button mat-menu-item *ngIf="item.db.status_del==2" (click)="reven_status(item.db.id)">Sử
                       dụng</button>
                   </mat-menu> -->
-                  <div class="flex justify-center items-center ng-star-inserted"   *ngIf="item.db.status_del==1" (click)="delete(item.db.id)"><span
-                    class="material-icons" style="color: rgb(255, 0, 0);">cancel</span></div>
-                   <div class="flex justify-center items-center ng-star-inserted"  *ngIf="item.db.status_del==2" (click)="delete(item.db.id)"><span
-                     class="material-icons" style="color: rgb(16, 222, 36)">
-                     <mat-icon>done_outline</mat-icon>
+                  <div class="flex justify-center items-center ng-star-inserted" *ngIf="item.db.status_del==1"
+                    (click)="delete(item.db.id)"><span class="material-icons"
+                      style="color: rgb(255, 0, 0);">cancel</span></div>
+                  <div class="flex justify-center items-center ng-star-inserted" *ngIf="item.db.status_del==2"
+                    (click)="reven_status(item.db.id)"><span class="material-icons" style="color: rgb(16, 222, 36)">
+                      <mat-icon>done_outline</mat-icon>
                     </span></div>
-                 <div class="flex justify-center items-center ng-star-inserted" (click)="openDialogDetail(item)"><span
-                    class="material-icons">
-                     <mat-icon>build</mat-icon>
-                   </span></div>
+                  <div class="flex justify-center items-center ng-star-inserted" (click)="openDialogDetail(item)"><span
+                      class="material-icons">
+                      <mat-icon>build</mat-icon>
+                    </span></div>
                 </div>
               </td>
               <td class="">
@@ -103,6 +107,10 @@
                 {{ item.ten_loai_cong_viec }}
               </td>
               <td class="">
+                <span *ngIf="item.db.loai==1">Cá Nhân</span>
+                <span *ngIf="item.db.loai==2">Tập thể</span>
+              </td>
+              <td class="">
                 {{ item.create_name }}
               </td>
               <td class="">
@@ -115,8 +123,5 @@
         </table>
       </mat-card>
     </div>
-    <app-pagination (goPage)="goToPage($event)" (goPrev)="goToPrevious()" (goNext)="goToNext()" [page]="page"
-      [perPage]="limit" [count]="total">
-    </app-pagination>
   </div>
 </div>

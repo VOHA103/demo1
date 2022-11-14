@@ -24,13 +24,13 @@ export class sys_cong_viec_giang_vien_service {
   };
   constructor(private http: HttpClient) {}
   //lấy danh sách sys_khoa
-  public DataHanlder(filter:any){
+  public DataHanlder(filter: any) {
     const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/DataHanlder';
-    return this.http.post(url,filter);
+    return this.http.post(url, filter);
   }
   //lấy danh sách sys_cong_viec_giang_vien
   public getAll(): Observable<sys_cong_viec_giang_vien_model[]> {
-    const url =  this.REST_API_URL + '/sys_cong_viec_giang_vien/GetAll';
+    const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/GetAll';
     return this.http.get<sys_cong_viec_giang_vien_model[]>(url);
   }
   // thêm sys_cong_viec_giang_vien
@@ -48,9 +48,26 @@ export class sys_cong_viec_giang_vien_service {
     const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/delete?id=' + id;
     return this.http.get(url);
   }
-    // reven status sys_cong_viec_giang_vien
-    public reven_status(id: string) {
-      const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/reven_status?id=' + id;
-      return this.http.get(url);
-    }
+  // reven status sys_cong_viec_giang_vien
+  public reven_status(id: string) {
+    const url =
+      this.REST_API_URL + '/sys_cong_viec_giang_vien/reven_status?id=' + id;
+    return this.http.get(url);
+  }
+  //get_thong_ke_cong_viec
+  public get_thong_ke_cong_viec(
+    id_cong_viec: string,
+    id_khoa: number,
+    id_chuc_vu: number
+  ) {
+    const url =
+      this.REST_API_URL +
+      '/sys_cong_viec_giang_vien/get_thong_ke_cong_viec?id_cong_viec=' +
+      id_cong_viec +
+      '?id_khoa=' +
+      id_khoa +
+      '?id_chuc_vu' +
+      id_chuc_vu;
+    return this.http.get(url);
+  }
 }

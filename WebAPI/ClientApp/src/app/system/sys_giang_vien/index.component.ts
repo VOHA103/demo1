@@ -67,6 +67,7 @@ export class sys_giang_vien_indexComponent implements OnInit {
      });
    }
   openDialogDetail(item): void {
+    debugger
     const dialogRef = this.dialog.open(sys_giang_vien_popupComponent, {
       width: '850px',
       data: item,
@@ -76,38 +77,20 @@ export class sys_giang_vien_indexComponent implements OnInit {
       this.DataHanlder();
     });
   }
-  getOrders(): void {
-    // this._salesData.getOrders(this.page, this.limit)
-    //   .subscribe(res => {
-    //     console.log('Result from getOrders: ', res);
-    //     this.orders = res['page']['data'];
-    //     this.total = res['page'].total;
-    //     this.loading = false;
-    //   });
-  }
   goToPrevious(): void {
     this.page--;
-    this.getOrders();
+    this.DataHanlder();
   }
 
   goToNext(): void {
     this.page++;
-    this.getOrders();
+    this.DataHanlder();
   }
 
   goToPage(n: number): void {
     this.page = n;
-    this.getOrders();
+    this.DataHanlder();
   }
-  onSearchClear() {
-    this.searchKey = '';
-    this.applyFilter();
-  }
-
-  applyFilter() {
-    this.listData.filter = this.searchKey.trim().toLowerCase();
-  }
-
   openDialogAdd(): void {
     const dialogRef = this.dialog.open(sys_giang_vien_popupComponent, {
       width: '850px',

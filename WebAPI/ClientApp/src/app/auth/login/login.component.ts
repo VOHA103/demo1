@@ -15,6 +15,7 @@ export class login_indexComponent implements OnInit {
   public user = new User;
   name: string = '';
   pass: string = '';
+  hide= true;
   constructor(
     private http: HttpClient,
     private router: Router,

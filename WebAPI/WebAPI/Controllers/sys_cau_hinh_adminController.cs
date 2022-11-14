@@ -21,6 +21,7 @@ using WebAPI.Services.Interfaces;
 using WebAPI.Part;
 using System.IO;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Hosting;
 
 namespace WebAPI.Controllers
 {
@@ -30,17 +31,21 @@ namespace WebAPI.Controllers
     public class sys_cau_hinh_adminController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        public sys_cau_hinh_adminController(ApplicationDbContext _context)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public sys_cau_hinh_adminController(ApplicationDbContext _context, IWebHostEnvironment hostingEnvironment)
         {
             this._context = _context;
+            _hostingEnvironment = hostingEnvironment;
         }
-        [HttpPost, DisableRequestSizeLimit]
-        public IActionResult Upload()
+        [HttpPost("Upload"), DisableRequestSizeLimit]
+        public async Task<IActionResult> Upload()
         {
             try
             {
-                var file = Request.Form.Files[0];
-                var folderName = Path.Combine("UploadedFiles", "Images");
+                var formCollection = await Request.ReadFormAsync();
+                var file = formCollection.Files.First();
+                //var file = Request.Form.Files[0];
+                var folderName = Path.Combine("Resources", "Images");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (file.Length > 0)
                 {
@@ -60,7 +65,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex}");
+                return StatusCode(500, $"error: {ex}");
             }
         }
         [HttpPost("[action]")]

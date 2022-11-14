@@ -19,7 +19,7 @@
           <mat-label>Trạng thái</mat-label>
           <mat-form-field appearance="outline" class="w-full">
             <mat-select>
-              <mat-option *ngFor="let food of lst_status" [value]="food.id" >
+              <mat-option *ngFor="let food of lst_status" [value]="food.id">
                 {{ food.name }}
               </mat-option>
             </mat-select>
@@ -92,8 +92,5 @@
         </table>
       </mat-card>
     </div>
-    <app-pagination (goPage)="goToPage($event)" (goPrev)="goToPrevious()" (goNext)="goToNext()" [page]="page"
-      [perPage]="limit" [count]="total">
-    </app-pagination>
   </div>
 </div>

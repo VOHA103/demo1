@@ -18,6 +18,11 @@ namespace WebAPI.Model
         public string ten_giang_vien { get; set; }
         public string ten_cong_viec { get; set; }
         public string ten_loai_cong_viec { get; set; }
+        public string ten_chuc_vu { get; set; }
+        public string ten_khoa { get; set; }
+        public int? so_gio { get; set; }
+        //1 đã xong 2 chưa thực hiện 3 đang thực hiện
+        public int? trang_thai { get; set; }
         public List<string> list_giang_vien { get; set; }
     }
     public class filter_data_cong_viec_giang_vien

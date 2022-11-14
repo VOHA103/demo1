@@ -69,4 +69,9 @@ export class sys_giang_vien_service {
     const url =  this.REST_API_URL + '/sys_giang_vien/get_list_giang_vien_change?id_chuc_vu='+id_chuc_vu+'&id_khoa='+id_khoa;
     return this.http.get<sys_giang_vien_model[]>(url);
   }
+  //string pass, string pass_new, string pass_new_reset
+  public reset_pass(pass:string,pass_new:string,pass_new_reset:string): Observable<sys_giang_vien_model[]> {
+    const url =  this.REST_API_URL + '/sys_giang_vien/reset_pass?pass='+pass+'&pass_new='+pass_new+'&pass_new_reset='+pass_new_reset;
+    return this.http.get<sys_giang_vien_model[]>(url);
+  }
 }

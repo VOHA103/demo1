@@ -16,7 +16,7 @@
         <div class="flex-1  px-2">
           <mat-label>Trạng thái</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select  [(ngModel)]="filter.status_del" (selectionChange)="DataHanlder()">
+            <mat-select [(ngModel)]="filter.status_del" (selectionChange)="DataHanlder()">
               <mat-option *ngFor="let item of lst_status" [value]="item.id">
                 {{ item.name }}
               </mat-option>
@@ -72,16 +72,17 @@
                     <button mat-menu-item *ngIf="item.db.status_del==2" (click)="reven_status(item.db.id)"> Sử dụng
                       lại</button>
                   </mat-menu> -->
-                  <div class="flex justify-center items-center ng-star-inserted"   *ngIf="item.db.status_del==1" (click)="delete(item.db.id)"><span
-                    class="material-icons" style="color: rgb(255, 0, 0);">cancel</span></div>
-                   <div class="flex justify-center items-center ng-star-inserted"  *ngIf="item.db.status_del==2" (click)="delete(item.db.id)"><span
-                     class="material-icons" style="color: rgb(16, 222, 36)">
-                     <mat-icon>done_outline</mat-icon>
+                  <div class="flex justify-center items-center ng-star-inserted" *ngIf="item.db.status_del==1"
+                    (click)="delete(item.db.id)"><span class="material-icons"
+                      style="color: rgb(255, 0, 0);">cancel</span></div>
+                  <div class="flex justify-center items-center ng-star-inserted" *ngIf="item.db.status_del==2"
+                    (click)="reven_status(item.db.id)"><span class="material-icons" style="color: rgb(16, 222, 36)">
+                      <mat-icon>done_outline</mat-icon>
                     </span></div>
-                 <div class="flex justify-center items-center ng-star-inserted" (click)="openDialogDetail(item)"><span
-                    class="material-icons">
-                     <mat-icon>build</mat-icon>
-                   </span></div>
+                  <div class="flex justify-center items-center ng-star-inserted" (click)="openDialogDetail(item)"><span
+                      class="material-icons">
+                      <mat-icon>build</mat-icon>
+                    </span></div>
                 </div>
               </td>
               <td class="">
@@ -93,10 +94,10 @@
                 {{ item.db.ten_ky }}
               </td>
               <td class="">
-                {{ item.db.thoi_gian_bat_dau|date:'dd/MM/YYYY HH:mm'  }}
+                {{ item.db.thoi_gian_bat_dau|date:'dd/MM/YYYY HH:mm' }}
               </td>
               <td class="">
-                {{ item.db.thoi_gian_ket_thuc|date:'dd/MM/YYYY HH:mm'  }}
+                {{ item.db.thoi_gian_ket_thuc|date:'dd/MM/YYYY HH:mm' }}
               </td>
               <td class="">
                 {{ item.create_name }}
@@ -112,9 +113,5 @@
         </table>
       </mat-card>
     </div>
-
-    <app-pagination (goPage)="goToPage($event)" (goPrev)="goToPrevious()" (goNext)="goToNext()" [page]="page"
-      [perPage]="limit" [count]="total">
-    </app-pagination>
   </div>
 </div>

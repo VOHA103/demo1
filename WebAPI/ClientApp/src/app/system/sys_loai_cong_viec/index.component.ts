@@ -16,12 +16,12 @@ export class sys_loai_cong_viec_indexComponent implements OnInit {
   public foods: any = [];
   public listData: any = [];
   public lst_status: any = [];
+  filter = { search: '', total: '0', page: '0', limit: '10', status_del: '1' };
   public model: user_model;
   public loading = false;
   total = 0;
   page = 1;
   limit = 10;
-  filter = { search: '', total: '0', page: '0', limit: '10', status_del: '1' };
   searchKey: string;
   constructor(
     private http: HttpClient,

@@ -1,9 +1,9 @@
 <button mat-button [matMenuTriggerFor]="menu">Xin chào {{ user_name }}</button>
 <mat-menu #menu="matMenu">
   <button mat-menu-item>
-    <div class="flex item-container justify-center w-full" (click)="get_user_login()">
-      <div class="item-container justify-center">
-        <button mat-raised-button color="primary">
+    <div class="flex item-container w-full" (click)="get_user_login()">
+      <div class="item-container">
+        <button mat-raised-button>
 
           Thông tin cá nhân
         </button>
@@ -11,9 +11,18 @@
     </div>
   </button>
   <button mat-menu-item>
-    <div class="flex item-container justify-center w-full" (click)="onLogout()">
-      <div class="item-container justify-center">
-        <button mat-raised-button color="primary">
+    <div class="flex item-container w-full" (click)="go_to_popup_reset_password()">
+      <div class="item-container">
+        <button mat-raised-button>
+          Đổi mật khẩu
+        </button>
+      </div>
+    </div>
+  </button>
+  <button mat-menu-item>
+    <div class="flex item-container w-full" (click)="onLogout()">
+      <div class="item-container">
+        <button mat-raised-button>
           Logout
         </button>
       </div>

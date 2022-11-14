@@ -45,23 +45,10 @@ export class sys_cau_hinh_admin_indexComponent implements OnInit {
       model=resp;
       this.listData = model.data;
       this.total=model.total,
-      // var result:any;
-      // result = resp;
-      // this.listData=result.data_list;
-      // this.total=result.total,
-      // this.page = result.page,
-      // this.limit = result.limit,
       this.loading = true;
     });
   }
   getOrders(): void {
-    // this._salesData.getOrders(this.page, this.limit)
-    //   .subscribe(res => {
-    //     console.log('Result from getOrders: ', res);
-    //     this.orders = res['page']['data'];
-    //     this.total = res['page'].total;
-    //     this.loading = false;
-    //   });
   }
   goToPrevious(): void {
     this.page--;
@@ -105,12 +92,6 @@ export class sys_cau_hinh_admin_indexComponent implements OnInit {
     this.loading = false;
     this.sys_cau_hinh_admin_service.getAll().subscribe((resp) => {
       this.listData=resp;
-      // var result:any;
-      // result = resp;
-      // this.listData=result.data_list;
-      // this.total=result.total,
-      // this.page = result.page,
-      // this.limit = result.limit,
       this.loading = true;
     });
   }

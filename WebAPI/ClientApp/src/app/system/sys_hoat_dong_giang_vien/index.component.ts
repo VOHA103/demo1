@@ -28,6 +28,18 @@ export class sys_hoat_dong_giang_vien_indexComponent implements OnInit {
     private sys_hoat_dong_giang_vien_service: sys_hoat_dong_giang_vien_service,
     public dialog: MatDialog
   ) {}
+//   reven_status(id): void {
+//    this.sys_hoat_dong_service.reven_status(id).subscribe((result) => {
+//      Swal.fire({
+//        icon: 'success',
+//        title: 'Thành công',
+//        showConfirmButton: false,
+//        timer: 2000,
+//      }).then((result) => {
+//        this.DataHanlder();
+//      });
+//    });
+//  }
   openDialogDetail(item): void {
     const dialogRef = this.dialog.open(sys_hoat_dong_giang_vien_popupComponent, {
       width: '850px',
