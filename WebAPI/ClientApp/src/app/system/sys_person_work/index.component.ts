@@ -1,24 +1,32 @@
-import { sys_hoat_dong_service } from '../../service/sys_hoat_dong.service';
+import { sys_cong_viec_service } from '../../service/sys_cong_viec.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { sys_hoat_dong_model } from '@/app/model/sys_hoat_dong.model';
+import { user_model } from '@/app/model/user.model';
 import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
-import { sys_hoat_dong_popupComponent } from './popupAdd.component';
+import { sys_loai_cong_viec_service } from '../../service/sys_loai_cong_viec.service';
 @Component({
-  selector: 'sys_hoat_dong_index',
+  selector: 'sys_cong_viec_index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.scss'],
 })
-export class sys_hoat_dong_indexComponent implements OnInit {
+export class sys_person_work_indexComponent implements OnInit {
   public foods: any = [];
   public listData: any = [];
   public lst_status: any = [];
-  public model: sys_hoat_dong_model;
+  public list_loai_cong_viec: any = [];
+  public model: user_model;
   public loading = false;
-
+  filter = {
+    search: '',
+    total: '0',
+    page: '0',
+    limit: '10',
+    status_del: 1,
+    id_loai_cong_viec: -1,
+  };
   public pageIndex: number = 1;
   public pageSize: number = 20;
   public pageDisplay: number = 10;
@@ -27,11 +35,12 @@ export class sys_hoat_dong_indexComponent implements OnInit {
   p: number = 0;
   total: number = 100;
   resp: number;
-  filter = { search: '', total: '0', page: '0', limit: '10', status_del: '1' };
+
 
   constructor(
     private http: HttpClient,
-    private sys_hoat_dong_service: sys_hoat_dong_service,
+    private sys_cong_viec_service: sys_cong_viec_service,
+    private sys_loai_cong_viec_service: sys_loai_cong_viec_service,
     public dialog: MatDialog
   ) {
     this.DataHanlder();
@@ -41,8 +50,9 @@ export class sys_hoat_dong_indexComponent implements OnInit {
     this.DataHanlder();
 }
   DataHanlder(): void {
-     this.loading = false;
-     this.sys_hoat_dong_service.DataHanlder(this.filter).subscribe((resp) => {
+    debugger;
+    this.loading = false;
+    this.sys_cong_viec_service.DataHanlder(this.filter).subscribe((resp) => {
       var model: any;
       this.listData=resp;
       this.total=this.resp;
@@ -53,36 +63,11 @@ export class sys_hoat_dong_indexComponent implements OnInit {
       this.pageIndex = model.pageIndex;
       this.pageSize = model.pageSize;
       this.totalRow = model.totalRow;
-     });
-   }
-  openDialogDetail(item): void {
-    const dialogRef = this.dialog.open(sys_hoat_dong_popupComponent, {
-      width: '850px',
-      data: item,
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      this.DataHanlder();
     });
   }
 
-  openDialogAdd(): void {
-    const dialogRef = this.dialog.open(sys_hoat_dong_popupComponent, {
-      width: '850px',
-      data: {
-        db: {
-          id: 0,
-        },
-        lst_cong_viec: null,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-      this.DataHanlder();
-    });
-  }
-   delete(id): void {
-    this.sys_hoat_dong_service.delete(id).subscribe((result) => {
+  delete(id): void {
+    this.sys_cong_viec_service.delete(id).subscribe((result) => {
       Swal.fire({
         icon: 'success',
         title: 'Thành công',
@@ -94,26 +79,33 @@ export class sys_hoat_dong_indexComponent implements OnInit {
     });
   }
   reven_status(id): void {
-   this.sys_hoat_dong_service.reven_status(id).subscribe((result) => {
-     Swal.fire({
-       icon: 'success',
-       title: 'Thành công',
-       showConfirmButton: false,
-       timer: 2000,
-     }).then((result) => {
-       this.DataHanlder();
-     });
-   });
- }
+    this.sys_cong_viec_service.reven_status(id).subscribe((result) => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        showConfirmButton: false,
+        timer: 2000,
+      }).then((result) => {
+        this.DataHanlder();
+      });
+    });
+  }
+  get_list_person_cong_viec(): void {
+    debugger;
+    this.sys_loai_cong_viec_service.get_list_use().subscribe((result) => {
+      this.list_loai_cong_viec = result;
+    });
+  }
   ngOnInit(): void {
+    this.get_list_person_cong_viec();
     this.DataHanlder();
     this.lst_status = [
       {
-        id: '1',
+        id: 1,
         name: 'Đang sử dụng',
       },
       {
-        id: '2',
+        id: 2,
         name: 'Ngưng sử dụng',
       },
     ];

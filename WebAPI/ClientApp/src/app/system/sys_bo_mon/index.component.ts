@@ -18,16 +18,24 @@ export class sys_bo_mon_indexComponent implements OnInit {
   public lst_status: any = [];
   public model: user_model;
   public loading = false;
-  total = 0;
-  page = 1;
-  limit = 10;
   filter = { search: '', total: '0', page: '0', limit: '10', status_del: '1' };
-  searchKey: string;
+  public pageIndex: number = 1;
+  public pageSize: number = 20;
+  public pageDisplay: number = 10;
+  public totalRow: number;
+  search:string="";
+  p: number = 0;
+  total: number = 100;
+  resp: number;
   constructor(
     private http: HttpClient,
     private sys_bo_mon_service: sys_bo_mon_service,
     public dialog: MatDialog
   ) {}
+  pageChangeEvent(event: number){
+    this.p = event;
+    this.DataHanlder();
+}
   openDialogDetail(item): void {
     const dialogRef = this.dialog.open(sys_bo_mon_popupComponent, {
       width: '850px',
@@ -41,51 +49,18 @@ export class sys_bo_mon_indexComponent implements OnInit {
   DataHanlder(): void {
     this.loading = false;
     this.sys_bo_mon_service.DataHanlder(this.filter).subscribe((resp) => {
-      var model:any;
-      model=resp;
+      var model: any;
+      this.listData=resp;
+      this.total=this.resp;
+      model = resp;
       this.listData = model.data;
-      this.total=model.total,
-      // var result:any;
-      // result = resp;
-      // this.listData=result.data_list;
-      // this.total=result.total,
-      // this.page = result.page,
-      // this.limit = result.limit,
+      this.total = model.total;
       this.loading = true;
+      this.pageIndex = model.pageIndex;
+      this.pageSize = model.pageSize;
+      this.totalRow = model.totalRow;
     });
   }
-  getOrders(): void {
-    // this._salesData.getOrders(this.page, this.limit)
-    //   .subscribe(res => {
-    //     console.log('Result from getOrders: ', res);
-    //     this.orders = res['page']['data'];
-    //     this.total = res['page'].total;
-    //     this.loading = false;
-    //   });
-  }
-  goToPrevious(): void {
-    this.page--;
-    this.getOrders();
-  }
-
-  goToNext(): void {
-    this.page++;
-    this.getOrders();
-  }
-
-  goToPage(n: number): void {
-    this.page = n;
-    this.getOrders();
-  }
-  onSearchClear() {
-    this.searchKey = '';
-    this.applyFilter();
-  }
-
-  applyFilter() {
-    this.listData.filter = this.searchKey.trim().toLowerCase();
-  }
-
   openDialogAdd(): void {
     const dialogRef = this.dialog.open(sys_bo_mon_popupComponent, {
       width: '850px',
@@ -99,19 +74,6 @@ export class sys_bo_mon_indexComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       this.DataHanlder();
-    });
-  }
-  loadAPI() {
-    this.loading = false;
-    this.sys_bo_mon_service.getAll().subscribe((resp) => {
-      this.listData=resp;
-      // var result:any;
-      // result = resp;
-      // this.listData=result.data_list;
-      // this.total=result.total,
-      // this.page = result.page,
-      // this.limit = result.limit,
-      this.loading = true;
     });
   }
    delete(id): void {

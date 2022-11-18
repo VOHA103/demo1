@@ -20,11 +20,16 @@ export class sys_phong_truc_indexComponent implements OnInit {
   public lst_status: any = [];
   public model: user_model;
   public loading = false;
-  total = 0;
-  page = 1;
-  limit = 10;
   filter = { search: '', total: '0', page: '0', limit: '10', status_del: '1' };
-  searchKey: string;
+
+  public pageIndex: number = 1;
+  public pageSize: number = 20;
+  public pageDisplay: number = 10;
+  public totalRow: number;
+  search:string="";
+  p: number = 0;
+  total: number = 100;
+  resp: number;
   constructor(
     private http: HttpClient,
     private sys_phong_truc_service: sys_phong_truc_service,
@@ -36,14 +41,22 @@ export class sys_phong_truc_indexComponent implements OnInit {
  DataHanlder(): void {
   this.loading = false;
   this.sys_phong_truc_service.DataHanlder(this.filter).subscribe((resp) => {
-    var model:any;
-      model=resp;
-      this.listData = model.data;
-      this.total=model.total,
+    var model: any;
+    this.listData=resp;
+    this.total=this.resp;
+    model = resp;
+    this.listData = model.data;
+    this.total = model.total;
     this.loading = true;
+    this.pageIndex = model.pageIndex;
+    this.pageSize = model.pageSize;
+    this.totalRow = model.totalRow;
   });
 }
-
+pageChangeEvent(event: number){
+  this.p = event;
+  this.DataHanlder();
+}
   openDialogDetail(item): void {
     const dialogRef = this.dialog.open(sys_phong_truc_popupComponent, {
       width: '850px',
@@ -54,38 +67,6 @@ export class sys_phong_truc_indexComponent implements OnInit {
       this.DataHanlder();
     });
   }
-  getOrders(): void {
-    // this._salesData.getOrders(this.page, this.limit)
-    //   .subscribe(res => {
-    //     console.log('Result from getOrders: ', res);
-    //     this.orders = res['page']['data'];
-    //     this.total = res['page'].total;
-    //     this.loading = false;
-    //   });
-  }
-  goToPrevious(): void {
-    this.page--;
-    this.getOrders();
-  }
-
-  goToNext(): void {
-    this.page++;
-    this.getOrders();
-  }
-
-  goToPage(n: number): void {
-    this.page = n;
-    this.getOrders();
-  }
-  onSearchClear() {
-    this.searchKey = '';
-    this.applyFilter();
-  }
-
-  applyFilter() {
-    this.listData.filter = this.searchKey.trim().toLowerCase();
-  }
-
   openDialogAdd(): void {
     const dialogRef = this.dialog.open(sys_phong_truc_popupComponent, {
       width: '850px',

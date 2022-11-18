@@ -40,7 +40,7 @@ namespace WebAPI.Controllers
             return Ok();
         }
         [HttpPost("[action]")]
-        public IActionResult DataHanlder([FromBody] filter_data_cong_viec_giang_vien filter)
+        public async Task<IActionResult> DataHanlder([FromBody] filter_data_cong_viec_giang_vien filter)
         {
             var result = _context.sys_cong_viec_giang_vien
               .Select(d => new sys_cong_viec_giang_vien_model()
@@ -57,8 +57,7 @@ namespace WebAPI.Controllers
               .Where(q => q.db.status_del == filter.status_del)
               .Where(q => q.db.id_giang_vien == filter.id_giang_vien || filter.id_giang_vien == "")
               .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
-              .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
-              .Where(q => q.ten_giang_vien.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
+              .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || q.ten_giang_vien.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
               .Where(q => q.db.id_chuc_vu == filter.id_chuc_vu || filter.id_chuc_vu==0)
               .Where(q => q.db.id_khoa == filter.id_khoa || filter.id_khoa == 0)
               .ToList();
@@ -104,21 +103,6 @@ namespace WebAPI.Controllers
             result.status_del = 1;
             _context.SaveChanges();
             return Ok();
-        }
-        [HttpGet("[action]")]
-        public IActionResult GetAll()
-        {
-            var result = _context.sys_cong_viec_giang_vien
-              .Select(d => new sys_cong_viec_giang_vien_model()
-              {
-                  db = d,
-                  create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
-                  update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
-                  ten_giang_vien = _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.ten_giang_vien).SingleOrDefault(),
-                  ten_cong_viec = _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.ten_cong_viec).SingleOrDefault(),
-                  ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(q => q.id == _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.id_loai_cong_viec).SingleOrDefault()).Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
-              }).ToList();
-            return Ok(result);
         }
         [HttpPost("edit")]
         public async Task<IActionResult> edit([FromBody] user_model sys_cong_viec_giang_vien)

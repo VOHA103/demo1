@@ -19,12 +19,16 @@ export class sys_ky_truc_khoa_indexComponent implements OnInit {
   public lst_status: any = [];
   public model: sys_ky_truc_khoa_model;
   public loading = false;
-  total = 0;
-  page = 1;
-  limit = 10;
+  public pageIndex: number = 1;
+  public pageSize: number = 20;
+  public pageDisplay: number = 10;
+  public totalRow: number;
+  search:string="";
+  p: number = 0;
+  total: number = 100;
+  resp: number;
   filter = { search: '', total: '0', page: '0', limit: '10', status_del: '1' };
-  searchKey: string;
-  constructor(
+  searchKey: string;  constructor(
     private http: HttpClient,
     private sys_ky_truc_khoa_service: sys_ky_truc_khoa_service,
     public dialog: MatDialog
@@ -34,14 +38,23 @@ export class sys_ky_truc_khoa_indexComponent implements OnInit {
  DataHanlder(): void {
     this.loading = false;
     this.sys_ky_truc_khoa_service.DataHanlder(this.filter).subscribe((resp) => {
-      var model:any;
-      model=resp;
+      var model: any;
+      this.listData=resp;
+      this.total=this.resp;
+      model = resp;
       this.listData = model.data;
-      this.total=model.total,
+      this.total = model.total;
       this.loading = true;
+      this.pageIndex = model.pageIndex;
+      this.pageSize = model.pageSize;
+      this.totalRow = model.totalRow;
     });
   }
 
+  pageChangeEvent(event: number){
+    this.p = event;
+    this.DataHanlder();
+}
   openDialogDetail(item): void {
     const dialogRef = this.dialog.open(sys_ky_truc_khoa_popupComponent, {
       width: '850px',
@@ -51,37 +64,6 @@ export class sys_ky_truc_khoa_indexComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.DataHanlder();
     });
-  }
-  getOrders(): void {
-    // this._salesData.getOrders(this.page, this.limit)
-    //   .subscribe(res => {
-    //     console.log('Result from getOrders: ', res);
-    //     this.orders = res['page']['data'];
-    //     this.total = res['page'].total;
-    //     this.loading = false;
-    //   });
-  }
-  goToPrevious(): void {
-    this.page--;
-    this.getOrders();
-  }
-
-  goToNext(): void {
-    this.page++;
-    this.getOrders();
-  }
-
-  goToPage(n: number): void {
-    this.page = n;
-    this.getOrders();
-  }
-  onSearchClear() {
-    this.searchKey = '';
-    this.applyFilter();
-  }
-
-  applyFilter() {
-    this.listData.filter = this.searchKey.trim().toLowerCase();
   }
 
   openDialogAdd(): void {

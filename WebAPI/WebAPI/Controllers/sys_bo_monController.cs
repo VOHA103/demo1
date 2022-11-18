@@ -40,8 +40,8 @@ namespace WebAPI.Controllers
               .Select(d => new sys_bo_mon_model()
               {
                   db = d,
-                  create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
-                  update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                  create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
               })
               .Where(q => q.db.ten_bo_mon.Contains(filter.search) || filter.search == "")
               .Where(q => q.db.status_del == status_del)
@@ -98,18 +98,6 @@ namespace WebAPI.Controllers
             //cập nhập trạng thái sử dụng
             result.status_del = 1;
             _context.SaveChanges();
-            return Ok(result);
-        }
-        [HttpGet("[action]")]
-        public IActionResult GetAll()
-        {
-            var result = _context.sys_bo_mon
-              .Select(d => new sys_bo_mon_model()
-              {
-                  db = d,
-                  create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
-                  update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
-              }).ToList();
             return Ok(result);
         }
         [HttpPost("edit")]

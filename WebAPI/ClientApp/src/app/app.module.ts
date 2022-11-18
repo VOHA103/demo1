@@ -82,20 +82,17 @@ import { sys_chuyen_nganh_popupComponent } from './system/sys_chuyen_nganh/popup
 import { sys_chuyen_nganh_indexComponent } from './system/sys_chuyen_nganh/index.component';
 import { sys_cau_hinh_admin_popupComponent } from './system/sys_cau_hinh_admin/popupAdd.component';
 import { sys_cau_hinh_admin_indexComponent } from './system/sys_cau_hinh_admin/index.component';
-// import {
-//   NgxMatDatetimePickerModule,
-//   NgxMatNativeDateModule,
-//   NgxMatTimepickerModule
-// } from '@angular-material-components/datetime-picker';
-
 import * as CanvasJSAngularChart from '../assets/canvasjs.angular.component';
 import { sys_thong_ke_indexComponent } from './system/sys_thong_ke_admin/index.component';
 import { reset_password_popupComponent } from './auth/reset_password/popupAdd.component';
 import { UploadImageComponent } from './component/upload_image/index.component';
 var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
+import { sys_person_work_indexComponent } from './system/sys_person_work/index.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 @NgModule({
   declarations: [
     AppComponent,
+    sys_person_work_indexComponent,
     sys_user_indexComponent,
     nav_indexComponent,
     sys_user_popupComponent,
@@ -181,6 +178,7 @@ var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
+    NgxPaginationModule
     // NgxMatDatetimePickerModule,
     // NgxMatTimepickerModule,
     // NgxMatNativeDateModule

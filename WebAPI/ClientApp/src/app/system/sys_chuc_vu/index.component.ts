@@ -2,11 +2,12 @@ import { sys_chuc_vu_service } from '../../service/sys_chuc_vu.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, takeUntil } from 'rxjs';
 import { user_model } from '@/app/model/user.model';
 import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
 import { sys_chuc_vu_popupComponent } from './popupAdd.component';
+import { ReplaySubject, Subject } from 'rxjs';
 @Component({
   selector: 'sys_chuc_vu_index',
   templateUrl: './index.component.html',
@@ -18,11 +19,16 @@ export class sys_chuc_vu_indexComponent implements OnInit {
   public lst_status: any = [];
   public model: user_model;
   public loading = false;
-  total = 0;
-  page = 1;
-  limit = 10;
   filter = { search: '', total: '0', page: '0', limit: '10', status_del: '1' };
-  searchKey: string;
+
+  public pageIndex: number = 1;
+  public pageSize: number = 20;
+  public pageDisplay: number = 10;
+  public totalRow: number;
+  search:string="";
+  p: number = 0;
+  total: number = 100;
+  resp: number;
   constructor(
     private http: HttpClient,
     private sys_chuc_vu_service: sys_chuc_vu_service,
@@ -33,13 +39,22 @@ export class sys_chuc_vu_indexComponent implements OnInit {
   DataHanlder(): void {
     this.loading = false;
     this.sys_chuc_vu_service.DataHanlder(this.filter).subscribe((resp) => {
-      var model:any;
-      model=resp;
+      var model: any;
+      this.listData=resp;
+      this.total=this.resp;
+      model = resp;
       this.listData = model.data;
-      this.total=model.total,
+      this.total = model.total;
       this.loading = true;
+      this.pageIndex = model.pageIndex;
+      this.pageSize = model.pageSize;
+      this.totalRow = model.totalRow;
     });
   }
+  pageChangeEvent(event: number){
+    this.p = event;
+    this.DataHanlder();
+}
   openDialogDetail(item): void {
     const dialogRef = this.dialog.open(sys_chuc_vu_popupComponent, {
       width: '850px',
@@ -49,37 +64,6 @@ export class sys_chuc_vu_indexComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.DataHanlder();
     });
-  }
-  getOrders(): void {
-    // this._salesData.getOrders(this.page, this.limit)
-    //   .subscribe(res => {
-    //     console.log('Result from getOrders: ', res);
-    //     this.orders = res['page']['data'];
-    //     this.total = res['page'].total;
-    //     this.loading = false;
-    //   });
-  }
-  goToPrevious(): void {
-    this.page--;
-    this.getOrders();
-  }
-
-  goToNext(): void {
-    this.page++;
-    this.getOrders();
-  }
-
-  goToPage(n: number): void {
-    this.page = n;
-    this.getOrders();
-  }
-  onSearchClear() {
-    this.searchKey = '';
-    this.applyFilter();
-  }
-
-  applyFilter() {
-    this.listData.filter = this.searchKey.trim().toLowerCase();
   }
 
   openDialogAdd(): void {
@@ -135,8 +119,8 @@ export class sys_chuc_vu_indexComponent implements OnInit {
       });
     });
   }
-  ngOnInit(): void {
-    this.DataHanlder();
+  load_status_dell():void{
+
     this.lst_status = [
       {
         id: '1',
@@ -148,5 +132,11 @@ export class sys_chuc_vu_indexComponent implements OnInit {
       },
 
     ];
+  }
+    /** Subject that emits when the component has been destroyed. */
+    protected _onDestroy = new Subject<void>();
+  ngOnInit(): void {
+    this.DataHanlder();
+
   }
 }

@@ -20,11 +20,15 @@ export class sys_cong_viec_indexComponent implements OnInit {
   public list_loai_cong_viec: any = [];
   public model: user_model;
   public loading = false;
-  total = 0;
-  page = 1;
-  limit = 10;
+  public pageIndex: number = 1;
+  public pageSize: number = 20;
+  public pageDisplay: number = 10;
+  public totalRow: number;
+  search:string="";
+  p: number = 0;
+  total: number = 100;
+  resp: number;
   filter = { search: '', total: '0', page: '0', limit: '10', status_del: 1,id_loai_cong_viec:-1 };
-  searchKey: string;
   constructor(
     private http: HttpClient,
     private sys_cong_viec_service: sys_cong_viec_service,
@@ -33,15 +37,23 @@ export class sys_cong_viec_indexComponent implements OnInit {
   ) {
     this.DataHanlder();
   }
+  pageChangeEvent(event: number){
+    this.p = event;
+    this.DataHanlder();
+}
   DataHanlder(): void {
-    debugger
      this.loading = false;
      this.sys_cong_viec_service.DataHanlder(this.filter).subscribe((resp) => {
-      var model:any;
-      model=resp;
+      var model: any;
+      this.listData=resp;
+      this.total=this.resp;
+      model = resp;
       this.listData = model.data;
-      this.total=model.total,
-       this.loading = true;
+      this.total = model.total;
+      this.loading = true;
+      this.pageIndex = model.pageIndex;
+      this.pageSize = model.pageSize;
+      this.totalRow = model.totalRow;
      });
    }
   openDialogDetail(item): void {
@@ -54,38 +66,6 @@ export class sys_cong_viec_indexComponent implements OnInit {
       this.DataHanlder();
     });
   }
-  getOrders(): void {
-    // this._salesData.getOrders(this.page, this.limit)
-    //   .subscribe(res => {
-    //     console.log('Result from getOrders: ', res);
-    //     this.orders = res['page']['data'];
-    //     this.total = res['page'].total;
-    //     this.loading = false;
-    //   });
-  }
-  goToPrevious(): void {
-    this.page--;
-    this.getOrders();
-  }
-
-  goToNext(): void {
-    this.page++;
-    this.getOrders();
-  }
-
-  goToPage(n: number): void {
-    this.page = n;
-    this.getOrders();
-  }
-  onSearchClear() {
-    this.searchKey = '';
-    this.applyFilter();
-  }
-
-  applyFilter() {
-    this.listData.filter = this.searchKey.trim().toLowerCase();
-  }
-
   openDialogAdd(): void {
     const dialogRef = this.dialog.open(sys_cong_viec_popupComponent, {
       width: '850px',

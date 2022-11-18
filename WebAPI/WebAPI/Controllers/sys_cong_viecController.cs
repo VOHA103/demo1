@@ -32,15 +32,30 @@ namespace WebAPI.Controllers
         {
             this._context = _context;
         }
+        [HttpGet("[action]")]
+        public IActionResult get_list_person_cong_viec()
+        {
+            var result = _context.sys_cong_viec.Select(q => new
+            {
+                id = q.id,
+                ten_cong_viec = q.ten_cong_viec,
+                ngay_bat_dau = q.ngay_bat_dau,
+                gio_bat_dau = q.gio_bat_dau,
+                so_gio = q.so_gio,
+                note = q.note,
+                status_del = q.status_del,
+            }).ToList();
+            return Ok(result);
+        }
         [HttpPost("[action]")]
-        public IActionResult DataHanlder([FromBody] filter_data_cong_viec filter)
+        public async Task<IActionResult> DataHanlder([FromBody] filter_data_cong_viec filter)
         {
             var result = _context.sys_cong_viec
               .Select(d => new sys_cong_viec_model()
               {
                   db = d,
-                  create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
-                  update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                  create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
                   ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(q => q.id == d.id_loai_cong_viec).Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
               })
               .Where(q => q.db.ten_cong_viec.Contains(filter.search) || filter.search == "")
@@ -56,7 +71,7 @@ namespace WebAPI.Controllers
             return Ok(model);
         }
         [HttpGet("[action]")]
-        public IActionResult get_list_cong_viec()
+        public async Task<IActionResult> get_list_cong_viec()
         {
             var result = _context.sys_cong_viec
               .OrderByDescending(q => q.update_date).Select(d => new
@@ -67,7 +82,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
         [HttpGet("[action]")]
-        public IActionResult delete([FromQuery] string id)
+        public async Task<IActionResult> delete([FromQuery] string id)
         {
             var result = _context.sys_cong_viec.Where(q => q.id == id).SingleOrDefault();
             // xoá khỏi database
@@ -79,7 +94,7 @@ namespace WebAPI.Controllers
             return Ok();
         }
         [HttpGet("[action]")]
-        public IActionResult reven_status([FromQuery] string id)
+        public async Task<IActionResult> reven_status([FromQuery] string id)
         {
             var result = _context.sys_cong_viec.Where(q => q.id == id).SingleOrDefault();
             // xoá khỏi database
@@ -88,19 +103,6 @@ namespace WebAPI.Controllers
             //cập nhập trạng thái sử dụng
             result.status_del = 1;
             _context.SaveChanges();
-            return Ok(result);
-        }
-        [HttpGet("[action]")]
-        public IActionResult GetAll()
-        {
-            var result = _context.sys_cong_viec
-              .Select(d => new sys_cong_viec_model()
-              {
-                  db = d,
-                  create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
-                  update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
-                  ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(q => q.id == d.id_loai_cong_viec).Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
-              }).ToList();
             return Ok(result);
         }
         [HttpPost("edit")]

@@ -73,7 +73,7 @@
             <th class=" text-base" style="height: 60px">Người tạo</th>
             <th class=" text-base" style="height: 60px">Ngày tạo</th>
           </thead>
-          <tbody *ngFor="let item of listData; index as i">
+          <tbody *ngFor="let item of listData|paginate: { itemsPerPage: 5, currentPage: p, totalItems: total } ; index as i">
             <tr>
               <td class="">
                 <div class="flex flex-row justify-center item-center">
@@ -111,5 +111,6 @@
         </table>
       </mat-card>
     </div>
+    <pagination-controls (pageChange)="pageChangeEvent($event)"></pagination-controls>
   </div>
 </div>

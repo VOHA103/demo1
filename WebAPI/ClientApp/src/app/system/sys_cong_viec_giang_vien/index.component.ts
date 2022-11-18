@@ -52,7 +52,14 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
     id_bo_mon: 0,
     id_khoa: 0,
   };
-  searchKey: string;
+  public pageIndex: number = 1;
+  public pageSize: number = 20;
+  public pageDisplay: number = 10;
+  public totalRow: number;
+  search:string="";
+  p: number = 0;
+  total: number = 100;
+  resp: number;
   constructor(
     private http: HttpClient,
     private sys_giang_vien_service: sys_giang_vien_service,
@@ -64,6 +71,10 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
     public dialog: MatDialog,
     private excelServicesService: ExcelServicesService
   ) {}
+  pageChangeEvent(event: number){
+    this.p = event;
+    this.DataHanlder();
+}
   openDialogDetail(item): void {
     const dialogRef = this.dialog.open(
       sys_cong_viec_giang_vien_popupComponent,
@@ -95,18 +106,6 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
       console.log('The dialog was closed');
       this.DataHanlder();
     });
-  }
-  goToPrevious(): void {
-    this.filter.page--;
-    this.DataHanlder();
-  }
-  goToNext(): void {
-    this.filter.page++;
-    this.DataHanlder();
-  }
-  goToPage(n: number): void {
-    this.filter.page = n;
-    this.DataHanlder();
   }
   exportAsExcel(): void {
     this.excelServicesService.exportAsExcelFile(this.listData, 'CVGiangVien');
@@ -154,10 +153,15 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
       .DataHanlder(this.filter)
       .subscribe((resp) => {
         var model: any;
+        this.listData=resp;
+        this.total=this.resp;
         model = resp;
         this.listData = model.data;
-        this.filter.total = model.total;
+        this.total = model.total;
         this.loading = true;
+        this.pageIndex = model.pageIndex;
+        this.pageSize = model.pageSize;
+        this.totalRow = model.totalRow;
       });
   }
 

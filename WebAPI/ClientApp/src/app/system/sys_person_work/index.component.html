@@ -1,0 +1,99 @@
+<div class="w-full">
+  <mat-progress-bar *ngIf="loading==false" mode="indeterminate"></mat-progress-bar>
+
+  <div class="flex flex-col p-4" *ngIf="loading==true">
+    <div class="flex">
+      <h1 class="font-bold text-xl uppercase">Công Việc giảng viên</h1>
+    </div>
+    <mat-card>
+      <div class="flex">
+        <div class="flex-1  px-2">
+          <mat-label>Giảng viên</mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select (selectionChange)="DataHanlder()">
+              <mat-option *ngFor="let food of lst_status" [value]="food.id">
+                {{ food.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex-1  px-2">
+          <mat-label>Trạng thái</mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select (selectionChange)="DataHanlder()">
+              <mat-option *ngFor="let food of lst_status" [value]="food.id">
+                {{ food.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Tìm kiếm</mat-label>
+          <mat-form-field class="w-full" appearance="outline" class="w-full">
+            <input [(ngModel)]="filter.search" matInput>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card>
+
+    <div class="flex justify-end mt-5">
+      <div class="flex justify-end mr-10">
+        <button mat-raised-button (click)="DataHanlder()">Tìm kiếm</button>
+      </div>
+      <div class="flex justify-end mr-10">
+        <!-- <button onclick="exportToExcel('Users', 'Users', 'data')">
+          Export to Excel
+        </button> -->
+        <button mat-raised-button color="primary"  onclick="exportToExcel('Users', 'Users', 'data')">
+          <mat-icon>cloud_download</mat-icon>  Export Excel
+        </button>
+      </div>
+
+    </div>
+    <div class="flex mt-10">
+      <mat-card class="w-full">
+
+        <table id="data "  class="w-full table_admin">
+          <thead class="">
+            <th class=" text-base" style="width: 5%; height: 60px"> No. </th>
+            <th class=" text-base" style="height: 60px">Tên công việc</th>
+            <th class=" text-base" style="height: 60px">Ngày bắt đầu</th>
+            <th class=" text-base" style="height: 60px">Giờ bắt đầu</th>
+            <th class=" text-base" style="height: 60px">Số giờ</th>
+            <th class=" text-base" style="height: 60px">Ghi chú</th>
+            <th class=" text-base" style="height: 60px">Trạng thái</th>
+          </thead>
+          <tbody *ngFor="let item of listData|paginate: { itemsPerPage: 5, currentPage: p, totalItems: total } ; index as i">
+            <tr>
+            <td id="no_No">
+                <span class="p-4">{{ i + 1 }} </span>
+              </td>
+              <td class="">
+                <span>{{ item.db.ten_cong_viec }}</span>
+              </td>
+              <td class="">{{ item.db.ngay_bat_dau }}
+              </td>
+              <td class="">{{ item.db.gio_bat_dau }}
+              </td>
+              <td class="">{{ item.db.so_gio }}
+              </td>
+              <td class="">{{ item.db.note }}</td>
+
+              <td class="">
+                <div *ngIf="item.db.status_del==1" class="border-2 border-black rounded-full w-8 h-8 "
+                  style="background-color: rgb(16, 188, 56);"></div>
+                <div *ngIf="item.db.status_del==2" class="border-2 border-black rounded-full w-8 h-8"
+                  style="background-color: rgb(188, 23, 39);"></div>
+                <div *ngIf="item.db.status_del==3" class="border-2 border-black rounded-full w-8 h-8"
+                  style="background-color: rgb(230, 238, 22);"></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card>
+    </div>
+    <pagination-controls (pageChange)="pageChangeEvent($event)"></pagination-controls>
+  </div>
+</div>

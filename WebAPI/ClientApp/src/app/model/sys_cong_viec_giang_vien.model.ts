@@ -12,16 +12,3 @@ export class sys_cong_viec_giang_vien_model {
   trang_thai: number | null;
   list_giang_vien: string[];
 }
-
-export interface filter_data_cong_viec_giang_vien {
-  search: string;
-  id_giang_vien: string;
-  id_cong_viec: string;
-  total: number;
-  page: number;
-  limit: number;
-  status_del: number | null;
-  id_chuc_vu: number | null;
-  id_bo_mon: number | null;
-  id_khoa: number | null;
-}

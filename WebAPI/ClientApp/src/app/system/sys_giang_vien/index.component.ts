@@ -22,7 +22,15 @@ export class sys_giang_vien_indexComponent implements OnInit {
   public loading = false;
   public lst_khoa: any = [];
   public lst_chuc_vu: any = [];
-  total = 0;
+
+  public pageIndex: number = 1;
+  public pageSize: number = 20;
+  public pageDisplay: number = 10;
+  public totalRow: number;
+  search:string="";
+  p: number = 0;
+  total: number = 100;
+  resp: number;
   page = 1;
   limit = 10;
   filter = { search: '', total: '0', page: '0', limit: '10', status_del: '1',id_chuc_vu:'-1',id_khoa:'-1',id_chuyen_nghanh:'-1' };
@@ -38,6 +46,10 @@ export class sys_giang_vien_indexComponent implements OnInit {
     this.get_list_khoa();
     this.get_list_chuc_vu();
   }
+  pageChangeEvent(event: number){
+    this.p = event;
+    this.DataHanlder();
+}
   get_list_khoa(): void {
     this.sys_khoa_service
       .get_list_khoa()
@@ -59,11 +71,17 @@ export class sys_giang_vien_indexComponent implements OnInit {
   DataHanlder(): void {
      this.loading = false;
      this.sys_giang_vien_service.DataHanlder(this.filter).subscribe((resp) => {
-      var model:any;
-      model=resp;
+      var model: any;
+      this.listData=resp;
+      this.total=this.resp;
+      model = resp;
       this.listData = model.data;
-      this.total=model.total,
-       this.loading = true;
+      this.total = model.total;
+      this.loading = true;
+      this.pageIndex = model.pageIndex;
+      this.pageSize = model.pageSize;
+      this.totalRow = model.totalRow;
+
      });
    }
   openDialogDetail(item): void {
@@ -76,20 +94,6 @@ export class sys_giang_vien_indexComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.DataHanlder();
     });
-  }
-  goToPrevious(): void {
-    this.page--;
-    this.DataHanlder();
-  }
-
-  goToNext(): void {
-    this.page++;
-    this.DataHanlder();
-  }
-
-  goToPage(n: number): void {
-    this.page = n;
-    this.DataHanlder();
   }
   openDialogAdd(): void {
     const dialogRef = this.dialog.open(sys_giang_vien_popupComponent, {

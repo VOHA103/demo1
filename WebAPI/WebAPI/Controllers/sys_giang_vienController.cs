@@ -90,8 +90,8 @@ namespace WebAPI.Controllers
               .Select(d => new sys_giang_vien_model()
               {
                   db = d,
-                  create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
-                  update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                  create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
                   ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == d.id_chuc_vu).Select(q => q.ten_chuc_vu).SingleOrDefault(),
                   ten_khoa = _context.sys_khoa.Where(q => q.id == d.id_khoa).Select(q => q.ten_khoa).SingleOrDefault(),
 
@@ -174,8 +174,8 @@ namespace WebAPI.Controllers
               .Select(d => new sys_giang_vien_model()
               {
                   db = d,
-                  create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
-                  update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                  create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
                   ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == d.id_chuc_vu).Select(q => q.ten_chuc_vu).SingleOrDefault(),
                   ten_khoa = _context.sys_khoa.Where(q => q.id == d.id_khoa).Select(q => q.ten_khoa).SingleOrDefault(),
 
@@ -233,9 +233,9 @@ namespace WebAPI.Controllers
         {
             try
             {
-                sys_giang_vien.db.pass_word = chang_password(sys_giang_vien.db.email);
+                //sys_giang_vien.db.pass_word = chang_password(sys_giang_vien.db.email);
                 sys_giang_vien.db.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
-                //string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+                string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var error = sys_giang_vien_part.get_list_error(sys_giang_vien);
                 if (error.Count() == 0)
                 {
@@ -244,8 +244,8 @@ namespace WebAPI.Controllers
                     sys_giang_vien.db.update_date = DateTime.Now;
                     sys_giang_vien.db.create_date = DateTime.Now;
                     sys_giang_vien.db.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
-                    //sys_giang_vien.db.update_by = user_id;
-                    //sys_giang_vien.db.create_by = user_id;
+                    sys_giang_vien.db.update_by = user_id;
+                    sys_giang_vien.db.create_by = user_id;
                     sys_giang_vien.db.username = sys_giang_vien.db.ma_giang_vien;
                     sys_giang_vien.db.id_bo_mon = sys_giang_vien.list_bo_mon.Join(",");
                     sys_giang_vien.db.status_del = 1;

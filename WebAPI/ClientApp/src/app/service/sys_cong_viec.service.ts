@@ -23,6 +23,12 @@ export class sys_cong_viec_service {
     }),
   };
   constructor(private http: HttpClient) {}
+
+  //lấy danh sách sys_cong_viec
+  public get_list_person_cong_viec(): Observable<sys_cong_viec_model[]> {
+   const url = this.REST_API_URL + '/sys_cong_viec/get_list_person_cong_viec';
+   return this.http.get<sys_cong_viec_model[]>(url);
+ }
   //lấy danh sách sys_cong_viec
   public DataHandel(): Observable<sys_cong_viec_model[]> {
     const url = this.REST_API_URL + '/sys_cong_viec/DataHandel';
