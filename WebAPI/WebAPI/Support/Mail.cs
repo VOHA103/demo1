@@ -44,12 +44,12 @@ namespace WebAPI.Support
             var title = "Trường đại học Công Nghiệp Thực Phẩm Thành phố Hồ Chí Minh";
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(title, From));
-            message.To.Add(new MailboxAddress("test", "thanhthaile160801@gmail.com"));
+            message.To.Add(new MailboxAddress("test", email));
             message.Subject = title;
             var builder = new BodyBuilder();
 
-            builder.HtmlBody = string.Format(@"
-           <div style="" width: 100%; height: 600px; margin-top: 10px; text-align: center;"">
+            builder.HtmlBody =String.Format(@"
+           <div style="" width: 100%;sss margin-top: 10px; text-align: center;"">
                 <div  style=""height:30px; width: 100%;background-color:white;   margin-top: 12px;width: 100%; margin-bottom: 100px"">
                     <table  style="" border-collapse: collapse; border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc; border: 0px solid white;width: 100%; margin: 2xp 3px 2px 3px;  margin-top: 30px;top: 12px; "" >
                         <thead style=""  font-weight: 100;font-size: 23px; text-align: left;  font-weight: 1px;"">
@@ -58,7 +58,7 @@ namespace WebAPI.Support
 
                                 <th style = "" border-top: 0px solid #ccc; border-bottom: 0.001px solid #ccc; border: 0px solid white;width:200px ;  padding: 10px; padding-left: 30px; border-right: 0px solid #ccc; "">
                                         <img  style = ""width:150px;height: 150px; ""
-                                          src=""cid:{0}""</th>
+                                          src=""cid:{0}""/></th>
                                 <td style = "" border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc; padding: 10px; padding-left: 30px; border-right: 0.001px solid #ccc;  border: 0px solid white;font-size: 50px; font-weight: 50px;color: blue; font-family: Verdana, Geneva, Tahoma;"" >
                                         Trường Đại học Công nghiệp Thực phẩm Thành phố Hồ Chí Minh
                                 </td>
@@ -73,7 +73,7 @@ namespace WebAPI.Support
         
                         <div style=""font-size: 15px; "">
                             <label>Mật khẩu mới:</label>
-                            <label style = ""font-size:30px;font-weight: bold;"" > 1234 </label >
+                            <label style = ""font-size:30px;font-weight: bold;"" > {0} </label >
                         </div >
                     </div >
                 </div >
@@ -112,9 +112,9 @@ namespace WebAPI.Support
                     </div >
                 </div >
             </div >
-");
-            var image = builder.LinkedResources.Add(@"../Resources/Images/logo_hufi.jfif");
-            image.ContentId = MimeUtils.GenerateMessageId();
+",pass) ;
+            //var image = builder.LinkedResources.Add(@"../Resources/Images/logo_hufi.jfif");
+            //image.ContentId = MimeUtils.GenerateMessageId();
             message.Body = builder.ToMessageBody();
 
             using (var client = new SmtpClient())
@@ -136,7 +136,7 @@ namespace WebAPI.Support
             message.Subject = title;
 
             var builder = new BodyBuilder();
-            builder.HtmlBody = string.Format(@" 
+            builder.HtmlBody = String.Format(@" 
                   <div style="" width: 100%; height: 600px; margin-top: 10px; text-align: center;"">
                     <div  style=""border-collapse: collapse; height:30px; width: 100%;background-color:white;   margin-top: 1px;width: 100%; margin-bottom: 100px"">
                         <table  style="" border-collapse: collapse; border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc; border: 0px solid white;width: 100%; margin: 2xp 3px 2px 3px;  margin-top: 10px;top: 12px; "" >
@@ -226,11 +226,11 @@ namespace WebAPI.Support
                         </div >
                     </div >
                 </div >
-");
+",work );
 
-            var image = builder.LinkedResources.Add(@"../Resources/Images/logo_hufi.jfif");
+            //var image = builder.LinkedResources.Add(@"../Resources/Images/logo_hufi.jfif");
 
-            image.ContentId = MimeUtils.GenerateMessageId();
+            //image.ContentId = MimeUtils.GenerateMessageId();
 
             message.Body = builder.ToMessageBody();
 
@@ -244,26 +244,5 @@ namespace WebAPI.Support
             }
             return 1;
         }
-        //public static int sendMail(string email)
-        //{
-        //    var title = "Trường đại học Công Nghiệp Thực Phẩm Thành phố Hồ Chí Minh";
-        //    var message = new MimeMessage();
-        //    message.From.Add(new MailboxAddress(title, _email.Value.From));
-        //    message.To.Add(new MailboxAddress("", email));
-        //    message.Subject = title;
-        //    message.Body = new TextPart("plain")
-        //    {
-        //        Text = "hello"
-        //    };
-        //    using (var client = new SmtpClient())
-        //    {
-        //        client.Connect(_email.Value.SmtpServer, (int)_email.Value.Port, _email.Value.emailIsSSL);
-        //        client.Authenticate(_email.Value.Username, _email.Value.Password);
-
-        //        client.Send(message);
-        //        client.Disconnect(true);
-        //    }
-        //    return 1;
-        //}
     }
 }

@@ -1,6 +1,6 @@
 <div class="flex flex-col flex-auto w-full  h-fit overflow-y-visible">
   <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8">
-    <span class="text-lg font-medium">Khoa</span>
+    <span class="text-lg font-medium">Công việc</span>
   </div>
   <div class="w-full p-6 sm:p-8 space-y-1 overflow-y-auto">
     <div class="flex flex-col">
@@ -35,7 +35,7 @@
         <div class="flex-1 px-2">
           <mat-label>Định mức
             <span *ngFor="let key of check_error">
-              <span style="color:red" *ngIf="key.key=='db.id_loai_cong_viec'">({{key.value}})</span>
+              <span style="color:red" *ngIf="key.key=='db.so_gio'">({{key.value}})</span>
             </span>
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
@@ -45,7 +45,7 @@
         <div class="flex-1 px-2">
           <mat-label>Loại
             <span *ngFor="let key of check_error">
-              <span style="color:red" *ngIf="key.key=='db.note'">({{key.value}})</span>
+              <span style="color:red" *ngIf="key.key=='db.loai'">({{key.value}})</span>
             </span>
 
           </mat-label>
@@ -62,7 +62,7 @@
         <div class="flex-1 px-2">
           <mat-label>Ngày bắt đầu
             <span *ngFor="let key of check_error">
-              <span style="color:red" *ngIf="key.key=='db.email'">({{key.value}})</span>
+              <span style="color:red" *ngIf="key.key=='db.ngay_bat_dau'">({{key.value}})</span>
             </span>
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
@@ -74,7 +74,7 @@
         <div class="flex-1 px-2">
           <mat-label>Giờ
             <span *ngFor="let key of check_error">
-              <span style="color:red" *ngIf="key.key=='db.note'">({{key.value}})</span>
+              <span style="color:red" *ngIf="key.key=='db.gio'">({{key.value}})</span>
             </span>
 
           </mat-label>
@@ -98,6 +98,52 @@
             <mat-select [(ngModel)]="sys_cong_viec_model.phut">
               <mat-option *ngFor="let food of lst_phut" [value]="food.id">{{
                 food.name
+                }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Khoa
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.id_khoa'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="sys_cong_viec_model.id_khoa">
+              <mat-option *ngFor="let item of lst_khoa" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex-1 px-2">
+          <mat-label>Chức vụ
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.id_chuc_vu'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="sys_cong_viec_model.id_chuc_vu" (selectionChange)="get_list_giang_vien()">
+              <mat-option *ngFor="let item of lst_chuc_vu" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label class="mb-5">Giảng viên
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='list_giang_vien'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="sys_cong_viec_model.list_giang_vien" multiple>
+              <mat-option *ngFor="let item of list_giang_vien" [value]="item.id">{{
+                item.name
                 }}</mat-option>
             </mat-select>
           </mat-form-field>

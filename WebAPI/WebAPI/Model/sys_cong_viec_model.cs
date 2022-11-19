@@ -11,6 +11,7 @@ namespace WebAPI.Model
         public sys_cong_viec_model()
         {
             db = new sys_cong_viec();
+            list_giang_vien = new List<string>();
         }
         public sys_cong_viec db { get; set; }
         public string create_name { get; set; }
@@ -18,6 +19,9 @@ namespace WebAPI.Model
         public string ten_loai_cong_viec { get; set; }
         public string gio { get; set; }
         public string phut { get; set; }
+        public int? id_chuc_vu { get; set; }
+        public int? id_khoa { get; set; }
+        public List<string> list_giang_vien { get; set; }
     }
     public class filter_data_cong_viec
     {

@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
               })
               .Where(q => q.db.ten_cong_viec.Contains(filter.search) || filter.search == "")
               .Where(q => q.db.status_del == filter.status_del)
-              .Where(q => q.db.id_loai_cong_viec == filter.id_loai_cong_viec|| filter.id_loai_cong_viec==-1)
+              .Where(q => q.db.id_loai_cong_viec == filter.id_loai_cong_viec || filter.id_loai_cong_viec == -1)
               .ToList();
             result = result.OrderByDescending(q => q.db.update_date).ToList();
             var model = new
@@ -89,7 +89,7 @@ namespace WebAPI.Controllers
             //_context.sys_cong_viec.Remove(result);
 
             //cập nhập trạng thái sử dụng
-            result.status_del = 1;
+            result.status_del = 2;
             _context.SaveChanges();
             return Ok();
         }
@@ -145,14 +145,38 @@ namespace WebAPI.Controllers
                 var error = sys_cong_viec_part.check_error_insert_update(sys_cong_viec);
                 if (error.Count() == 0)
                 {
-                    sys_cong_viec.db.id = get_id_primary_key();
+                    sys_cong_viec.db.id = get_id_primary_key_cong_viec();
                     sys_cong_viec.db.ngay_bat_dau = sys_cong_viec.db.ngay_bat_dau.Value.AddDays(1);
-                    sys_cong_viec.db.update_date = DateTime.Now;
-                    sys_cong_viec.db.create_date = DateTime.Now;
                     sys_cong_viec.db.gio_bat_dau = sys_cong_viec.gio + ":" + sys_cong_viec.phut;
-                    sys_cong_viec.db.create_by = user_id;
-                    sys_cong_viec.db.update_by = user_id;
                     sys_cong_viec.db.status_del = 1;
+                    var time_work = 0;
+                    if (sys_cong_viec.db.loai == 2)
+                    {
+                        time_work = sys_cong_viec.db.so_gio / sys_cong_viec.list_giang_vien.Count() ?? 0;
+                    }
+                    else
+                    {
+                        time_work = sys_cong_viec.db.so_gio??0;
+                    }
+                    for (int i = 0; i < sys_cong_viec.list_giang_vien.Count(); i++)
+                    {
+                        var cong_viec_giang_vien = new sys_cong_viec_giang_vien_model();
+                        var item = sys_cong_viec.list_giang_vien[i];
+                        cong_viec_giang_vien.db.id = get_id_primary_key_cong_viec_gv();
+                        cong_viec_giang_vien.db.id_giang_vien = item;
+                        cong_viec_giang_vien.db.id_cong_viec = sys_cong_viec.db.id;
+                        cong_viec_giang_vien.db.id_chuc_vu = sys_cong_viec.id_chuc_vu;
+                        cong_viec_giang_vien.db.id_khoa = sys_cong_viec.id_khoa;
+                        cong_viec_giang_vien.db.update_date = DateTime.Now;
+                        cong_viec_giang_vien.db.create_date = DateTime.Now;
+                        cong_viec_giang_vien.db.create_by = user_id;
+                        cong_viec_giang_vien.db.update_by = user_id;
+                        cong_viec_giang_vien.db.so_gio = time_work;
+                        var giang_vien = _context.sys_giang_vien.Where(q => q.id == item).Select(q => q.email).SingleOrDefault();
+                        Mail.send_work(giang_vien, sys_cong_viec.db.ten_cong_viec);
+                        _context.sys_cong_viec_giang_vien.Add(cong_viec_giang_vien.db);
+                        await _context.SaveChangesAsync();
+                    }
                     _context.sys_cong_viec.Add(sys_cong_viec.db);
                     await _context.SaveChangesAsync();
                 }
@@ -168,14 +192,25 @@ namespace WebAPI.Controllers
                 return Ok(ex.Message);
             }
         }
-        private string get_id_primary_key()
+        private string get_id_primary_key_cong_viec()
         {
             var id = "";
             var check_id = 0;
             do
             {
                 id = RandomExtension.getStringID();
-                check_id = _context.Users.Where(q => q.id == id).Count();
+                check_id = _context.sys_cong_viec.Where(q => q.id == id).Count();
+            } while (check_id != 0);
+            return id;
+        }
+        private string get_id_primary_key_cong_viec_gv()
+        {
+            var id = "";
+            var check_id = 0;
+            do
+            {
+                id = RandomExtension.getStringID();
+                check_id = _context.sys_cong_viec_giang_vien.Where(q => q.id == id).Count();
             } while (check_id != 0);
             return id;
         }

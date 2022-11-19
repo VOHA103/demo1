@@ -7,10 +7,10 @@ import { Component, OnInit, Input, Inject } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { sys_cong_viec_giang_vien_service } from '../../service/sys_cong_viec_giang_vien.service';
-import { sys_giang_vien_service } from '../../service/sys_giang_vien.service';
 import { sys_cong_viec_service } from '../../service/sys_cong_viec.service';
 import { sys_chuc_vu_service } from '../../service/sys_chuc_vu.service';
 import { sys_khoa_service } from '../../service/sys_khoa.service';
+import { sys_giang_vien_service } from '../../service/sys_giang_vien.service';
 import { sys_bo_mon_service } from '../../service/sys_bo_mon.service';
 import Swal from 'sweetalert2';
 import { sys_cong_viec_giang_vien_model } from '@/app/model/sys_cong_viec_giang_vien.model';
@@ -22,9 +22,9 @@ import { sys_cong_viec_giang_vien_model } from '@/app/model/sys_cong_viec_giang_
 export class sys_cong_viec_giang_vien_popupComponent {
   public sys_cong_viec_giang_vien_model = new sys_cong_viec_giang_vien_model();
   public lst_status: any = [];
-  public list_giang_vien: any;
   public list_cong_viec: any;
   public check_error: any = [];
+  public list_giang_vien: any;
   public lst_khoa: any = [];
   public lst_chuc_vu: any = [];
   public lst_bo_mon: any = [];

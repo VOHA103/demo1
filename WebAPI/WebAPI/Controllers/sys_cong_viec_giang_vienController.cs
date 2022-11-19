@@ -66,11 +66,11 @@ namespace WebAPI.Controllers
                 var time_work = _context.sys_cong_viec.Where(d => d.id == q.db.id_cong_viec).Select(q => q.ngay_bat_dau).SingleOrDefault();
                 var time_now = DateTime.Now;
                 //trang_thai => 1 đã xong 2 chưa thực hiện 3 đang thực hiện
-                if (time_work>time_now)
+                if (time_work > time_now)
                 {
                     q.trang_thai = 2;
                 }
-                else if (time_now==time_work)
+                else if (time_now == time_work)
                 {
                     q.trang_thai = 3;
                 }
@@ -111,6 +111,7 @@ namespace WebAPI.Controllers
             {
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var model = await _context.sys_cong_viec_giang_vien.FindAsync(sys_cong_viec_giang_vien.db.id);
+                
                 _context.SaveChanges();
                 return Ok(sys_cong_viec_giang_vien);
             }

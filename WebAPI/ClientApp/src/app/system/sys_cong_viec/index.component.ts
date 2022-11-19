@@ -82,19 +82,6 @@ export class sys_cong_viec_indexComponent implements OnInit {
       this.DataHanlder();
     });
   }
-  loadAPI() {
-    this.loading = false;
-    this.sys_cong_viec_service.getAll().subscribe((resp) => {
-      this.listData=resp;
-      // var result:any;
-      // result = resp;
-      // this.listData=result.data_list;
-      // this.total=result.total,
-      // this.page = result.page,
-      // this.limit = result.limit,
-      this.loading = true;
-    });
-  }
    delete(id): void {
     this.sys_cong_viec_service.delete(id).subscribe((result) => {
       Swal.fire({

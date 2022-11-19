@@ -22,6 +22,38 @@ namespace WebAPI.Part
             {
                 list_error.Add(set_error.set("db.id_loai_cong_viec", "Bắt buộc"));
             }
+            if (string.IsNullOrEmpty(item.db.so_gio.ToString()))
+            {
+                list_error.Add(set_error.set("db.so_gio", "Bắt buộc"));
+            }
+            if (string.IsNullOrEmpty(item.db.loai.ToString()))
+            {
+                list_error.Add(set_error.set("db.loai", "Bắt buộc"));
+            }
+            if (string.IsNullOrEmpty(item.db.ngay_bat_dau.ToString()))
+            {
+                list_error.Add(set_error.set("db.ngay_bat_dau", "Bắt buộc"));
+            }
+            //if (string.IsNullOrEmpty(item.gio.ToString())||item.gio==null)
+            //{
+            //    list_error.Add(set_error.set("db.gio", "Bắt buộc"));
+            //}
+            //if (string.IsNullOrEmpty(item.phut.ToString()) || item.phut == null)
+            //{
+            //    list_error.Add(set_error.set("db.phut", "Bắt buộc"));
+            //}
+            if (string.IsNullOrEmpty(item.id_khoa.ToString()))
+            {
+                list_error.Add(set_error.set("db.id_khoa", "Bắt buộc"));
+            }
+            if (string.IsNullOrEmpty(item.id_chuc_vu.ToString()))
+            {
+                list_error.Add(set_error.set("db.id_chuc_vu", "Bắt buộc"));
+            }
+            if (item.list_giang_vien.Count()==0 || item.list_giang_vien==null)
+            {
+                list_error.Add(set_error.set("list_giang_vien", "Bắt buộc"));
+            }
             return list_error;
         }
     }

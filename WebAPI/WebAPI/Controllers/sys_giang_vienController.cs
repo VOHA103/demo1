@@ -61,8 +61,8 @@ namespace WebAPI.Controllers
                 .Select(d => new sys_giang_vien_model()
                 {
                     db = d,
-                    create_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
-                    update_name = _context.Users.Where(q => q.id == d.create_by).Select(q => q.name).SingleOrDefault(),
+                    create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                    update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
                     ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == d.id_chuc_vu).Select(q => q.ten_chuc_vu).SingleOrDefault(),
                     ten_khoa = _context.sys_khoa.Where(q => q.id == d.id_khoa).Select(q => q.ten_khoa).SingleOrDefault(),
                 }).SingleOrDefault();
@@ -202,7 +202,6 @@ namespace WebAPI.Controllers
                 {
                     var model = await _context.sys_giang_vien.FindAsync(sys_giang_vien.db.id);
                     model.update_date = DateTime.Now;
-                    model.create_date = DateTime.Now;
                     model.update_by = user_id;
                     model.status_del = 1;
                     model.id_chuc_vu = sys_giang_vien.db.id_chuc_vu;
@@ -212,7 +211,6 @@ namespace WebAPI.Controllers
                     model.email = sys_giang_vien.db.email;
                     model.ngay_sinh = sys_giang_vien.db.ngay_sinh;
                     sys_giang_vien.db.id_bo_mon = sys_giang_vien.list_bo_mon.Join(",");
-                    _context.sys_giang_vien.Add(sys_giang_vien.db);
                     await _context.SaveChangesAsync();
                 }
                 var result = new
