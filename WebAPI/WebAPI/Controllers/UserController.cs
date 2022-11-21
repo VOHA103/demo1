@@ -43,29 +43,6 @@ namespace WebAPI.Controllers
             this._email = email;
         }
         [HttpGet("[action]")]
-        public IActionResult sendMail(string email, string content)
-        {
-            int check = Mail.sendMail(email, content);
-            //var title = "Trường đại học Công Nghiệp Thực Phẩm Thành phố Hồ Chí Minh";
-            //var message = new MimeMessage();
-            //message.From.Add(new MailboxAddress(title, _email.Value.From));
-            //message.To.Add(new MailboxAddress("", email));
-            //message.Subject = title;
-            //message.Body = new TextPart("plain")
-            //{
-            //    Text = "hello"
-            //};
-            //using (var client=new SmtpClient())
-            //{
-            //    client.Connect(_email.Value.SmtpServer, (int)_email.Value.Port, _email.Value.emailIsSSL);
-            //    client.Authenticate(_email.Value.Username, _email.Value.Password);
-
-            //    client.Send(message);
-            //    client.Disconnect(true);
-            //}
-            return Ok();
-        }
-        [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
         {
             var result = _context.Users.Find(id);

@@ -11,6 +11,7 @@ namespace WebAPI.Data
     public partial class ApplicationDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<sys_role_user_administer_db> sys_role_user_administer { get; set; }
         public DbSet<sys_loai_cong_viec> sys_loai_cong_viec { get; set; }
         public DbSet<sys_chuyen_nganh> sys_chuyen_nganh { get; set; }
         public DbSet<sys_bo_mon> sys_bo_mon { get; set; }
@@ -23,9 +24,7 @@ namespace WebAPI.Data
         public DbSet<sys_cong_viec> sys_cong_viec { get; set; }
         public DbSet<sys_giang_vien> sys_giang_vien { get; set; }
         public DbSet<sys_cau_hinh_admin> sys_cau_hinh_admin { get; set; }
-        public DbSet<sys_cap_nhat_tt_giang_vien> sys_cap_nhat_tt_giang_vien { get; set; }
         public DbSet<sys_hoat_dong_giang_vien> sys_hoat_dong_giang_vien { get; set; }
-        public DbSet<sys_bo_mon_giang_vien> sys_bo_mon_giang_vien { get; set; }
         public DbSet<sys_cong_viec_giang_vien> sys_cong_viec_giang_vien { get; set; }
         public DbSet<sys_giang_vien_truc_khoa> sys_giang_vien_truc_khoa { get; set; }
 

@@ -269,3 +269,11 @@ D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\obj\Debug\netcoreapp3.1\WebAPI.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\obj\Debug\netcoreapp3.1\WebAPI.pdb
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\obj\Debug\netcoreapp3.1\WebAPI.genruntimeconfig.cache
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\obj\Debug\netcoreapp3.1\WebAPI.csproj.AssemblyReference.cache
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\NPOI.OOXML.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\NPOI.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\NPOI.OpenXml4Net.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\NPOI.OpenXmlFormats.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\EntityFramework.SqlServer.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\EntityFramework.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\ICSharpCode.SharpZipLib.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\System.CodeDom.dll

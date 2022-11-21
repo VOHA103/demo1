@@ -55,19 +55,15 @@ export class sys_cong_viec_giang_vien_service {
     return this.http.get(url);
   }
   //get_thong_ke_cong_viec
-  public get_thong_ke_cong_viec(
-    id_cong_viec: string,
-    id_khoa: number,
-    id_chuc_vu: number
-  ) {
+  public get_thong_ke_cong_viec(filter: any) {
+    debugger
+    const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/get_thong_ke_cong_viec';
+    return this.http.post(url, filter);
+  }
+  // reven status sys_cong_viec_giang_vien
+  public get_thong_ke_cong_viec_nguoi_dung() {
     const url =
-      this.REST_API_URL +
-      '/sys_cong_viec_giang_vien/get_thong_ke_cong_viec?id_cong_viec=' +
-      id_cong_viec +
-      '?id_khoa=' +
-      id_khoa +
-      '?id_chuc_vu' +
-      id_chuc_vu;
+      this.REST_API_URL + '/sys_cong_viec_giang_vien/get_thong_ke_cong_viec_nguoi_dung';
     return this.http.get(url);
   }
 }

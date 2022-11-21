@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class nav_indexComponent implements OnInit {
   public menu: any = [];
   opened = false;
+  public loading = false;
   panelOpenState = false;
   public currentYear: Date;
   public profile: any;
@@ -32,41 +33,30 @@ export class nav_indexComponent implements OnInit {
     if (this.opened == false) this.opened = true;
     else this.opened = false;
   }
-  public get_cau_hinh_admin(){
-this.sys_cau_hinh_admin_service.get_cau_hinh_admin().subscribe(data=>{
-this.cau_hinh=data;
-});
+  public get_cau_hinh_admin() {
+    this.sys_cau_hinh_admin_service.get_cau_hinh_admin().subscribe((data) => {
+      this.cau_hinh = data;
+      this.get_profile_user();
+    });
   }
   public get_profile_user(): void {
-    this.sys_user_service.get_profile_user().subscribe(
-      (res: any) => {
-        this.profile = res;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
-  public get_id_user(): void {
-    this.sys_user_service.get_id_user().subscribe(
-      (res: any) => {
-        this.id_user = res;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    this.sys_user_service.get_profile_user().subscribe((res: any) => {
+      this.profile = res;
+      this.loading = true;
+    });
   }
   ngOnInit(): void {
     console.log(localStorage.getItem('token'));
-    this.get_profile_user();
-    this.get_id_user();
     this.get_cau_hinh_admin();
 
     this.menu = [
       {
         link: 'sys_thong_ke_index',
         label: 'Thống kê',
+      },
+      {
+        link: 'sys_thong_ke_user_index',
+        label: 'Thống kê người dùng',
       },
       {
         link: 'sys_cau_hinh_giao_dien_index',
@@ -97,8 +87,8 @@ this.cau_hinh=data;
         label: 'Chức vụ',
       },
       {
-        link:"sys_cong_viec_giang_vien_index",
-        label:"Công việc giảng viên"
+        link: 'sys_cong_viec_giang_vien_index',
+        label: 'Công việc giảng viên',
       },
       {
         link: 'sys_cong_viec_index',

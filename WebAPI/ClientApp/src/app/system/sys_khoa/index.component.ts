@@ -27,7 +27,7 @@ export class sys_khoa_indexComponent implements OnInit {
   total: number = 100;
   resp: number;
 
-  filter = { search: '', total: '0', page: '0', limit: '10', status_del: '1' };
+  filter = { search: '',  status_del: '1' };
 
   constructor(
     private http: HttpClient,
