@@ -21,6 +21,11 @@ namespace WebAPI.Model
         public string ten_bo_mon { get; set; }
         public List<string> list_bo_mon { get; set; }
     }
+    public class excel_import
+    {
+        public string ten { get; set; }
+        public string nam_sinh { get; set; }
+    }
     public class filter_data_giang_vien
     {
         public string search { get; set; }

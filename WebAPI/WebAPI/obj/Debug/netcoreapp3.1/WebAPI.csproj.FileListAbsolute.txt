@@ -277,3 +277,5 @@ D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\EntityFrame
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\EntityFramework.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\ICSharpCode.SharpZipLib.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\System.CodeDom.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\EPPlus.Core.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\System.Xml.XPath.XmlDocument.dll

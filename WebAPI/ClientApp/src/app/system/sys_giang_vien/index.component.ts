@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { sys_giang_vien_popupComponent } from './popupAdd.component';
 import { sys_chuc_vu_service } from '../../service/sys_chuc_vu.service';
 import { sys_khoa_service } from '../../service/sys_khoa.service';
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'sys_giang_vien_index',
   templateUrl: './index.component.html',
@@ -16,6 +17,7 @@ import { sys_khoa_service } from '../../service/sys_khoa.service';
 })
 export class sys_giang_vien_indexComponent implements OnInit {
   public foods: any = [];
+  public file: any;
   public listData: any = [];
   public lst_status: any = [];
   public model: user_model;
@@ -27,14 +29,24 @@ export class sys_giang_vien_indexComponent implements OnInit {
   public pageSize: number = 20;
   public pageDisplay: number = 10;
   public totalRow: number;
-  search:string="";
+  search: string = '';
   p: number = 0;
   total: number = 100;
   resp: number;
   page = 1;
   limit = 10;
-  filter = { search: '', total: '0', page: '0', limit: '10', status_del: '1',id_chuc_vu:'-1',id_khoa:'-1',id_chuyen_nghanh:'-1' };
+  filter = {
+    search: '',
+    total: '0',
+    page: '0',
+    limit: '10',
+    status_del: '1',
+    id_chuc_vu: '-1',
+    id_khoa: '-1',
+    id_chuyen_nghanh: '-1',
+  };
   searchKey: string;
+  data: any;
   constructor(
     private http: HttpClient,
     private sys_chuc_vu_service: sys_chuc_vu_service,
@@ -46,34 +58,76 @@ export class sys_giang_vien_indexComponent implements OnInit {
     this.get_list_khoa();
     this.get_list_chuc_vu();
   }
-  pageChangeEvent(event: number){
+  submit_file(event: any) {
+    debugger
+    let file = event.target.files[0];
+
+    let fileReader = new FileReader();
+
+    fileReader.readAsBinaryString(file);
+    fileReader.onload = (e) => {
+      var workbook = XLSX.read(fileReader.result, { type: 'binary' });
+      var sheetNames = workbook.SheetNames;
+
+      this.data = XLSX.utils.sheet_to_json(workbook.Sheets[sheetNames[0]]);
+      console.log(this.data);
+    };
+  }
+  onFileSelected(event: any) {
+    this.file = event.target.files[0];
+    this.onSubmitFile();
+    event.target.value = null;
+  }
+  dowloadFileMau() {
+    // var url = '/sys_user.ctr/downloadtemp';
+    // window.location.href = url;
+  }
+  onSubmitFile() {
+    if (this.file == null || this.file == undefined) {
+      Swal.fire('Phải chọn file import', '', 'warning');
+    } else {
+      var formData = new FormData();
+
+      formData.append('file', this.file);
+      this.http
+        .post('https://localhost:44334/sys_giang_vien/ImportFromExcel/', formData, {
+          //reportProgress: true,
+          //observe: 'events'
+        })
+        .subscribe((res) => {
+          if (res == '') {
+            Swal.fire('Lưu thành công', '', 'success');
+            this.DataHanlder();
+          } else {
+            Swal.fire(res.toString(), '', 'warning');
+          }
+        });
+    }
+  }
+  pageChangeEvent(event: number) {
     this.p = event;
     this.DataHanlder();
-}
+  }
   get_list_khoa(): void {
-    this.sys_khoa_service
-      .get_list_khoa()
-      .subscribe((data) =>  {
-          var result:any;
-        result=data;
-        this.lst_khoa = result;
-        });
+    this.sys_khoa_service.get_list_khoa().subscribe((data) => {
+      var result: any;
+      result = data;
+      this.lst_khoa = result;
+    });
   }
   get_list_chuc_vu(): void {
-    this.sys_chuc_vu_service
-      .get_list_chuc_vu()
-      .subscribe((data) => {
-        var result:any;
-        result=data;
-        this.lst_chuc_vu = result;
-      });
+    this.sys_chuc_vu_service.get_list_chuc_vu().subscribe((data) => {
+      var result: any;
+      result = data;
+      this.lst_chuc_vu = result;
+    });
   }
   DataHanlder(): void {
-     this.loading = false;
-     this.sys_giang_vien_service.DataHanlder(this.filter).subscribe((resp) => {
+    this.loading = false;
+    this.sys_giang_vien_service.DataHanlder(this.filter).subscribe((resp) => {
       var model: any;
-      this.listData=resp;
-      this.total=this.resp;
+      this.listData = resp;
+      this.total = this.resp;
       model = resp;
       this.listData = model.data;
       this.total = model.total;
@@ -81,11 +135,10 @@ export class sys_giang_vien_indexComponent implements OnInit {
       this.pageIndex = model.pageIndex;
       this.pageSize = model.pageSize;
       this.totalRow = model.totalRow;
-
-     });
-   }
+    });
+  }
   openDialogDetail(item): void {
-    debugger
+    debugger;
     const dialogRef = this.dialog.open(sys_giang_vien_popupComponent, {
       width: '850px',
       data: item,
@@ -114,7 +167,7 @@ export class sys_giang_vien_indexComponent implements OnInit {
   loadAPI() {
     this.loading = false;
     this.sys_giang_vien_service.getAll().subscribe((resp) => {
-      this.listData=resp;
+      this.listData = resp;
       // var result:any;
       // result = resp;
       // this.listData=result.data_list;
@@ -124,7 +177,7 @@ export class sys_giang_vien_indexComponent implements OnInit {
       this.loading = true;
     });
   }
-   delete(id): void {
+  delete(id): void {
     this.sys_giang_vien_service.delete(id).subscribe((result) => {
       Swal.fire({
         icon: 'success',

@@ -28,6 +28,7 @@ namespace WebAPI.Controllers
     public class role_user_administerController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        List<role> list_role = new List<role>();
         public role_user_administerController(ApplicationDbContext _context)
         {
             this._context = _context;
@@ -35,7 +36,6 @@ namespace WebAPI.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> get_list_role()
         {
-            List<role> list_role = new List<role>();
             list_role.Add(add_role("sys_thong_ke_index", "Thống kê"));
             list_role.Add(add_role("sys_thong_ke_user_index", "Thống kê người dùng"));
             list_role.Add(add_role("sys_cau_hinh_giao_dien_index", "Cấu hình giao diện"));

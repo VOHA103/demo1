@@ -46,6 +46,10 @@
               "target": "Package",
               "version": "[1.2.3, )"
             },
+            "EPPlus.Core": {
+              "target": "Package",
+              "version": "[1.5.4, )"
+            },
             "EntityFramework": {
               "target": "Package",
               "version": "[6.4.4, )"
