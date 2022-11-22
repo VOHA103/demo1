@@ -6,21 +6,12 @@ using System.Threading.Tasks;
 
 namespace WebAPI.System
 {
-    [Table("sys_ky_truc_khoa")]
-    public class sys_ky_truc_khoa
+    [Table("sys_role_user_administer")]
+    public class sys_role_user_administer_db
     {
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
-        public string ten_ky { get; set; }
-        public DateTime? thoi_gian_bat_dau { get; set; }
-        public DateTime? thoi_gian_ket_thuc { get; set; }
-
-        public string create_by { get; set; }
-        public DateTime? create_date { get; set; }
-        public string update_by { get; set; }
-
-        public DateTime? update_date { get; set; }
-        public int? status_del { get; set; }
-        public string note { get; set; }
+        public string id_role { get; set; }
+        public string id_user { get; set; }
     }
 }
