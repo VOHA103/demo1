@@ -165,6 +165,7 @@ namespace WebAPI.Controllers
                         var cong_viec_giang_vien = new sys_cong_viec_giang_vien_model();
                         var item = sys_cong_viec.list_giang_vien[i];
                         cong_viec_giang_vien.db.id = get_id_primary_key_cong_viec_gv();
+                        cong_viec_giang_vien.db.status_del = 1;
                         cong_viec_giang_vien.db.id_giang_vien = item;
                         cong_viec_giang_vien.db.id_cong_viec = sys_cong_viec.db.id;
                         cong_viec_giang_vien.db.id_chuc_vu = sys_cong_viec.id_chuc_vu;

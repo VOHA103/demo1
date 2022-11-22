@@ -74,7 +74,7 @@ namespace WebAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> login(User users)
         {
-            if (users.name != "administrator" && users.pass != "123456@#")
+            if (users.name != "administrator")
             {
                 users.pass = Libary.EncodeMD5(users.pass);
             }
@@ -111,12 +111,11 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> get_profile_user()
         {
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
-            var user = await usersServices.GetUserAsync(user_id);
             var profile = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => new
             {
                 id = q.id,
                 name = q.ten_giang_vien,
-                type = q.id_chuc_vu,
+                code = _context.sys_chuc_vu.Where(d=>d.id== q.id_chuc_vu).Select(q=>q.code).SingleOrDefault(),
             }).SingleOrDefault();
             return Ok(profile);
         }

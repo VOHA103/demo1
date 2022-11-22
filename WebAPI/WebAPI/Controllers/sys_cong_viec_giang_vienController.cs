@@ -32,11 +32,58 @@ namespace WebAPI.Controllers
         {
             this._context = _context;
         }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> DataHanlderUser([FromBody] filter_data_cong_viec_giang_vien_user filter)
+        {
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var result = _context.sys_cong_viec_giang_vien
+              .Select(d => new sys_cong_viec_giang_vien_model()
+              {
+                  db = d,
+                  create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  ten_giang_vien = _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.id_chuc_vu).SingleOrDefault()).Select(q => q.ten_chuc_vu).SingleOrDefault(),
+                  ten_khoa = _context.sys_khoa.Where(q => q.id == _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.id_khoa).SingleOrDefault()).Select(q => q.ten_khoa).SingleOrDefault(),
+                  ten_cong_viec = _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.ten_cong_viec).SingleOrDefault(),
+                  ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(q => q.id == _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.id_loai_cong_viec).SingleOrDefault()).Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
+              })
+              .Where(q => q.db.status_del == filter.status_del)
+              .Where(q => q.db.id_giang_vien == user_id)
+              .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
+              .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || q.ten_giang_vien.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
+              .ToList();
+            result.ForEach(q =>
+            {
+                var time_work = _context.sys_cong_viec.Where(d => d.id == q.db.id_cong_viec).Select(q => q.ngay_bat_dau).SingleOrDefault();
+                var time_now = DateTime.Now;
+                //trang_thai => 1 đã xong 2 chưa thực hiện 3 đang thực hiện
+                if (time_work > time_now)
+                {
+                    q.trang_thai = 2;
+                }
+                else if (time_now == time_work)
+                {
+                    q.trang_thai = 3;
+                }
+                else
+                {
+                    q.trang_thai = 1;
+                }
+            });
+            var count = result.Count();
+            var model = new
+            {
+                data = result,
+                total = count,
+            };
+            return Ok(model);
+        }
         [HttpGet("[action]")]
         public IActionResult get_thong_ke_cong_viec_nguoi_dung()
         {
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
-            var result = _context.sys_cong_viec_giang_vien.Where(q => q.id_giang_vien==user_id)
+            var result = _context.sys_cong_viec_giang_vien.Where(q => q.id_giang_vien == user_id)
                .GroupBy(q => new { q.id_cong_viec }).Select(q => new
                {
                    label = _context.sys_cong_viec.Where(d => d.id == q.Key.id_cong_viec).Select(q => q.ten_cong_viec).SingleOrDefault(),
@@ -53,7 +100,7 @@ namespace WebAPI.Controllers
                    label = _context.sys_giang_vien.Where(d => d.id == q.Key.id_giang_vien).Select(q => q.ten_giang_vien).SingleOrDefault(),
                    y = _context.sys_cong_viec_giang_vien.Where(d => d.id_giang_vien == q.Key.id_giang_vien).Sum(q => q.so_gio) ?? 0,
                }).ToList();
-            return Ok(result);  
+            return Ok(result);
         }
         [HttpPost("[action]")]
         public async Task<IActionResult> DataHanlder([FromBody] filter_data_cong_viec_giang_vien filter)
@@ -96,7 +143,6 @@ namespace WebAPI.Controllers
                 }
             });
             var count = result.Count();
-            result = result.OrderByDescending(q => q.db.update_date).Skip(filter.page - 1).Take(10).ToList();
             var model = new
             {
                 data = result,

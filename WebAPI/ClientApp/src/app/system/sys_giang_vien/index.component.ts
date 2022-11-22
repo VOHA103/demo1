@@ -75,7 +75,7 @@ export class sys_giang_vien_indexComponent implements OnInit {
   }
   onFileSelected(event: any) {
     this.file = event.target.files[0];
-    this.onSubmitFile();
+   //this.onSubmitFile();
     event.target.value = null;
   }
   dowloadFileMau() {
@@ -90,10 +90,7 @@ export class sys_giang_vien_indexComponent implements OnInit {
 
       formData.append('file', this.file);
       this.http
-        .post('https://localhost:44334/sys_giang_vien/ImportFromExcel/', formData, {
-          //reportProgress: true,
-          //observe: 'events'
-        })
+        .post('https://localhost:44334/sys_giang_vien/ImportFromExcel/', formData, {})
         .subscribe((res) => {
           if (res == '') {
             Swal.fire('Lưu thành công', '', 'success');
@@ -162,19 +159,6 @@ export class sys_giang_vien_indexComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
       this.DataHanlder();
-    });
-  }
-  loadAPI() {
-    this.loading = false;
-    this.sys_giang_vien_service.getAll().subscribe((resp) => {
-      this.listData = resp;
-      // var result:any;
-      // result = resp;
-      // this.listData=result.data_list;
-      // this.total=result.total,
-      // this.page = result.page,
-      // this.limit = result.limit,
-      this.loading = true;
     });
   }
   delete(id): void {

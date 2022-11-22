@@ -42,14 +42,23 @@ export class nav_indexComponent implements OnInit {
   public get_profile_user(): void {
     this.sys_user_service.get_profile_user().subscribe((res: any) => {
       this.profile = res;
+      this.role_admin = {
+        link: 'sys_role_user_administer_index',
+        label: 'Phân quyền người dùng',
+      };
+      debugger
+      this.load_role();
+      if (this.profile.code === 'admin')
+        this.menu.splice(0, 0, this.role_admin);
       this.loading = true;
     });
   }
-  ngOnInit(): void {
-    console.log(localStorage.getItem('token'));
-    this.get_cau_hinh_admin();
-
+  load_role(){
     this.menu = [
+      {
+        link: 'sys_person_work_index',
+        label: 'Công việc người dùng',
+      },
       {
         link: 'sys_thong_ke_index',
         label: 'Thống kê',
@@ -66,10 +75,6 @@ export class nav_indexComponent implements OnInit {
         link: 'sys_bo_mon_index',
         label: 'Bộ môn',
       },
-      // {
-      //   link:"sys_user_index",
-      //   label:"Thành viên"
-      // },
       {
         link: 'sys_khoa_index',
         label: 'Khoa',
@@ -98,18 +103,10 @@ export class nav_indexComponent implements OnInit {
         link: 'sys_giang_vien_index',
         label: 'Giảng viên',
       },
-      // {
-      //   link:"sys_giang_vien_truc_khoa_index",
-      //   label:"Giảng viên trực khoa"
-      // },
       {
         link: 'sys_hoat_dong_index',
         label: 'Hoạt động',
       },
-      // {
-      //   link: 'sys_hoat_dong_giang_vien_index',
-      //   label: 'Hoạt động giảng viên',
-      // },
       {
         link: 'sys_loai_cong_viec_index',
         label: 'Loại công việc',
@@ -118,10 +115,10 @@ export class nav_indexComponent implements OnInit {
         link: 'sys_phong_truc_index',
         label: 'Phòng trực',
       },
-      // {
-      //   link: 'sys_thong_bao_index',
-      //   label: 'Thông báo',
-      // },
     ];
+  }
+  role_admin: any;
+  ngOnInit(): void {
+    this.get_cau_hinh_admin();
   }
 }

@@ -23,6 +23,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using System.IO;
 using OfficeOpenXml;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using NPOI.HSSF.UserModel;
+using System.Text.RegularExpressions;
 
 namespace WebAPI.Controllers
 {
@@ -36,201 +40,244 @@ namespace WebAPI.Controllers
         {
             this._context = _context;
         }
-        //[HttpPost]
-        //public async Task<IActionResult> ImportFromExcel()
-        //{
-        //    var error = "";
-        //    IFormFile file = Request.Form.Files[0];
+        [HttpPost("[action]")]
+        public async Task<IActionResult> ImportFromExcel()
+        {
+            var error = "";
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            IFormFile file = Request.Form.Files[0];
 
-        //    string folderName = "import_excel";
+            string folderName = "import_excel";
 
-        //    var currentpath = Directory.GetCurrentDirectory();
+            var currentpath = Directory.GetCurrentDirectory();
 
-        //    string newPath = Path.Combine(currentpath, "file_upload", folderName);
-        //    var tick = Guid.NewGuid();
-        //    if (!Directory.Exists(newPath))
+            string newPath = Path.Combine(currentpath, "file_upload", folderName);
+            var tick = Guid.NewGuid();
+            if (!Directory.Exists(newPath))
 
-        //    {
+            {
 
-        //        Directory.CreateDirectory(newPath);
+                Directory.CreateDirectory(newPath);
 
-        //    }
+            }
 
-        //    var list_cell = new List<cell>();
+            var list_cell = new List<cell>();
 
-        //    var list_row = new List<row>();
-        //    if (file.Length > 0)
+            var list_row = new List<row>();
+            if (file.Length > 0)
 
-        //    {
+            {
 
-        //        string sFileExtension = Path.GetExtension(file.FileName).ToLower();
+                string sFileExtension = Path.GetExtension(file.FileName).ToLower();
 
-        //        ISheet sheet;
+                ISheet sheet;
 
-        //        string fullPath = Path.Combine(newPath, tick + "." + file.FileName.Split(".").Last());
+                string fullPath = Path.Combine(newPath, tick + "." + file.FileName.Split(".").Last());
 
-        //        try
-        //        {
-        //            using (var stream = new FileStream(fullPath, FileMode.Create))
+                try
+                {
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
 
-        //            {
+                    {
 
-        //                file.CopyTo(stream);
+                        file.CopyTo(stream);
 
-        //                stream.Position = 0;
+                        stream.Position = 0;
 
-        //                if (sFileExtension == ".xls")
+                        if (sFileExtension == ".xls")
 
-        //                {
+                        {
 
-        //                    HSSFWorkbook hssfwb = new HSSFWorkbook(stream); //This will read the Excel 97-2000 formats  
+                            HSSFWorkbook hssfwb = new HSSFWorkbook(stream); //This will read the Excel 97-2000 formats  
 
-        //                    sheet = hssfwb.GetSheetAt(0); //get first sheet from workbook  
+                            sheet = hssfwb.GetSheetAt(0); //get first sheet from workbook  
 
-        //                }
+                        }
 
-        //                else
+                        else
 
-        //                {
+                        {
 
-        //                    XSSFWorkbook hssfwb = new XSSFWorkbook(stream); //This will read 2007 Excel format  
+                            XSSFWorkbook hssfwb = new XSSFWorkbook(stream); //This will read 2007 Excel format  
 
-        //                    sheet = hssfwb.GetSheetAt(0); //get first sheet from workbook   
+                            sheet = hssfwb.GetSheetAt(0); //get first sheet from workbook   
 
-        //                }
+                        }
 
-        //                IRow headerRow = sheet.GetRow(0); //Get Header Row
+                        IRow headerRow = sheet.GetRow(0); //Get Header Row
 
-        //                int cellCount = headerRow.LastCellNum;
+                        int cellCount = headerRow.LastCellNum;
 
-        //                //sb.Append("<table class='table table-bordered'><tr>");
 
-        //                //Header
-        //                //for (int j = 0; j < cellCount; j++)
+                        for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
 
-        //                //{
+                        {
 
-        //                //    NPOI.SS.UserModel.ICell cell = headerRow.GetCell(j);
-        //                //   if (cell == null || string.IsNullOrWhiteSpace(cell.ToString())) continue;
+                            IRow row = sheet.GetRow(i);
 
-        //                //   sb.Append("<th>" + cell.ToString() + "</th>");
+                            if (row == null) continue;
 
-        //                //}
-        //                //sb.Append("</tr>");
-        //                //sb.AppendLine("<tr>");
+                            if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
 
-        //                for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
+                            for (int j = row.FirstCellNum; j < cellCount; j++)
 
-        //                {
+                            {
 
-        //                    IRow row = sheet.GetRow(i);
+                                if (row.GetCell(j) != null)
+                                {
+                                    var cell = new cell();
 
-        //                    if (row == null) continue;
+                                    var value = row.GetCell(j).ToString();
 
-        //                    if (row.Cells.All(d => d.CellType == CellType.Blank)) continue;
 
-        //                    for (int j = row.FirstCellNum; j < cellCount; j++)
+                                    cell.value = value;
+                                    list_cell.Add(cell);
+                                }
 
-        //                    {
+                            }
 
-        //                        if (row.GetCell(j) != null)
-        //                        {
-        //                            var cell = new cell();
+                            var data_row = new row();
 
-        //                            var value = row.GetCell(j).ToString();
 
-
-        //                            cell.value = value;
-        //                            list_cell.Add(cell);
-        //                        }
-
-        //                        //sb.Append("<td>" + row.GetCell(j).ToString() + "</td>");
-
-        //                    }
-
-        //                    var data_row = new row();
-
-
-        //                    data_row.key = i.ToString();
-        //                    data_row.list_cell = list_cell;
-        //                    list_cell = new List<cell>();
-        //                    list_row.Add(data_row);
-        //                    //sb.AppendLine("</tr>");
-
-        //                }
-
-        //                //sb.Append("</table>");
-
-        //            }
-
-
-        //            for (int ct = 0; ct < list_row.Count(); ct++)
-        //            {
-        //                var fileImport = list_row[ct].list_cell.ToList();
-
-
-        //                var model = new sys_user_model();
-
-        //                var stt = (fileImport[0].value.ToString() ?? "").Trim();
-        //                var full_name = (fileImport[1].value.ToString() ?? "").Trim();
-        //                var sex = (fileImport[2].value.ToString() ?? "").Trim();
-        //                var date_of_birth = (fileImport[3].value.ToString() ?? "").Trim();
-        //                var email = (fileImport[4].value.ToString() ?? "").Trim();
-        //                var phone = (fileImport[5].value.ToString() ?? "").Trim();
-        //                var status_graduate = (fileImport[6].value.ToString() ?? "").Trim();
-        //                var id_khoa = (fileImport[7].value.ToString() ?? "").Trim();
-        //                var school_year = (fileImport[8].value.ToString() ?? "").Trim();
-        //                var company = (fileImport[9].value.ToString() ?? "").Trim();
-        //                var position = (fileImport[10].value.ToString() ?? "").Trim();
-        //                var dia_chi = (fileImport[11].value.ToString() ?? "").Trim();
-        //                model.password = "";
-        //                model.db.full_name = full_name;
-        //                model.db.email = email;
-        //                model.db.phone = phone;
-                        
-        //                model.db.company = company;
-        //                model.db.position = position;
-        //                model.db.dia_chi = dia_chi;
-        //                model.db.Username = email;
-
-        //                if (!string.IsNullOrEmpty(error))
-        //                {
-
-        //                }
-        //                else
-        //                {
-        //                    Random rnd = new Random();
-        //                    int myRandomNo = rnd.Next(10000000, 99999999);
-        //                    byte[] passwordHash, passwordSalt;
-        //                    model.password = myRandomNo.ToString();
-        //                    model.db.Id = Guid.NewGuid().ToString();
-        //                    model.db.PasswordHash = passwordHash;
-        //                    model.db.PasswordSalt = passwordSalt;
-        //                    model.db.status_del = 1;
-
-
-
-        //                }
-
-
-        //            }
-        //            return Ok(error);
-        //        }
-        //        catch
-        //        {
-        //            return Ok("File không đúng định dạng");
-        //        }
-
-
-        //    }
-        //    else
-        //    {
-        //        return Ok("File không đúng định dạng");
-
-        //    }
-
-        //}
-
+                            data_row.key = i.ToString();
+                            data_row.list_cell = list_cell;
+                            list_cell = new List<cell>();
+                            list_row.Add(data_row);
+                        }
+
+
+                    }
+
+
+                    for (int ct = 0; ct < list_row.Count(); ct++)
+                    {
+                        var fileImport = list_row[ct].list_cell.ToList();
+
+
+                        var model = new sys_giang_vien_model();
+
+                        var ten_giang_vien = (fileImport[0].value.ToString() ?? "").Trim();
+                        var ma_giang_vien = (fileImport[1].value.ToString() ?? "").Trim();
+                        var chuc_vu = (fileImport[2].value.ToString() ?? "").Trim();
+                        var khoa = (fileImport[3].value.ToString() ?? "").Trim();
+                        var chuyen_nghanh = (fileImport[4].value.ToString() ?? "").Trim();
+                        var so_dien_thoai = (fileImport[5].value.ToString() ?? "").Trim();
+                        var email = (fileImport[6].value.ToString() ?? "").Trim();
+                        var dia_chi = (fileImport[7].value.ToString() ?? "").Trim();
+                        var ngay_sinh = (fileImport[8].value.ToString() ?? "").Trim();
+                        var sex = (fileImport[9].value.ToString() ?? "").Trim();
+
+                        model.db.ma_giang_vien = ma_giang_vien;
+                        model.db.ten_giang_vien = ten_giang_vien;
+                        model.db.email = email;
+                        model.db.sdt = so_dien_thoai;
+                        model.db.dia_chi = dia_chi;
+                        model.db.ngay_sinh = DateTime.Parse(ngay_sinh);
+                        if (sex.ToLower().Trim() == "Nam".ToLower())
+                        {
+                            model.db.gioi_tinh = 1;
+                        }
+                        else
+                        {
+                            model.db.gioi_tinh = 2;
+                        }
+                        error = CheckErrorImport(model, ct + 1, error);
+                        if (!string.IsNullOrEmpty(error))
+                        {
+
+                        }
+                        else
+                        {
+                            model.db.id = get_id_primary_key();
+                            model.db.pass_word = chang_password(model.db.email);
+                            model.db.status_del = 1;
+                            model.db.username = model.db.ma_giang_vien;
+                            model.db.id_bo_mon = "";
+                            model.db.create_date = DateTime.Now;
+                            model.db.update_date = DateTime.Now;
+                            model.db.create_by = user_id;
+                            model.db.update_by = user_id;
+
+                            _context.sys_giang_vien.Add(model.db);
+                            _context.SaveChanges();
+
+                        }
+
+
+                    }
+                    return Ok(error);
+                }
+                catch
+                {
+                    return Ok("File không đúng định dạng");
+                }
+
+
+            }
+            else
+            {
+                return Ok("File không đúng định dạng");
+
+            }
+
+        }
+        private string CheckErrorImport(sys_giang_vien_model model, int ct, string error)
+        {
+            if (String.IsNullOrEmpty(model.db.email))
+            {
+                error += "Phải nhập email  tại dòng" + (ct + 1) + "<br />";
+            }
+            else
+            {
+
+                var rgEmail = new Regex(@"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*"
+                                   + "@"
+                                   + @"((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))\z");
+                var checkEmail = rgEmail.IsMatch(model.db.email);
+                if (checkEmail == false)
+                {
+                    error += "Email không hợp lệ" + (ct + 1) + "<br />";
+                }
+            }
+            if (!string.IsNullOrEmpty(model.db.sdt))
+            {
+
+                if (model.db.sdt.Length > 10)
+                {
+                    error += "Số điện thoại tối đa 10 số" + (ct + 1) + "<br />";
+
+                }
+                else
+                {
+                    var rgSoDienThoai = new Regex(@"(^[\+]?[0-9]{10,13}$) 
+            |(^[0-9]{3}-[0-9]{4}-[0-9]{4}$)
+            |(^\+[0-9]{2}\s+[0-9]{2}[0-9]{8}$)
+            |(^[(]?[\+]?[\s]?[(]?[0-9]{2,3}[)]?[-\s\.]?[0-9]{2,4}[-\s\.]?[0-9]{2,4}[-\s\.]?[0-9]{2,4}[-\s\.]?[0-9]{0,4}[-\s\.]?$)");
+
+                    var checkSDT = rgSoDienThoai.IsMatch(model.db.sdt);
+                    if (checkSDT == false)
+                    {
+                        error += "Số điện thoại không hợp lệ" + (ct + 1) + "<br />";
+                    }
+
+                }
+
+
+            }
+
+            if (String.IsNullOrEmpty(model.db.ten_giang_vien))
+            {
+                error += "Phải nhập tên giảng viên tại dòng" + (ct + 1) + "<br />";
+            }
+
+
+            if (model.db.gioi_tinh == null)
+            {
+                error += "Phải nhập giới tính tại dòng" + (ct + 1) + "<br />";
+            }
+
+            return error;
+        }
         //[AllowAnonymous]
         //public ActionResult downloadtemp()
         //{
@@ -245,30 +292,30 @@ namespace WebAPI.Controllers
         //    MemoryStream ms = new MemoryStream(fileBytes);
         //    return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, "sys_user.xlsx");
         //}
-        [HttpPost("[action]")]
-        public async Task<IActionResult> ImportFromExcel(IFormFile file)
-        {
-            var list = new List<excel_import>();
-            using (var stream = new MemoryStream())
-            {
-                await file.CopyToAsync(stream);
-                using (var package = new ExcelPackage(stream))
-                {
-                    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-                    var row_count = worksheet.Dimension.Rows;
-                    for (int i = 0; i < row_count; i++)
-                    {
+        //[HttpPost("[action]")]
+        //public async Task<IActionResult> ImportFromExcel(IFormFile file)
+        //{
+        //    var list = new List<excel_import>();
+        //    using (var stream = new MemoryStream())
+        //    {
+        //        await file.CopyToAsync(stream);
+        //        using (var package = new ExcelPackage(stream))
+        //        {
+        //            ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+        //            var row_count = worksheet.Dimension.Rows;
+        //            for (int i = 0; i < row_count; i++)
+        //            {
 
-                        list.Add(new excel_import
-                        {
-                            ten=worksheet.Cells[i,1].Value.ToString().Trim(),
-                            nam_sinh=worksheet.Cells[i,2].Value.ToString().Trim(),
-                        });
-                    }
-                }
-            }
-            return Ok(list);
-        }
+        //                list.Add(new excel_import
+        //                {
+        //                    ten=worksheet.Cells[i,1].Value.ToString().Trim(),
+        //                    nam_sinh=worksheet.Cells[i,2].Value.ToString().Trim(),
+        //                });
+        //            }
+        //        }
+        //    }
+        //    return Ok(list);
+        //}
         [HttpGet("[action]")]
         public IActionResult reset_pass(string pass, string pass_new, string pass_new_reset)
         {
@@ -336,19 +383,19 @@ namespace WebAPI.Controllers
               .Where(q => q.db.id_khoa == id_khoa || id_khoa == -1)
               .Where(q => q.db.id_chuyen_nghanh == id_chuyen_nghanh || id_chuyen_nghanh == -1)
               .ToList();
-            result.ForEach(q =>
-            {
-                q.list_bo_mon = q.db.id_bo_mon.Split(",").ToList();
-                foreach (var item in q.list_bo_mon)
-                {
-                    var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
-                    q.ten_bo_mon += name;
-                    if (!item.Equals(q.list_bo_mon.Last()))
-                    {
-                        q.ten_bo_mon += ", ";
-                    }
-                }
-            });
+            //result.ForEach(q =>
+            //{
+            //    q.list_bo_mon = q.db.id_bo_mon.Split(",").ToList();
+            //    foreach (var item in q.list_bo_mon)
+            //    {
+            //        var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
+            //        q.ten_bo_mon += name;
+            //        if (!item.Equals(q.list_bo_mon.Last()))
+            //        {
+            //            q.ten_bo_mon += ", ";
+            //        }
+            //    }
+            //});
             result = result.OrderByDescending(q => q.db.update_date).ToList();
             var model = new
             {

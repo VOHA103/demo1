@@ -66,4 +66,9 @@ export class sys_cong_viec_giang_vien_service {
       this.REST_API_URL + '/sys_cong_viec_giang_vien/get_thong_ke_cong_viec_nguoi_dung';
     return this.http.get(url);
   }
+  //lấy danh sách sys_cong_viec
+  public DataHanlderUser(filter:any){
+    const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/DataHanlderUser';
+    return this.http.post(url,filter);
+  }
 }

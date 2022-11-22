@@ -18,7 +18,7 @@ namespace WebAPI.System
         public string sdt { get; set; }
         public string email { get; set; }
         public string dia_chi { get; set; }
-        //1 nam 2 nữ 3 khác
+        //1 nam 2 nữ 
         public DateTime? ngay_sinh { get; set; }
         public string username { get; set; }
         public string pass_word { get; set; }

@@ -24,7 +24,7 @@ export class sys_thong_ke_indexComponent implements OnInit {
   public lst_data: any = [];
   public lst_chuc_vu: any = [];
   public chartOptions: any;
-  public loading :any;
+  public loading: any;
   filter = {
     id_cong_viec: '',
     id_chuc_vu: '',
@@ -58,6 +58,7 @@ export class sys_thong_ke_indexComponent implements OnInit {
         },
       ],
     };
+    this.loading=true;
   }
   get_list_cong_viec(): void {
     this.sys_cong_viec_service.get_list_cong_viec().subscribe((result) => {
@@ -70,8 +71,6 @@ export class sys_thong_ke_indexComponent implements OnInit {
       .get_thong_ke_cong_viec(this.filter)
       .subscribe((result) => {
         this.lst_data = result;
-        console.log(this.lst_data);
-
         this.load_data();
       });
   }
