@@ -22,7 +22,6 @@ import { sys_cau_hinh_admin_indexComponent } from './system/sys_cau_hinh_admin/i
 import { sys_thong_ke_indexComponent } from './system/sys_thong_ke_admin/index.component';
 import { sys_person_work_indexComponent } from './system/sys_person_work/index.component';
 import { sys_thong_ke_user_indexComponent } from './system/sys_thong_ke_user/index.component';
-import { sys_role_user_administer_indexComponent } from './system/sys_role_user_administer/index.component';
 
 const routes: Routes = [
   { path: "login", component: login_indexComponent },
@@ -30,10 +29,6 @@ const routes: Routes = [
   { path: "home", component: nav_indexComponent,canActivate:[AuthGuard] },
   { path: "", component: nav_indexComponent ,children: [
 
-    {
-      path: "sys_role_user_administer_index",
-      component: sys_role_user_administer_indexComponent
-    },
     {
       path: "sys_thong_ke_user_index",
       component: sys_thong_ke_user_indexComponent

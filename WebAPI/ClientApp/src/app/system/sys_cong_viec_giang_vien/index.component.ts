@@ -5,7 +5,6 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { user_model } from '@/app/model/user.model';
 import Swal from 'sweetalert2';
-import { MatPaginator } from '@angular/material/paginator';
 import * as XLSX from 'xlsx';
 import { ExcelServicesService } from '@/app/service/ExcelService';
 import { sys_giang_vien_service } from '../../service/sys_giang_vien.service';
@@ -14,6 +13,7 @@ import { sys_chuc_vu_service } from '../../service/sys_chuc_vu.service';
 import { sys_khoa_service } from '../../service/sys_khoa.service';
 import { sys_bo_mon_service } from '../../service/sys_bo_mon.service';
 import { sys_cong_viec_giang_vien_popupComponent } from './popupAdd.component';
+import { ExportExcelService } from '@/app/auth/export-excel.service';
 @Component({
   selector: 'sys_cong_viec_giang_vien_index',
   templateUrl: './index.component.html',
@@ -69,7 +69,8 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
     private sys_bo_mon_service: sys_bo_mon_service,
     private sys_cong_viec_giang_vien_service: sys_cong_viec_giang_vien_service,
     public dialog: MatDialog,
-    private excelServicesService: ExcelServicesService
+    private excelServicesService: ExcelServicesService,
+    private exportExcelService: ExportExcelService
   ) {}
   pageChangeEvent(event: number){
     this.p = event;
@@ -107,18 +108,33 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
       this.DataHanlder();
     });
   }
-  exportAsExcel(): void {
-    this.excelServicesService.exportAsExcelFile(this.listData, 'CVGiangVien');
-  }
-  export() {
-    let element = document.getElementById('excel-table');
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+  export_Excel(): void {
+    const exportData = this.listData.map((da_ta) => {
+      return {
+        ten_giang_vien:da_ta.ten_giang_vien,
+        ten_cong_viec:da_ta.ten_cong_viec,
+        status_del:da_ta.db.status_del,
+        create_name:da_ta.create_name,
+        create_date:da_ta.db.create_date,
+        note:da_ta.db.note,
+      };
+    });
+    this.exportExcelService.exportToExcelPro({
+        myData: exportData,
+        fileName: 'DSCViecGV',
+        sheetName: 'CVGV',
+        report: 'CÔNG VIỆC GIẢNG VIÊN',
+        myHeader: ['Tên giảng viên','Công việc', 'Trạng thái','Người tạo', 'Ngày tạo', 'Ghi chú'],
+        widths: [
+          { width:30 },
+          { width: 25 },
+          { width: 25 },
+          { width:35 },
+          { width: 40 },
 
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'CongViecGVienSheer');
+        ],
 
-    // save to file
-    XLSX.writeFile(wb, 'CongViecGiangVien.xlsx');
+    });
   }
   delete(id): void {
     this.sys_cong_viec_giang_vien_service.delete(id).subscribe((result) => {
