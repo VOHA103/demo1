@@ -25,6 +25,12 @@ namespace WebAPI.Model
         public int? trang_thai { get; set; }
         public List<string> list_giang_vien { get; set; }
     }
+    
+    public class filter_thong_ke_user
+    {
+        public int? id_loai_cong_viec { get; set; }
+
+    }
     public class filter_thong_ke
     {
         public string id_cong_viec { get; set; }

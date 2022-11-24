@@ -42,9 +42,6 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
   ];
   filter = {
     search: '',
-    total: 0,
-    page: 1,
-    limit: 10,
     status_del: 1,
     id_giang_vien: '',
     id_cong_viec: '',

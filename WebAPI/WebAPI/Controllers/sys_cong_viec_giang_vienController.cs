@@ -79,26 +79,28 @@ namespace WebAPI.Controllers
             };
             return Ok(model);
         }
-        [HttpGet("[action]")]
-        public IActionResult get_thong_ke_cong_viec_nguoi_dung()
+        [HttpPost("[action]")]
+        public IActionResult get_thong_ke_cong_viec_nguoi_dung([FromBody] filter_thong_ke_user filter)
         {
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
-            var result = _context.sys_cong_viec_giang_vien.Where(q => q.id_giang_vien == user_id)
+            var result = _context.sys_cong_viec_giang_vien
+                .Where(q => q.id_giang_vien == user_id)
                .GroupBy(q => new { q.id_cong_viec }).Select(q => new
                {
                    label = _context.sys_cong_viec.Where(d => d.id == q.Key.id_cong_viec).Select(q => q.ten_cong_viec).SingleOrDefault(),
-                   y = _context.sys_cong_viec_giang_vien.Where(d => d.id_giang_vien == q.Key.id_cong_viec).Sum(q => q.so_gio) ?? 0,
+                   y = _context.sys_cong_viec_giang_vien.Where(d => d.id_cong_viec == q.Key.id_cong_viec).Where(q => q.id_giang_vien == user_id).Sum(q => q.so_gio) ?? 0,
                }).ToList();
             return Ok(result);
         }
         [HttpPost("[action]")]
         public IActionResult get_thong_ke_cong_viec([FromBody] filter_thong_ke filter)
         {
-            var result = _context.sys_cong_viec_giang_vien.Where(q => q.id_chuc_vu == filter.id_chuc_vu && q.id_cong_viec == filter.id_cong_viec && q.id_khoa == filter.id_khoa)
+            var result = _context.sys_cong_viec_giang_vien.Where(q => q.id_chuc_vu == filter.id_chuc_vu && q.id_khoa == filter.id_khoa)
+                .Where(q=> q.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec=="")
                .GroupBy(q => new { q.id_giang_vien }).Select(q => new
                {
                    label = _context.sys_giang_vien.Where(d => d.id == q.Key.id_giang_vien).Select(q => q.ten_giang_vien).SingleOrDefault(),
-                   y = _context.sys_cong_viec_giang_vien.Where(d => d.id_giang_vien == q.Key.id_giang_vien).Sum(q => q.so_gio) ?? 0,
+                   y = _context.sys_cong_viec_giang_vien.Where(d => d.id_giang_vien == q.Key.id_giang_vien).Where(q => q.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "").Sum(q => q.so_gio) ?? 0,
                }).ToList();
             return Ok(result);
         }

@@ -54,14 +54,15 @@ export class reset_password_popupComponent {
           }).then((result) => {
             this.Close();
           });
-        } else
-          Swal.fire({
-            icon: 'warning',
-            title: 'Thất bại',
-            showConfirmButton: false,
-            timer: 2000,
-          }).then((result) => {
-          });
+        }
+        // else
+        //   Swal.fire({
+        //     icon: 'warning',
+        //     title: 'Thất bại',
+        //     showConfirmButton: false,
+        //     timer: 2000,
+        //   }).then((result) => {
+        //   });
       });
   }
 

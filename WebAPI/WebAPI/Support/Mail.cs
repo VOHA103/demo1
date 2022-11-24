@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.Model;
 using WebAPI.Services;
 
 namespace WebAPI.Support
@@ -39,28 +40,12 @@ namespace WebAPI.Support
             }
             return 1;
         }
-        //<th style = "" border-top: 0px solid #ccc; border-bottom: 0.001px solid #ccc; border: 0px solid white;width:200px ;  padding: 10px; padding-left: 30px; border-right: 0px solid #ccc; "">
-        //                                <img  style = ""width:150px; height: 150px; ""
-        //                                  src=""cid:{0}""/></th>
-
-
-
-        //          <div style = ""margin: 200px 0 12px 0;margin-top: 300px;"">
-        //            <div style = ""text-align: left; margin-left:50px;margin-top: 100px;"" >
-        //                <div style = ""font-size: 20px; font-weight: bold;margin-bottom: 30px;  margin-top: 100px; "" ><label>Thông tin mật khẩu</label></div>
-
-        //                <div style = ""font-size: 15px; "">
-        //                    <label>Mật khẩu mới:</label>
-        //                    <label style = ""font-size:30px;font-weight: bold;"" > {0} </label >
-        //                </div >
-        //            </div >
-        //        </div >
-        public static int send_password(string email, string pass)
+        public static int send_password(sys_giang_vien_model model, string pass)
         {
             var title = "Trường đại học Công Nghiệp Thực Phẩm Thành phố Hồ Chí Minh";
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(title, From));
-            message.To.Add(new MailboxAddress("test", email));
+            message.To.Add(new MailboxAddress("test", model.db.email));
             message.Subject = title;
             var builder = new BodyBuilder();
 
@@ -91,8 +76,12 @@ namespace WebAPI.Support
         
                
                 <div style=""font-size: 15px; "">
-                    <label>Mật khẩu mới:</label>
+                    <label>Tài khoản:</label>
                     <label style = ""font-size:30px;font-weight: bold;"" > {0} </label >
+                </div >
+                <div style=""font-size: 15px; "">
+                    <label>Mật khẩu:</label>
+                    <label style = ""font-size:30px;font-weight: bold;"" > {1} </label >
                 </div >
             </div >
         </div >
@@ -130,9 +119,7 @@ namespace WebAPI.Support
             </div >
         </div >
     </div >
-", pass);
-            //var image = builder.LinkedResources.Add(@"../Resources/Images/logo_hufi.jfif");
-            //image.ContentId = MimeUtils.GenerateMessageId();
+",model.db.username, pass);
             message.Body = builder.ToMessageBody();
 
             using (var client = new SmtpClient())

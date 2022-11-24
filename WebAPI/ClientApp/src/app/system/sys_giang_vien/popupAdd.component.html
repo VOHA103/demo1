@@ -16,14 +16,14 @@
             <input matInput [(ngModel)]="sys_giang_vien_model.db.ten_giang_vien" />
           </mat-form-field>
         </div>
-        <div class="flex-1 px-2">
+        <div class="flex-1 px-2"  *ngIf="sys_giang_vien_model.db.id == '0'">
           <mat-label>Mã giảng viên
             <span *ngFor="let key of check_error">
               <span style="color:red" *ngIf="key.key=='db.ma_giang_vien'">({{key.value}})</span>
             </span>
           </mat-label>
           <mat-form-field class="w-full" appearance="outline">
-            <input matInput [(ngModel)]="sys_giang_vien_model.db.ma_giang_vien" onkeypress=bind_data(this)/>
+            <input matInput [(ngModel)]="sys_giang_vien_model.db.ma_giang_vien" />
           </mat-form-field>
         </div>
       </div>

@@ -7,4 +7,5 @@ export class sys_chuc_vu {
   update_date: string | null;
   status_del: number | null;
   note: string;
+  code: string;
 }

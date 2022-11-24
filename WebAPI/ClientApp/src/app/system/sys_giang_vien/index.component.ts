@@ -10,6 +10,7 @@ import { sys_giang_vien_popupComponent } from './popupAdd.component';
 import { sys_chuc_vu_service } from '../../service/sys_chuc_vu.service';
 import { sys_khoa_service } from '../../service/sys_khoa.service';
 import * as XLSX from 'xlsx';
+import { environment } from '@/environments/environment';
 @Component({
   selector: 'sys_giang_vien_index',
   templateUrl: './index.component.html',
@@ -47,6 +48,8 @@ export class sys_giang_vien_indexComponent implements OnInit {
   };
   searchKey: string;
   data: any;
+
+  private REST_API_URL = environment.api;
   constructor(
     private http: HttpClient,
     private sys_chuc_vu_service: sys_chuc_vu_service,
@@ -87,12 +90,13 @@ export class sys_giang_vien_indexComponent implements OnInit {
       Swal.fire('Phải chọn file import', '', 'warning');
     } else {
       var formData = new FormData();
-
       formData.append('file', this.file);
       this.http
-        .post('https://localhost:44334/sys_giang_vien/ImportFromExcel/', formData, {})
+        .post(this.REST_API_URL+'/sys_giang_vien/ImportFromExcel/', formData, {})
         .subscribe((res) => {
+            console.log(res);
           if (res == '') {
+
             Swal.fire('Lưu thành công', '', 'success');
             this.DataHanlder();
           } else {

@@ -39,7 +39,7 @@ export class sys_thong_ke_indexComponent implements OnInit {
     private sys_khoa_service: sys_khoa_service,
     private sys_cong_viec_giang_vien_service: sys_cong_viec_giang_vien_service
   ) {}
-  load_data(): void {
+  load_data(data:any): void {
     this.chartOptions = {
       title: {
         text: 'Thống kê',
@@ -54,7 +54,7 @@ export class sys_thong_ke_indexComponent implements OnInit {
         {
           type: 'column', //change type to bar, line, area, pie, etc
           color: '#01b8aa',
-          dataPoints: this.lst_data,
+          dataPoints: data,
         },
       ],
     };
@@ -66,12 +66,12 @@ export class sys_thong_ke_indexComponent implements OnInit {
     });
   }
   get_thong_ke_cong_viec(): void {
-    debugger;
+    this.loading=false;
     this.sys_cong_viec_giang_vien_service
       .get_thong_ke_cong_viec(this.filter)
       .subscribe((result) => {
         this.lst_data = result;
-        this.load_data();
+        this.load_data(result);
       });
   }
   get_list_khoa(): void {

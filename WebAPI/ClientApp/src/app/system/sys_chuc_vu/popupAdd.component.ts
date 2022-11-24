@@ -19,6 +19,7 @@ export class sys_chuc_vu_popupComponent {
   public sys_chuc_vu_model = new sys_chuc_vu_model();
   public lst_status: any = [];
   public check_error: any = [];
+  public list_role: any = [];
   constructor(
     private http: HttpClient,
     private sys_chuc_vu_service: sys_chuc_vu_service,
@@ -30,6 +31,20 @@ export class sys_chuc_vu_popupComponent {
     //this.sys_chuc_vu = data;
     this.sys_chuc_vu_model = data;
     if (this.sys_chuc_vu_model.db.id == 0) this.Save();
+    this.list_role=[
+      {
+        id: "admin",
+        name:"QUản trị"
+      },
+      {
+        id: "sub_admin",
+        name:"Hỗ trợ quản trị"
+      },
+      {
+        id: "user",
+        name:"Người dùng"
+      }
+    ]
   }
   Close(): void {
     this.dialogRef.close();

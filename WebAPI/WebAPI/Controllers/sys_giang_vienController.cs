@@ -167,7 +167,75 @@ namespace WebAPI.Controllers
                         var ngay_sinh = (fileImport[8].value.ToString() ?? "").Trim();
                         var sex = (fileImport[9].value.ToString() ?? "").Trim();
 
+
+                        if (chuc_vu == null || chuc_vu=="")
+                        {
+                            error += "Phải nhập chức vụ tại dòng" + (ct + 1) + "<br />";
+                        }
+                        else
+                        {
+                            var id_chuc_vu = _context.sys_chuc_vu.Where(q => q.ten_chuc_vu.ToLower().Trim().Equals(chuc_vu.ToLower().Trim())).Select(q => q.id).SingleOrDefault();
+                            if (id_chuc_vu != 0)
+                            {
+                                model.db.id_chuc_vu = id_chuc_vu;
+                            }
+                            else
+                            {
+                                error += "Không có khoa tại dòng" + (ct + 1) + "<br />";
+                            }
+                        }
+                        if (khoa == null || khoa == "")
+                        {
+                            error += "Phải nhập khoa vụ tại dòng" + (ct + 1) + "<br />";
+                        }
+                        else
+                        {
+                            var id_khoa = _context.sys_khoa.Where(q => q.ten_khoa.ToLower().Trim().Equals(khoa.ToLower().Trim())).Select(q => q.id).SingleOrDefault();
+                            if (id_khoa != 0)
+                            {
+                                model.db.id_khoa = id_khoa;
+                            }
+                            else
+                            {
+                                error += "Không có khoa tại dòng" + (ct + 1) + "<br />";
+                            }
+                        }
+                        if (chuyen_nghanh == null || chuyen_nghanh == "")
+                        {
+                            error += "Phải nhập chuyên nghành tại dòng" + (ct + 1) + "<br />";
+                        }
+                        else
+                        {
+                            var id_chuyen_nghanh = _context.sys_chuyen_nganh.Where(q => q.ten_chuyen_nganh.ToLower().Trim().Equals(chuyen_nghanh.ToLower().Trim())).Select(q => q.id).SingleOrDefault();
+                            if (id_chuyen_nghanh!=0)
+                            {
+                                model.db.id_chuyen_nghanh = id_chuyen_nghanh;
+                            }
+                            else
+                            {
+                                error += "Không có chuyên nghành tại dòng" + (ct + 1) + "<br />";
+                            }
+                        }
+                        if (ma_giang_vien == null || ma_giang_vien == "")
+                        {
+                            error += "Phải nhập mã giảng viên tại dòng" + (ct + 1) + "<br />";
+                        }
+                        else
+                        {
+                            var id_ma_giang_vien = _context.sys_giang_vien.Where(q => q.ma_giang_vien.ToLower().Trim().Equals(ma_giang_vien.ToLower().Trim())).Count();
+                            if (id_ma_giang_vien == 0)
+                            {
+                                model.db.ma_giang_vien = ma_giang_vien;
+                            }
+                            else
+                            {
+                                error += "Mã giảng viên đã tồn tại tại dòng" + (ct + 1) + "<br />";
+                            }
+                        }
+
+
                         model.db.ma_giang_vien = ma_giang_vien;
+                        model.db.username = ma_giang_vien;
                         model.db.ten_giang_vien = ten_giang_vien;
                         model.db.email = email;
                         model.db.sdt = so_dien_thoai;
@@ -188,15 +256,14 @@ namespace WebAPI.Controllers
                         }
                         else
                         {
-                            model.db.id = get_id_primary_key();
-                            model.db.pass_word = chang_password(model.db.email);
-                            model.db.status_del = 1;
-                            model.db.username = model.db.ma_giang_vien;
-                            model.db.id_bo_mon = "";
                             model.db.create_date = DateTime.Now;
                             model.db.update_date = DateTime.Now;
                             model.db.create_by = user_id;
                             model.db.update_by = user_id;
+                            model.db.id = get_id_primary_key();
+                            model.db.pass_word = chang_password(model);
+                            model.db.status_del = 1;
+                            model.db.username = model.db.ma_giang_vien;
 
                             _context.sys_giang_vien.Add(model.db);
                             _context.SaveChanges();
@@ -269,8 +336,6 @@ namespace WebAPI.Controllers
             {
                 error += "Phải nhập tên giảng viên tại dòng" + (ct + 1) + "<br />";
             }
-
-
             if (model.db.gioi_tinh == null)
             {
                 error += "Phải nhập giới tính tại dòng" + (ct + 1) + "<br />";
@@ -491,6 +556,8 @@ namespace WebAPI.Controllers
                     model.sdt = sys_giang_vien.db.sdt;
                     model.email = sys_giang_vien.db.email;
                     model.ngay_sinh = sys_giang_vien.db.ngay_sinh;
+                    model.dia_chi = sys_giang_vien.db.dia_chi;
+                    model.gioi_tinh = sys_giang_vien.db.gioi_tinh;
                     sys_giang_vien.db.id_bo_mon = sys_giang_vien.list_bo_mon.Join(",");
                     await _context.SaveChangesAsync();
                 }
@@ -519,7 +586,7 @@ namespace WebAPI.Controllers
                 if (error.Count() == 0)
                 {
                     sys_giang_vien.db.id = get_id_primary_key();
-                    sys_giang_vien.db.pass_word = chang_password(sys_giang_vien.db.email);
+                    sys_giang_vien.db.pass_word = chang_password(sys_giang_vien);
                     sys_giang_vien.db.update_date = DateTime.Now;
                     sys_giang_vien.db.create_date = DateTime.Now;
                     sys_giang_vien.db.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
@@ -544,10 +611,10 @@ namespace WebAPI.Controllers
             }
 
         }
-        private string chang_password(string email)
+        private string chang_password(sys_giang_vien_model model)
         {
             string pass = generate_password();
-            Mail.send_password(email, pass);
+            Mail.send_password(model, pass);
             pass = Libary.EncodeMD5(pass);
             return pass;
         }

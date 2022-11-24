@@ -17,6 +17,23 @@
             <input matInput [(ngModel)]="sys_chuc_vu_model.db.ten_chuc_vu" />
           </mat-form-field>
         </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Quyền
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.ten_chuc_vu'">({{key.value}})</span>
+            </span>
+
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="sys_chuc_vu_model.db.code">
+              <mat-option *ngFor="let item of list_role" [value]="item.id">{{
+                item.name
+                }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
         <div class="flex-1 px-2">
           <mat-label>Ghi chú
             <span *ngFor="let key of check_error">
@@ -30,29 +47,6 @@
         </div>
       </div>
 
-
-      <!-- <div class="flex">
-        <div class="flex-1 px-2">
-          <mat-label>Tên thành viên</mat-label>
-          <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="sys_chuc_vu_model.db.id" name="food">
-              <mat-option *ngFor="let food of lst_status" [value]="food.id">
-                {{ food.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="flex-1 px-2">
-          <mat-label class="mb-5">Toppings</mat-label>
-          <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="sys_chuc_vu_model.lst_cong_viec" multiple>
-              <mat-option *ngFor="let food of lst_status" [value]="food.id">{{
-                food.name
-              }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div> -->
       <div class="flex pl-6 pt-6 justify-end">
         <div class="flex mr-3">
           <button mat-raised-button (click)="Close()">Close</button>

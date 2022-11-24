@@ -17,9 +17,6 @@
           <mat-label>Trạng thái</mat-label>
           <mat-form-field appearance="outline" class="w-full">
             <mat-select [(ngModel)]="filter.status_del" (selectionChange)="DataHanlder()">
-              <!-- <mat-option>
-                <ngx-mat-select-search [(ngModel)]="search"></ngx-mat-select-search>
-              </mat-option> -->
               <mat-option *ngFor="let item of lst_status" [value]="item.id">
                 {{ item.name }}
               </mat-option>

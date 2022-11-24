@@ -27,7 +27,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatRadioModule} from '@angular/material/radio';
-import {MatRippleModule} from '@angular/material/core';
+import {MatRippleModule, MAT_DATE_LOCALE} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
@@ -189,7 +189,8 @@ import { sys_thong_ke_user_indexComponent } from './system/sys_thong_ke_user/ind
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true
-  }
+  },
+  {provide: MAT_DATE_LOCALE, useValue: 'vi-VN'},
 ],
   bootstrap: [AppComponent]
 })

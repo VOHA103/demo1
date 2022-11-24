@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./nav.component.scss'],
 })
 export class nav_indexComponent implements OnInit {
+  public menu_sub_admin: any = [];
+  public menu_admin: any = [];
+  public menu_user: any = [];
   public menu: any = [];
   opened = false;
   public loading = false;
@@ -18,6 +21,7 @@ export class nav_indexComponent implements OnInit {
   public profile: any;
   public id_user: any;
   public cau_hinh: any;
+
   anio: number = new Date().getFullYear();
   constructor(
     private router: Router,
@@ -29,7 +33,6 @@ export class nav_indexComponent implements OnInit {
     this.currentYear = new Date('YYYY');
   }
   show_hide() {
-    debugger;
     if (this.opened == false) this.opened = true;
     else this.opened = false;
   }
@@ -42,42 +45,39 @@ export class nav_indexComponent implements OnInit {
   public get_profile_user(): void {
     this.sys_user_service.get_profile_user().subscribe((res: any) => {
       this.profile = res;
-      this.role_admin = {
-        link: 'sys_role_user_administer_index',
-        label: 'Phân quyền người dùng',
-      };
-      debugger
       this.load_role();
-      if (this.profile.code === 'admin')
-        this.menu.splice(0, 0, this.role_admin);
       this.loading = true;
     });
   }
-  load_role(){
-    this.menu = [
-      {
-        link: 'sys_person_work_index',
-        label: 'Công việc người dùng',
-      },
+  load_role() {
+    this.menu_admin = [
       {
         link: 'sys_thong_ke_index',
         label: 'Thống kê',
       },
       {
-        link: 'sys_thong_ke_user_index',
-        label: 'Thống kê người dùng',
-      },
-      {
-        link: 'sys_cau_hinh_giao_dien_index',
-        label: 'Cấu hình giao diện',
-      },
-      {
-        link: 'sys_bo_mon_index',
-        label: 'Bộ môn',
+        link: 'sys_chuc_vu_index',
+        label: 'Chức vụ',
       },
       {
         link: 'sys_khoa_index',
         label: 'Khoa',
+      },
+    ];
+    this.menu_user = [
+      {
+        link: 'sys_person_work_index',
+        label: 'Công việc người dùng',
+      },
+      {
+        link: 'sys_thong_ke_user_index',
+        label: 'Thống kê người dùng',
+      },
+    ];
+    this.menu_sub_admin = [
+      {
+        link: 'sys_bo_mon_index',
+        label: 'Bộ môn',
       },
       {
         link: 'sys_chuyen_nganh_index',
@@ -86,10 +86,6 @@ export class nav_indexComponent implements OnInit {
       {
         link: 'sys_ky_truc_khoa_index',
         label: 'Kỳ trực khoa',
-      },
-      {
-        link: 'sys_chuc_vu_index',
-        label: 'Chức vụ',
       },
       {
         link: 'sys_cong_viec_giang_vien_index',
@@ -103,10 +99,10 @@ export class nav_indexComponent implements OnInit {
         link: 'sys_giang_vien_index',
         label: 'Giảng viên',
       },
-      {
-        link: 'sys_hoat_dong_index',
-        label: 'Hoạt động',
-      },
+      // {
+      //   link: 'sys_hoat_dong_index',
+      //   label: 'Hoạt động',
+      // },
       {
         link: 'sys_loai_cong_viec_index',
         label: 'Loại công việc',
@@ -116,6 +112,67 @@ export class nav_indexComponent implements OnInit {
         label: 'Phòng trực',
       },
     ];
+    if (this.profile.code === 'admin') this.menu = this.menu_admin;
+    if (this.profile.code === 'sub_admin') this.menu = this.menu_sub_admin;
+    if (this.profile.code === 'user') this.menu = this.menu_user;
+    if(this.profile.code=="admin" && this.profile.name=="administrator")
+    this.menu=[
+      {
+        link: 'sys_thong_ke_index',
+        label: 'Thống kê',
+      },
+      {
+        link: 'sys_chuc_vu_index',
+        label: 'Chức vụ',
+      },
+      {
+        link: 'sys_khoa_index',
+        label: 'Khoa',
+      },
+      {
+        link: 'sys_person_work_index',
+        label: 'Công việc người dùng',
+      },
+      {
+        link: 'sys_thong_ke_user_index',
+        label: 'Thống kê người dùng',
+      },{
+        link: 'sys_bo_mon_index',
+        label: 'Bộ môn',
+      },
+      {
+        link: 'sys_chuyen_nganh_index',
+        label: 'Chuyên nghành',
+      },
+      {
+        link: 'sys_ky_truc_khoa_index',
+        label: 'Kỳ trực khoa',
+      },
+      {
+        link: 'sys_cong_viec_giang_vien_index',
+        label: 'Công việc giảng viên',
+      },
+      {
+        link: 'sys_cong_viec_index',
+        label: 'Công việc',
+      },
+      {
+        link: 'sys_giang_vien_index',
+        label: 'Giảng viên',
+      },
+      // {
+      //   link: 'sys_hoat_dong_index',
+      //   label: 'Hoạt động',
+      // },
+      {
+        link: 'sys_loai_cong_viec_index',
+        label: 'Loại công việc',
+      },
+      {
+        link: 'sys_phong_truc_index',
+        label: 'Phòng trực',
+      },
+    ]
   }
   role_admin: any;
   ngOnInit(): void {
