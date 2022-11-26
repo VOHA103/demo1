@@ -75,7 +75,7 @@
         <button mat-raised-button (click)="DataHanlder()">Tìm kiếm</button>
       </div>
       <div class="flex justify-end mr-10">
-        <button mat-raised-button color="primary" (click)="export_Excel()">
+        <button mat-raised-button color="primary" (click)="ExportExcel()">
           <mat-icon>cloud_download</mat-icon> Export Excel
         </button>
       </div>
@@ -103,7 +103,8 @@
             <th class=" text-base" style="height: 60px">Ngày tạo</th>
             <th class=" text-base" style="height: 60px">Ghi chú</th>
           </thead>
-          <tbody *ngFor="let item of listData|paginate: { itemsPerPage: 5, currentPage: p, totalItems: total } ; index as i">
+          <tbody
+            *ngFor="let item of listData|paginate: { itemsPerPage: 5, currentPage: p, totalItems: total } ; index as i">
             <tr>
               <td class="">
                 <div class="flex justify-center item-center">

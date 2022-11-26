@@ -1,0 +1,323 @@
+
+CREATE TABLE [dbo].[sys_bo_mon](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[ten_bo_mon] [nvarchar](128) NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[status_del] [int] NULL,
+	[note] [nvarchar](128) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[sys_cap_nhat_tt_giang_vien](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[id_giang_vien] [nvarchar](128) NULL,
+	[ten_giang_vien] [nvarchar](128) NULL,
+	[sdt] [nvarchar](128) NULL,
+	[email] [nvarchar](128) NULL,
+	[dia_chi] [nvarchar](500) NULL,
+	[ngay_sinh] [datetime] NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[status_del] [int] NULL,
+	[trang_thai] [int] NULL,
+	[note] [nvarchar](128) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[sys_cau_hinh_admin](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[title] [nvarchar](128) NULL,
+	[name_footer] [nvarchar](128) NULL,
+	[title_footer] [nvarchar](128) NULL,
+	[type_] [int] NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[status_del] [int] NULL,
+	[note] [nvarchar](128) NULL,
+	[image] [nvarchar](max) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[sys_chuc_vu](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[ten_chuc_vu] [nvarchar](128) NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[status_del] [int] NULL,
+	[note] [nvarchar](128) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+CREATE TABLE [dbo].[sys_chuyen_nganh](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[ten_chuyen_nganh] [nvarchar](128) NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[status_del] [int] NULL,
+	[note] [nvarchar](128) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+CREATE TABLE [dbo].[sys_cong_viec](
+	[id] [nvarchar](128) NOT NULL,
+	[ten_cong_viec] [nvarchar](128) NULL,
+	[id_loai_cong_viec] [int] NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[status_del] [int] NULL,
+	[note] [nvarchar](128) NULL,
+	[ngay_bat_dau] [datetime] NULL,
+	[gio_bat_dau] [nvarchar](128) NULL,
+	[so_gio] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[sys_cong_viec_giang_vien](
+	[id] [nvarchar](128) NOT NULL,
+	[id_giang_vien] [nvarchar](128) NULL,
+	[id_cong_viec] [nvarchar](128) NULL,
+	[so_gio] [int] NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[status_del] [int] NULL,
+	[note] [nvarchar](128) NULL,
+	[id_chuc_vu] [int] NULL,
+	[id_bo_mon] [int] NULL,
+	[id_khoa] [int] NULL,
+	[trang_thai] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[sys_giang_vien](
+	[id] [nvarchar](128) NOT NULL,
+	[id_chuc_vu] [int] NULL,
+	[id_khoa] [int] NULL,
+	[ten_giang_vien] [nvarchar](128) NULL,
+	[ma_giang_vien] [nvarchar](128) NULL,
+	[sdt] [nvarchar](128) NULL,
+	[email] [nvarchar](128) NULL,
+	[dia_chi] [nvarchar](500) NULL,
+	[ngay_sinh] [datetime] NULL,
+	[username] [nvarchar](128) NULL,
+	[pass_word] [nvarchar](128) NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[status_del] [int] NULL,
+	[note] [nvarchar](128) NULL,
+	[id_bo_mon] [nvarchar](128) NULL,
+	[gioi_tinh] [int] NULL,
+	[id_chuyen_nghanh] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[sys_giang_vien_truc_khoa](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[id_giang_vien] [nvarchar](128) NULL,
+	[id_phong_truc] [int] NULL,
+	[id_ky_truc] [int] NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[status_del] [int] NULL,
+	[trang_thai] [int] NULL,
+	[note] [nvarchar](128) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[sys_hoat_dong](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[ten_hoat_dong] [nvarchar](128) NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[status_del] [int] NULL,
+	[note] [nvarchar](128) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[sys_hoat_dong_giang_vien](
+	[id] [nvarchar](128) NOT NULL,
+	[id_giang_vien] [nvarchar](128) NULL,
+	[id_hoat_dong] [int] NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[status_del] [int] NULL,
+	[note] [nvarchar](128) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+CREATE TABLE [dbo].[sys_khoa](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[ten_khoa] [nvarchar](128) NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[status_del] [int] NULL,
+	[note] [nvarchar](128) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+
+CREATE TABLE [dbo].[sys_ky_truc_khoa](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[ten_ky] [nvarchar](128) NULL,
+	[thoi_gian_bat_dau] [datetime] NULL,
+	[thoi_gian_ket_thuc] [datetime] NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[status_del] [int] NULL,
+	[note] [nvarchar](128) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+CREATE TABLE [dbo].[sys_loai_cong_viec](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[ten_loai_cong_viec] [nvarchar](128) NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[status_del] [int] NULL,
+	[note] [nvarchar](128) NULL,
+	[so_gio] [int] NULL,
+	[loai] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+
+CREATE TABLE [dbo].[sys_phong_truc](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[ten_phong_truc] [nvarchar](128) NULL,
+	[so_phong] [nvarchar](128) NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[status_del] [int] NULL,
+	[note] [nvarchar](128) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+CREATE TABLE [dbo].[sys_thong_bao](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[id_giang_vien] [nvarchar](128) NULL,
+	[id_ref] [nvarchar](128) NULL,
+	[id_type] [int] NULL,
+	[create_by] [nvarchar](128) NULL,
+	[create_date] [datetime] NULL,
+	[update_by] [nvarchar](128) NULL,
+	[update_date] [datetime] NULL,
+	[trang_thai] [int] NULL,
+	[status_del] [int] NULL,
+	[note] [nvarchar](128) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+
+
+alter table sys_cong_viec
+add loai int

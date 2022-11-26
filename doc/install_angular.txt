@@ -1,0 +1,51 @@
+ng new name_project
+
+
+npm i @angular/cli@14
+
+npm install -D tailwindcss
+npx tailwindcss init
+npm install sweetalert2
+
+npm install aos --save
+
+npm install moment --save 
+npm install moment
+npm install --save @angular/material-moment-adapter
+
+npm install --save  @angular-material-components/datetime-picker
+
+npm install ngx-mat-datetime-picker --save - faile
+
+npm install --save ngx-mat-timepicker
+
+npm install ngx-mat-select-search
+
+npm install --save  @angular-material-components/datetime-picker
+
+npm install chart.js
+
+npm install apexcharts ng-apexcharts --save 
+
+npm install angular-js-xlsx
+npm install xlsx
+npm install exceljs
+npm install file-saver
+
+npm install uuid
+npm install --save @angular/material @angular/cdk @angular/animations
+
+
+    "strictPropertyInitialization": false,
+const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
+  parse: {
+    dateInput: 'l, LTS'
+  },
+  display: {
+    dateInput: 'YYYY-MM-DD HH:mm:ss',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  }
+};
+https://jake.stackblitz.com/edit/ngx-mat-select-search?file=src%2Fapp%2Fexamples%2F01-single-selection-example%2Fsingle-selection-example.component.ts

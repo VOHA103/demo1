@@ -19,7 +19,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using WebAPI.Services.Interfaces;
 using WebAPI.Part;
-
+using ClosedXML.Excel;
+using System.IO;
+using Syncfusion.XlsIO;
+using Syncfusion.Drawing;
 namespace WebAPI.Controllers
 {
     [ApiController]
@@ -32,6 +35,50 @@ namespace WebAPI.Controllers
         {
             this._context = _context;
         }
+        [HttpPost("[action]")]
+        public IActionResult ExportExcel([FromBody] filter_data_cong_viec_giang_vien_user filter)
+        {
+            var result = _context.sys_cong_viec_giang_vien
+          .Select(d => new sys_cong_viec_giang_vien_model()
+          {
+              db = d,
+              create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+              update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+              ten_giang_vien = _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.ten_giang_vien).SingleOrDefault(),
+              ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.id_chuc_vu).SingleOrDefault()).Select(q => q.ten_chuc_vu).SingleOrDefault(),
+              ten_khoa = _context.sys_khoa.Where(q => q.id == _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.id_khoa).SingleOrDefault()).Select(q => q.ten_khoa).SingleOrDefault(),
+              ten_cong_viec = _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.ten_cong_viec).SingleOrDefault(),
+              ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(q => q.id == _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.id_loai_cong_viec).SingleOrDefault()).Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
+          })
+          .Where(q => q.db.status_del == filter.status_del)
+          .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
+          .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || q.ten_giang_vien.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
+          .ToList();
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Works");
+                var currentRow = 1;
+                worksheet.Cell(currentRow, 1).Value = "Công việc";
+                worksheet.Cell(currentRow, 2).Value = "Giảng viên";
+                foreach (var item in result)
+                {
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = item.ten_cong_viec;
+                    worksheet.Cell(currentRow, 2).Value = item.ten_giang_vien;
+
+                }
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    string fileName = "works.xlsx";
+                    return File(content, contentType, fileName);
+                }
+            }
+            return Ok("Lỗi");
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> DataHanlderUser([FromBody] filter_data_cong_viec_giang_vien_user filter)
         {
@@ -96,7 +143,7 @@ namespace WebAPI.Controllers
         public IActionResult get_thong_ke_cong_viec([FromBody] filter_thong_ke filter)
         {
             var result = _context.sys_cong_viec_giang_vien.Where(q => q.id_chuc_vu == filter.id_chuc_vu && q.id_khoa == filter.id_khoa)
-                .Where(q=> q.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec=="")
+                .Where(q => q.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
                .GroupBy(q => new { q.id_giang_vien }).Select(q => new
                {
                    label = _context.sys_giang_vien.Where(d => d.id == q.Key.id_giang_vien).Select(q => q.ten_giang_vien).SingleOrDefault(),

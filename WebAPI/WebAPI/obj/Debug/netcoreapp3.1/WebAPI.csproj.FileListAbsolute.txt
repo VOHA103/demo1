@@ -279,3 +279,13 @@ D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\ICSharpCode
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\System.CodeDom.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\EPPlus.Core.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\System.Xml.XPath.XmlDocument.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\ClosedXML.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\DocumentFormat.OpenXml.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\ExcelNumberFormat.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Irony.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\SixLabors.Fonts.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\System.IO.Packaging.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\XLParser.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Syncfusion.Compression.Portable.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Syncfusion.Licensing.dll
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Syncfusion.XlsIO.Portable.dll

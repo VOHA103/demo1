@@ -53,7 +53,7 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
   public pageSize: number = 20;
   public pageDisplay: number = 10;
   public totalRow: number;
-  search:string="";
+  search: string = '';
   p: number = 0;
   total: number = 100;
   resp: number;
@@ -69,10 +69,15 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
     private excelServicesService: ExcelServicesService,
     private exportExcelService: ExportExcelService
   ) {}
-  pageChangeEvent(event: number){
+  ExportExcel(): void {
+    this.sys_cong_viec_giang_vien_service
+      .ExportExcel(this.filter)
+      .subscribe((resp) => {});
+  }
+  pageChangeEvent(event: number) {
     this.p = event;
     this.DataHanlder();
-}
+  }
   openDialogDetail(item): void {
     const dialogRef = this.dialog.open(
       sys_cong_viec_giang_vien_popupComponent,
@@ -108,29 +113,34 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
   export_Excel(): void {
     const exportData = this.listData.map((da_ta) => {
       return {
-        ten_giang_vien:da_ta.ten_giang_vien,
-        ten_cong_viec:da_ta.ten_cong_viec,
-        status_del:da_ta.db.status_del,
-        create_name:da_ta.create_name,
-        create_date:da_ta.db.create_date,
-        note:da_ta.db.note,
+        ten_giang_vien: da_ta.ten_giang_vien,
+        ten_cong_viec: da_ta.ten_cong_viec,
+        status_del: da_ta.db.status_del,
+        create_name: da_ta.create_name,
+        create_date: da_ta.db.create_date,
+        note: da_ta.db.note,
       };
     });
     this.exportExcelService.exportToExcelPro({
-        myData: exportData,
-        fileName: 'DSCViecGV',
-        sheetName: 'CVGV',
-        report: 'CÔNG VIỆC GIẢNG VIÊN',
-        myHeader: ['Tên giảng viên','Công việc', 'Trạng thái','Người tạo', 'Ngày tạo', 'Ghi chú'],
-        widths: [
-          { width:30 },
-          { width: 25 },
-          { width: 25 },
-          { width:35 },
-          { width: 40 },
-
-        ],
-
+      myData: exportData,
+      fileName: 'DSCViecGV',
+      sheetName: 'CVGV',
+      report: 'CÔNG VIỆC GIẢNG VIÊN',
+      myHeader: [
+        'Tên giảng viên',
+        'Công việc',
+        'Trạng thái',
+        'Người tạo',
+        'Ngày tạo',
+        'Ghi chú',
+      ],
+      widths: [
+        { width: 30 },
+        { width: 25 },
+        { width: 25 },
+        { width: 35 },
+        { width: 40 },
+      ],
     });
   }
   delete(id): void {
@@ -166,8 +176,8 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
       .DataHanlder(this.filter)
       .subscribe((resp) => {
         var model: any;
-        this.listData=resp;
-        this.total=this.resp;
+        this.listData = resp;
+        this.total = this.resp;
         model = resp;
         this.listData = model.data;
         this.total = model.total;
@@ -178,13 +188,12 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
       });
   }
 
-
-
-
   get_list_giang_vien(): void {
-    this.sys_giang_vien_service.get_list_giang_vien_change(this.filter.id_chuc_vu,this.filter.id_khoa).subscribe((result) => {
-      this.lst_giang_vien = result;
-    });
+    this.sys_giang_vien_service
+      .get_list_giang_vien_change(this.filter.id_chuc_vu, this.filter.id_khoa)
+      .subscribe((result) => {
+        this.lst_giang_vien = result;
+      });
   }
   get_list_cong_viec(): void {
     this.sys_cong_viec_service.get_list_cong_viec().subscribe((result) => {
@@ -192,18 +201,14 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
     });
   }
   get_list_khoa(): void {
-    this.sys_khoa_service
-      .get_list_khoa()
-      .subscribe((data) => {
-        this.lst_khoa = data
-      });
+    this.sys_khoa_service.get_list_khoa().subscribe((data) => {
+      this.lst_khoa = data;
+    });
   }
   get_list_chuc_vu(): void {
-    this.sys_chuc_vu_service
-      .get_list_chuc_vu()
-      .subscribe((data) => {
-        this.lst_chuc_vu = data;
-      });
+    this.sys_chuc_vu_service.get_list_chuc_vu().subscribe((data) => {
+      this.lst_chuc_vu = data;
+    });
   }
   ngOnInit(): void {
     this.DataHanlder();

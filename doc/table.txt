@@ -1,0 +1,12 @@
+thái
+sys_giang_vien_truc_khoa =>pending
+
+hà
+sys_bo_mon_giang_vien
+sys_hoat_dong_giang_vien => pending
+
+
+hà
+sys_ky_truc_khoa => thái pending
+
+ALTER TABLE sys_giang_vien alter COLUMN id_bo_mon nvarchar(128);

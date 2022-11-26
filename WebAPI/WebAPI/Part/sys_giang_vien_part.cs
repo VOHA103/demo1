@@ -69,14 +69,14 @@ namespace WebAPI.Part
             {
                 list_error.Add(set_error.set("list_bo_mon", "Bắt buộc"));
             }
-            //else
-            //{
-            //    var check_ma_giang_vien = _context.sys_giang_vien.Where(q => q.ma_giang_vien == item.db.ma_giang_vien && q.id != item.db.id).SingleOrDefault();
-            //    if (check_ma_giang_vien !=null)
-            //    {
-            //        list_error.Add(set_error.set("db.ma_giang_vien", "Trùng mã giảng viên!"));
-            //    }
-            //}
+            else
+            {
+                var check_ma_giang_vien = _context.sys_giang_vien.Where(q => q.ma_giang_vien == item.db.ma_giang_vien && q.id != item.db.id).Count();
+                if (check_ma_giang_vien != 0)
+                {
+                    list_error.Add(set_error.set("db.ma_giang_vien", "Trùng mã giảng viên!"));
+                }
+            }
             if (string.IsNullOrEmpty(item.db.sdt))
             {
                 list_error.Add(set_error.set("db.sdt", "Bắt buộc"));
