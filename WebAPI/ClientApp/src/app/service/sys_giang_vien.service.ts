@@ -49,6 +49,11 @@ export class sys_giang_vien_service {
     const url = this.REST_API_URL + '/sys_giang_vien/delete?id=' + id;
     return this.http.get(url);
   }
+  // edit sys_giang_vien
+  public reset_password (id: string) {
+    const url = this.REST_API_URL + '/sys_giang_vien/reset_password?id=' + id;
+    return this.http.get(url);
+  }
   // reven status sys_giang_vien
   public reven_status(id: string) {
     const url = this.REST_API_URL + '/sys_giang_vien/reven_status?id=' + id;

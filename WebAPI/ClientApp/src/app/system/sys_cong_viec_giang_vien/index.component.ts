@@ -72,7 +72,10 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
   ExportExcel(): void {
     this.sys_cong_viec_giang_vien_service
       .ExportExcel(this.filter)
-      .subscribe((resp) => {});
+      .subscribe((resp) => {
+        debugger
+        window.location.href= resp.toString();
+      });
   }
   pageChangeEvent(event: number) {
     this.p = event;

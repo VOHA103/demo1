@@ -58,6 +58,9 @@ namespace WebAPI.Controllers
             {
                 var worksheet = workbook.Worksheets.Add("Works");
                 var currentRow = 1;
+                worksheet.Cell(currentRow, 1).Value = "";
+                worksheet.Cell(currentRow, 2).Value = "Trường đại học Công Nghiệp Thực Phẩm Thành phố Hồ Chí Minh";
+                currentRow++;
                 worksheet.Cell(currentRow, 1).Value = "Công việc";
                 worksheet.Cell(currentRow, 2).Value = "Giảng viên";
                 foreach (var item in result)
@@ -67,6 +70,9 @@ namespace WebAPI.Controllers
                     worksheet.Cell(currentRow, 2).Value = item.ten_giang_vien;
 
                 }
+                currentRow++;
+                worksheet.Cell(currentRow, 1).Value = "Tổng cộng";
+                worksheet.Cell(currentRow, 2).Value = "320 giờ";
                 using (var stream = new MemoryStream())
                 {
                     workbook.SaveAs(stream);

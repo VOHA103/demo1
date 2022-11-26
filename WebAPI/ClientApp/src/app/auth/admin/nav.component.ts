@@ -56,6 +56,10 @@ export class nav_indexComponent implements OnInit {
         label: 'Thống kê',
       },
       {
+        link: 'sys_giang_vien_index',
+        label: 'Giảng viên',
+      },
+      {
         link: 'sys_chuc_vu_index',
         label: 'Chức vụ',
       },
@@ -94,10 +98,6 @@ export class nav_indexComponent implements OnInit {
       {
         link: 'sys_cong_viec_index',
         label: 'Công việc',
-      },
-      {
-        link: 'sys_giang_vien_index',
-        label: 'Giảng viên',
       },
       // {
       //   link: 'sys_hoat_dong_index',

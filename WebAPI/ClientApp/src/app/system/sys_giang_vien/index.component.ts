@@ -177,6 +177,18 @@ export class sys_giang_vien_indexComponent implements OnInit {
       });
     });
   }
+  reset_password(id): void {
+    this.sys_giang_vien_service.reset_password(id).subscribe((result) => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Thành công',
+        showConfirmButton: false,
+        timer: 2000,
+      }).then((result) => {
+        this.DataHanlder();
+      });
+    });
+  }
   reven_status(id): void {
     this.sys_giang_vien_service.reven_status(id).subscribe((result) => {
       Swal.fire({

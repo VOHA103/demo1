@@ -43,7 +43,6 @@ export class sys_cong_viec_giang_vien_popupComponent {
     //this.sys_cong_viec_giang_vien = data;
     this.sys_cong_viec_giang_vien_model = data;
     if (this.sys_cong_viec_giang_vien_model.db.id == '0') this.Save();
-    this.get_list_chuc_vu();
     this.get_list_khoa();
     this.get_list_bo_mon();
   }
@@ -83,15 +82,15 @@ export class sys_cong_viec_giang_vien_popupComponent {
       });
   }
   get_list_giang_vien(id_chuc_vu:any,id_khoa:any ): void {
+    debugger
     this.sys_giang_vien_service.get_list_giang_vien_change(id_chuc_vu,id_khoa).subscribe((result) => {
       this.list_giang_vien = result;
-      console.log(this.list_giang_vien);
+      this.list_giang_vien.splice(0,0,{id:"-1",name:"Tất cả"})
     });
   }
   get_list_cong_viec(): void {
     this.sys_cong_viec_service.get_list_cong_viec().subscribe((result) => {
       this.list_cong_viec = result;
-      console.log(this.list_cong_viec);
     });
   }
   get_list_khoa(): void {
@@ -100,6 +99,7 @@ export class sys_cong_viec_giang_vien_popupComponent {
       .subscribe((data) => {
         this.lst_khoa = data
         this.sys_cong_viec_giang_vien_model.db.id_khoa=this.lst_khoa[0].id;
+        this.get_list_chuc_vu();
       });
   }
   get_list_bo_mon(): void {
@@ -111,7 +111,9 @@ export class sys_cong_viec_giang_vien_popupComponent {
     this.sys_chuc_vu_service
       .get_list_chuc_vu()
       .subscribe((data) => {
+        debugger
         this.lst_chuc_vu = data
+        debugger
         this.sys_cong_viec_giang_vien_model.db.id_chuc_vu=this.lst_chuc_vu[0].id;
         this.get_list_giang_vien(this.sys_cong_viec_giang_vien_model.db.id_chuc_vu,this.sys_cong_viec_giang_vien_model.db.id_khoa);
       });

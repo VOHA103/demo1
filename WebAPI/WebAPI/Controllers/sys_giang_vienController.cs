@@ -509,6 +509,17 @@ namespace WebAPI.Controllers
             return Ok();
         }
         [HttpGet("[action]")]
+        public IActionResult reset_password([FromQuery] string id)
+        {
+            var result = _context.sys_giang_vien.Where(q=>q.id==id).Select(q=>new sys_giang_vien_model { 
+            db=q,
+            }).SingleOrDefault();
+
+            result.db.pass_word = chang_password(result);
+            _context.SaveChanges();
+            return Ok();
+        }
+        [HttpGet("[action]")]
         public IActionResult reven_status([FromQuery] string id)
         {
             var result = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(id)).SingleOrDefault();
@@ -562,7 +573,7 @@ namespace WebAPI.Controllers
                     model.ten_giang_vien = sys_giang_vien.db.ten_giang_vien;
                     model.sdt = sys_giang_vien.db.sdt;
                     model.email = sys_giang_vien.db.email;
-                    model.ngay_sinh = sys_giang_vien.db.ngay_sinh;
+                    model.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
                     model.dia_chi = sys_giang_vien.db.dia_chi;
                     model.gioi_tinh = sys_giang_vien.db.gioi_tinh;
                     sys_giang_vien.db.id_bo_mon = sys_giang_vien.list_bo_mon.Join(",");

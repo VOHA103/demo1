@@ -24,14 +24,15 @@ export class user_menuComponent implements OnInit {
     this.router.navigate(['/login']);
   }
   get_user_login(): void {
+    debugger
     this.sys_giang_vien_service.get_user_login().subscribe((result) => {
       debugger
       const dialogRef = this.dialog.open(sys_giang_vien_popupComponent, {
         width: '850px',
         data: result,
       });
-
-      dialogRef.afterClosed().subscribe((result) => {});
+      dialogRef.afterClosed().subscribe((result) => {
+      });
     });
   }
   go_to_popup_reset_password(): void {
