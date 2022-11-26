@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using WebAPI.Data;
 using WebAPI.Model;
@@ -69,25 +70,66 @@ namespace WebAPI.Part
             {
                 list_error.Add(set_error.set("list_bo_mon", "Bắt buộc"));
             }
-            else
-            {
-                var check_ma_giang_vien = _context.sys_giang_vien.Where(q => q.ma_giang_vien == item.db.ma_giang_vien && q.id != item.db.id).Count();
-                if (check_ma_giang_vien != 0)
-                {
-                    list_error.Add(set_error.set("db.ma_giang_vien", "Trùng mã giảng viên!"));
-                }
-            }
             if (string.IsNullOrEmpty(item.db.sdt))
             {
                 list_error.Add(set_error.set("db.sdt", "Bắt buộc"));
             }
+            else
+            {
+                if (!string.IsNullOrEmpty(item.db.sdt))
+                {
+
+                    if (item.db.sdt.Length > 10)
+                    {
+                        list_error.Add(set_error.set("db.sdt", "Số điện thoại không hợp lệ"));
+
+                    }
+                    else
+                    {
+                        var rgSoDienThoai = new Regex(@"(^[\+]?[0-9]{10,13}$) 
+            |(^[0-9]{3}-[0-9]{4}-[0-9]{4}$)
+            |(^\+[0-9]{2}\s+[0-9]{2}[0-9]{8}$)
+            |(^[(]?[\+]?[\s]?[(]?[0-9]{2,3}[)]?[-\s\.]?[0-9]{2,4}[-\s\.]?[0-9]{2,4}[-\s\.]?[0-9]{2,4}[-\s\.]?[0-9]{0,4}[-\s\.]?$)");
+
+                        var checkSDT = rgSoDienThoai.IsMatch(item.db.sdt);
+                        if (checkSDT == false)
+                        {
+                            list_error.Add(set_error.set("db.sdt", "Số điẹn thoại không hợp lệ"));
+                        }
+
+                    }
+
+
+                }
+            }
+
             if (string.IsNullOrEmpty(item.db.email))
             {
                 list_error.Add(set_error.set("db.email", "Bắt buộc"));
             }
+            else
+            {
+
+                var rgEmail = new Regex(@"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*"
+                                   + "@"
+                                   + @"((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))\z");
+                var checkEmail = rgEmail.IsMatch(item.db.email);
+                if (checkEmail == false)
+                {
+                    list_error.Add(set_error.set("db.email", "Email không đúng định dạng"));
+                }
+            }
             if (string.IsNullOrEmpty(item.db.dia_chi))
             {
                 list_error.Add(set_error.set("db.dia_chi", "Bắt buộc"));
+            }
+            if (string.IsNullOrEmpty(item.db.ma_giang_vien))
+            {
+                list_error.Add(set_error.set("db.ma_giang_vien", "Bắt buộc"));
+            }
+            else
+            {
+                
             }
             return list_error;
         }

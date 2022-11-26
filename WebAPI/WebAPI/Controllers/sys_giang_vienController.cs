@@ -168,7 +168,7 @@ namespace WebAPI.Controllers
                         var sex = (fileImport[9].value.ToString() ?? "").Trim();
 
 
-                        if (chuc_vu == null || chuc_vu=="")
+                        if (chuc_vu == null || chuc_vu == "")
                         {
                             error += "Phải nhập chức vụ tại dòng" + (ct + 1) + "<br />";
                         }
@@ -207,7 +207,7 @@ namespace WebAPI.Controllers
                         else
                         {
                             var id_chuyen_nghanh = _context.sys_chuyen_nganh.Where(q => q.ten_chuyen_nganh.ToLower().Trim().Equals(chuyen_nghanh.ToLower().Trim())).Select(q => q.id).SingleOrDefault();
-                            if (id_chuyen_nghanh!=0)
+                            if (id_chuyen_nghanh != 0)
                             {
                                 model.db.id_chuyen_nghanh = id_chuyen_nghanh;
                             }
@@ -306,32 +306,39 @@ namespace WebAPI.Controllers
                     error += "Email không hợp lệ" + (ct + 1) + "<br />";
                 }
             }
-            if (!string.IsNullOrEmpty(model.db.sdt))
+            if (String.IsNullOrEmpty(model.db.sdt))
             {
-
-                if (model.db.sdt.Length > 10)
+                error += "Phải nhập email  tại dòng" + (ct + 1) + "<br />";
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(model.db.sdt))
                 {
-                    error += "Số điện thoại tối đa 10 số" + (ct + 1) + "<br />";
 
-                }
-                else
-                {
-                    var rgSoDienThoai = new Regex(@"(^[\+]?[0-9]{10,13}$) 
+                    if (model.db.sdt.Length > 10)
+                    {
+                        error += "Số điện thoại tối đa 10 số" + (ct + 1) + "<br />";
+
+                    }
+                    else
+                    {
+                        var rgSoDienThoai = new Regex(@"(^[\+]?[0-9]{10,13}$) 
             |(^[0-9]{3}-[0-9]{4}-[0-9]{4}$)
             |(^\+[0-9]{2}\s+[0-9]{2}[0-9]{8}$)
             |(^[(]?[\+]?[\s]?[(]?[0-9]{2,3}[)]?[-\s\.]?[0-9]{2,4}[-\s\.]?[0-9]{2,4}[-\s\.]?[0-9]{2,4}[-\s\.]?[0-9]{0,4}[-\s\.]?$)");
 
-                    var checkSDT = rgSoDienThoai.IsMatch(model.db.sdt);
-                    if (checkSDT == false)
-                    {
-                        error += "Số điện thoại không hợp lệ" + (ct + 1) + "<br />";
+                        var checkSDT = rgSoDienThoai.IsMatch(model.db.sdt);
+                        if (checkSDT == false)
+                        {
+                            error += "Số điện thoại không hợp lệ" + (ct + 1) + "<br />";
+                        }
+
                     }
+
 
                 }
 
-
             }
-
             if (String.IsNullOrEmpty(model.db.ten_giang_vien))
             {
                 error += "Phải nhập tên giảng viên tại dòng" + (ct + 1) + "<br />";
@@ -580,9 +587,14 @@ namespace WebAPI.Controllers
             try
             {
                 //sys_giang_vien.db.pass_word = chang_password(sys_giang_vien.db.email);
-                sys_giang_vien.db.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
+                //sys_giang_vien.db.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var error = sys_giang_vien_part.get_list_error(sys_giang_vien);
+                var check_ma_giang_vien = _context.sys_giang_vien.Where(q => q.username == sys_giang_vien.db.ma_giang_vien && q.status_del == 1).Select(q => q.ma_giang_vien).ToList();
+                if (check_ma_giang_vien != null && sys_giang_vien.db.ma_giang_vien!="")
+                {
+                    error.Add(set_error.set("db.ma_giang_vien", "Trùng mã giảng viên!"));
+                }
                 if (error.Count() == 0)
                 {
                     sys_giang_vien.db.id = get_id_primary_key();

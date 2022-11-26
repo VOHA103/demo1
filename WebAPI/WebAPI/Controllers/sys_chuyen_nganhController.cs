@@ -124,6 +124,11 @@ namespace WebAPI.Controllers
 
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var error = sys_chuyen_nganh_part.check_error_insert_update(sys_chuyen_nganh);
+                var check = _context.sys_chuyen_nganh.Where(q => q.ten_chuyen_nganh == sys_chuyen_nganh.db.ten_chuyen_nganh && q.status_del == 1).SingleOrDefault();
+                if (check != null && sys_chuyen_nganh.db.ten_chuyen_nganh!="")
+                {
+                    error.Add(set_error.set("db.ten_chuyen_nganh", "Chuyên nghành đã tồn tại"));
+                }
                 if (error.Count() == 0)
                 {
                     sys_chuyen_nganh.db.id = 0;

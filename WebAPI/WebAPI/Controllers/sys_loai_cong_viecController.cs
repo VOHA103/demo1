@@ -109,6 +109,11 @@ namespace WebAPI.Controllers
             try
             {
                 var error = sys_loai_cong_viec_part.check_error_insert_update(sys_loai_cong_viec);
+                var check = _context.sys_loai_cong_viec.Where(q => q.ten_loai_cong_viec == sys_loai_cong_viec.db.ten_loai_cong_viec && q.status_del == 1).SingleOrDefault();
+                if (check != null && sys_loai_cong_viec.db.ten_loai_cong_viec!="")
+                {
+                    error.Add(set_error.set("db.ten_loai_cong_viec", "Loại công việc đã tồn tại"));
+                }
                 if (error.Count() == 0)
                 {
                     var model = _context.sys_loai_cong_viec.Where(q => q.id == sys_loai_cong_viec.db.id).SingleOrDefault();
@@ -143,6 +148,11 @@ namespace WebAPI.Controllers
 
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var error = sys_loai_cong_viec_part.check_error_insert_update(sys_loai_cong_viec);
+                var check = _context.sys_loai_cong_viec.Where(q => q.ten_loai_cong_viec == sys_loai_cong_viec.db.ten_loai_cong_viec && q.status_del == 1).SingleOrDefault();
+                if (check != null)
+                {
+                    error.Add(set_error.set("db.ten_loai_cong_viec", "Loại công việc đã tồn tại"));
+                }
                 if (error.Count() == 0)
                 {
                     sys_loai_cong_viec.db.id = 0;

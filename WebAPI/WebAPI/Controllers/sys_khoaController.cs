@@ -103,12 +103,18 @@ namespace WebAPI.Controllers
         {
             try
             {
+                string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var error = sys_khoa_part.check_error_insert_update(sys_khoa);
+                var check = _context.sys_khoa.Where(q => q.ten_khoa == sys_khoa.db.ten_khoa && q.status_del == 1).SingleOrDefault();
+                if (check != null && sys_khoa.db.ten_khoa!="")
+                {
+                    error.Add(set_error.set("db.ten_khoa", "Khoa đã tồn tại"));
+                }
                 if (error.Count() == 0)
                 {
                     var model = _context.sys_khoa.Where(q => q.id == sys_khoa.db.id).SingleOrDefault();
                     model.update_date = DateTime.Now;
-                    model.update_by = sys_khoa.db.update_by;
+                    model.update_by = user_id;
                     model.note = sys_khoa.db.note;
                     model.ten_khoa = sys_khoa.db.ten_khoa;
                     model.status_del = 1;
@@ -131,13 +137,20 @@ namespace WebAPI.Controllers
         {
             try
             {
+                string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var error = sys_khoa_part.check_error_insert_update(sys_khoa);
+                var check = _context.sys_khoa.Where(q => q.ten_khoa == sys_khoa.db.ten_khoa && q.status_del == 1).SingleOrDefault();
+                if (check != null)
+                {
+                    error.Add(set_error.set("db.ten_khoa", "Khoa đã tồn tại"));
+                }
                 if (error.Count() == 0)
                 {
                     sys_khoa.db.id =0;
                     sys_khoa.db.update_date = DateTime.Now;
                     sys_khoa.db.create_date = DateTime.Now;
-                    sys_khoa.db.update_by = sys_khoa.db.create_by;
+                    sys_khoa.db.create_by = user_id;
+                    sys_khoa.db.update_by = user_id;
                     sys_khoa.db.status_del = 1;
                     _context.sys_khoa.Add(sys_khoa.db);
                     await _context.SaveChangesAsync();

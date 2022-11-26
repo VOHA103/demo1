@@ -138,6 +138,11 @@ namespace WebAPI.Controllers
             {
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var error = sys_bo_mon_part.check_error_insert_update(sys_bo_mon);
+                var check_bo_mon = _context.sys_bo_mon.Where(q => q.ten_bo_mon == sys_bo_mon.db.ten_bo_mon && q.status_del == 1).SingleOrDefault();
+                if (check_bo_mon != null && sys_bo_mon.db.ten_bo_mon!="")
+                {
+                    error.Add(set_error.set("db.ten_bo_mon", "Tên bộ môn đã tồn tại"));
+                }
                 if (error.Count() == 0)
                 {
                     sys_bo_mon.db.id = 0;
