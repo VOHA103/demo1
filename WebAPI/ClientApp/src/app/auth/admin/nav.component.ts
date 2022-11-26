@@ -129,14 +129,15 @@ export class nav_indexComponent implements OnInit {
         link: 'sys_khoa_index',
         label: 'Khoa',
       },
+      // {
+      //   link: 'sys_person_work_index',
+      //   label: 'Công việc người dùng',
+      // },
+      // {
+      //   link: 'sys_thong_ke_user_index',
+      //   label: 'Thống kê người dùng',
+      // },
       {
-        link: 'sys_person_work_index',
-        label: 'Công việc người dùng',
-      },
-      {
-        link: 'sys_thong_ke_user_index',
-        label: 'Thống kê người dùng',
-      },{
         link: 'sys_bo_mon_index',
         label: 'Bộ môn',
       },

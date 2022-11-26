@@ -218,11 +218,15 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
     this.lst_status = [
       {
         id: '1',
-        name: 'Thành viên',
+        name: 'Hoàn thành',
       },
       {
         id: '2',
-        name: 'Công việc',
+        name: 'Chưa hoàn thành',
+      },
+      {
+        id: '3',
+        name: 'Đang thực hiện',
       },
     ];
   }
