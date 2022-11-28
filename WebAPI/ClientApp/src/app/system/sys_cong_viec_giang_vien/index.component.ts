@@ -73,10 +73,36 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
     this.sys_cong_viec_giang_vien_service
       .ExportExcel(this.filter)
       .subscribe((resp) => {
-        debugger
-        window.location.href= resp.toString();
+        var res;
+        res = resp;
+        var downloadedFile = new Blob([res.body], { type: res.body.type });
+        const a = document.createElement('a');
+        a.setAttribute('style', 'display:none;');
+        document.body.appendChild(a);
+        a.href = URL.createObjectURL(downloadedFile);
+        a.target = '_dAblank';
+        a.download = 'DanhSachBill.xlsx';
+        a.click();
+        document.body.removeChild(a);
       });
   }
+  // let uri = this.controller + '.ctr/exportExcel';
+  //       this.http.get(uri, { params, responseType: 'blob', observe: 'response' })
+  //           .subscribe(resp => {
+  //               var res;
+  //               debugger
+  //               res = resp;
+  //               var downloadedFile = new Blob([res.body], { type: res.body.type });
+  //               const a = document.createElement('a');
+  //               a.setAttribute('style', 'display:none;');
+  //               document.body.appendChild(a);
+  //               a.href = URL.createObjectURL(downloadedFile);
+  //               a.target = '_dAblank';
+  //               a.download = 'DanhSachBill.xlsx'
+  //               a.click();
+  //               document.body.removeChild(a);
+
+  // })
   pageChangeEvent(event: number) {
     this.p = event;
     this.DataHanlder();
@@ -113,6 +139,7 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
       this.DataHanlder();
     });
   }
+
   export_Excel(): void {
     const exportData = this.listData.map((da_ta) => {
       return {

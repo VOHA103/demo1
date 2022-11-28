@@ -101,10 +101,8 @@ namespace WebAPI.Controllers
                   ten_cong_viec = _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.ten_cong_viec).SingleOrDefault(),
                   ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(q => q.id == _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.id_loai_cong_viec).SingleOrDefault()).Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
               })
-              .Where(q => q.db.status_del == filter.status_del)
-              .Where(q => q.db.id_giang_vien == user_id)
               .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
-              .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || q.ten_giang_vien.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
+              .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
               .ToList();
             result.ForEach(q =>
             {
@@ -124,6 +122,7 @@ namespace WebAPI.Controllers
                     q.trang_thai = 1;
                 }
             });
+            result = result.Where(q => q.trang_thai == filter.status_del).ToList();
             var count = result.Count();
             var model = new
             {
@@ -138,6 +137,7 @@ namespace WebAPI.Controllers
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
             var result = _context.sys_cong_viec_giang_vien
                 .Where(q => q.id_giang_vien == user_id)
+                .Where(q => _context.sys_cong_viec.Where(d => d.id == q.id_cong_viec).Select(q => q.id_loai_cong_viec).SingleOrDefault()==filter.id_loai_cong_viec|| filter.id_loai_cong_viec==-1)
                .GroupBy(q => new { q.id_cong_viec }).Select(q => new
                {
                    label = _context.sys_cong_viec.Where(d => d.id == q.Key.id_cong_viec).Select(q => q.ten_cong_viec).SingleOrDefault(),
@@ -172,7 +172,6 @@ namespace WebAPI.Controllers
                   ten_cong_viec = _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.ten_cong_viec).SingleOrDefault(),
                   ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(q => q.id == _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.id_loai_cong_viec).SingleOrDefault()).Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
               })
-              .Where(q => q.db.status_del == filter.status_del)
               .Where(q => q.db.id_giang_vien == filter.id_giang_vien || filter.id_giang_vien == "")
               .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
               .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || q.ten_giang_vien.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
@@ -181,14 +180,14 @@ namespace WebAPI.Controllers
               .ToList();
             result.ForEach(q =>
             {
-                var time_work = _context.sys_cong_viec.Where(d => d.id == q.db.id_cong_viec).Select(q => q.ngay_bat_dau).SingleOrDefault();
+                var cong_viec = _context.sys_cong_viec.Where(d => d.id == q.db.id_cong_viec).SingleOrDefault();
                 var time_now = DateTime.Now;
                 //trang_thai => 1 đã xong 2 chưa thực hiện 3 đang thực hiện
-                if (time_work > time_now)
+                if (cong_viec.ngay_bat_dau > time_now)
                 {
                     q.trang_thai = 2;
                 }
-                else if (time_now == time_work)
+                else if (time_now > cong_viec.ngay_bat_dau && time_now < cong_viec.ngay_ket_thuc)
                 {
                     q.trang_thai = 3;
                 }
@@ -197,6 +196,7 @@ namespace WebAPI.Controllers
                     q.trang_thai = 1;
                 }
             });
+            result = result.Where(q => q.trang_thai == filter.status_del).ToList();
             var count = result.Count();
             var model = new
             {

@@ -6,6 +6,7 @@ export interface sys_cong_viec {
   so_gio: number | null;
   ngay_bat_dau: string | null;
   gio_bat_dau: string;
+  ngay_ket_thuc: string;
   create_by: string;
   create_date: string | null;
   update_by: string;

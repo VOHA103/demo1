@@ -72,9 +72,23 @@
           </mat-form-field>
         </div>
         <div class="flex-1 px-2">
+          <mat-label>Ngày kết thúc
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.ngay_ket_thuc'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput [matDatepicker]="picker" [(ngModel)]="sys_cong_viec_model.db.ngay_ket_thuc">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
           <mat-label>Giờ
             <span *ngFor="let key of check_error">
-              <span style="color:red" *ngIf="key.key=='db.gio'">({{key.value}})</span>
+              <span style="color:red" *ngIf="key.key=='gio'">({{key.value}})</span>
             </span>
 
           </mat-label>
@@ -90,7 +104,7 @@
         <div class="flex-1 px-2">
           <mat-label>Phút
             <span *ngFor="let key of check_error">
-              <span style="color:red" *ngIf="key.key=='db.note'">({{key.value}})</span>
+              <span style="color:red" *ngIf="key.key=='phut'">({{key.value}})</span>
             </span>
 
           </mat-label>

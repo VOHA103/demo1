@@ -11,7 +11,6 @@ namespace WebAPI.Data
     public partial class ApplicationDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
-        public DbSet<sys_role_user_administer_db> sys_role_user_administer { get; set; }
         public DbSet<sys_loai_cong_viec> sys_loai_cong_viec { get; set; }
         public DbSet<sys_chuyen_nganh> sys_chuyen_nganh { get; set; }
         public DbSet<sys_bo_mon> sys_bo_mon { get; set; }

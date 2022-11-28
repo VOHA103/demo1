@@ -77,11 +77,15 @@ export class sys_person_work_indexComponent implements OnInit {
     this.lst_status = [
       {
         id: 1,
-        name: 'Đang sử dụng',
+        name: 'Hoàn thành',
       },
       {
         id: 2,
-        name: 'Ngưng sử dụng',
+        name: 'Chưa hoàn thành',
+      },
+      {
+        id: 3,
+        name: 'Đang thực hiện',
       },
     ];
   }

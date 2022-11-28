@@ -90,9 +90,11 @@ var CanvasJSChart = CanvasJSAngularChart.CanvasJSChart;
 import { sys_person_work_indexComponent } from './system/sys_person_work/index.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { sys_thong_ke_user_indexComponent } from './system/sys_thong_ke_user/index.component';
+import { sys_giang_vien_edit_popupComponent } from './auth/user_menu/popupAdd.component';
 @NgModule({
   declarations: [
     AppComponent,
+    sys_giang_vien_edit_popupComponent,
     sys_thong_ke_user_indexComponent,
     sys_person_work_indexComponent,
     sys_user_indexComponent,

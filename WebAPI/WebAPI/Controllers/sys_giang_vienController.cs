@@ -455,19 +455,22 @@ namespace WebAPI.Controllers
               .Where(q => q.db.id_khoa == id_khoa || id_khoa == -1)
               .Where(q => q.db.id_chuyen_nghanh == id_chuyen_nghanh || id_chuyen_nghanh == -1)
               .ToList();
-            //result.ForEach(q =>
-            //{
-            //    q.list_bo_mon = q.db.id_bo_mon.Split(",").ToList();
-            //    foreach (var item in q.list_bo_mon)
-            //    {
-            //        var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
-            //        q.ten_bo_mon += name;
-            //        if (!item.Equals(q.list_bo_mon.Last()))
-            //        {
-            //            q.ten_bo_mon += ", ";
-            //        }
-            //    }
-            //});
+            result.ForEach(q =>
+            {
+                if (q.db.id_bo_mon!=null)
+                {
+                    q.list_bo_mon = q.db.id_bo_mon.Split(",").ToList();
+                    foreach (var item in q.list_bo_mon)
+                    {
+                        var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
+                        q.ten_bo_mon += name;
+                        if (!item.Equals(q.list_bo_mon.Last()))
+                        {
+                            q.ten_bo_mon += ", ";
+                        }
+                    }
+                }
+            });
             result = result.OrderByDescending(q => q.db.update_date).ToList();
             var model = new
             {
@@ -522,7 +525,7 @@ namespace WebAPI.Controllers
         [HttpGet("[action]")]
         public IActionResult reven_status([FromQuery] string id)
         {
-            var result = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(id)).SingleOrDefault();
+            var result = _context.sys_giang_vien.Find(id);
             // xoá khỏi database
             //_context.sys_khoa.Remove(result);
 
@@ -576,7 +579,7 @@ namespace WebAPI.Controllers
                     model.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
                     model.dia_chi = sys_giang_vien.db.dia_chi;
                     model.gioi_tinh = sys_giang_vien.db.gioi_tinh;
-                    sys_giang_vien.db.id_bo_mon = sys_giang_vien.list_bo_mon.Join(",");
+                    model.id_bo_mon = sys_giang_vien.list_bo_mon.Join(",");
                     await _context.SaveChangesAsync();
                 }
                 var result = new
@@ -597,8 +600,6 @@ namespace WebAPI.Controllers
         {
             try
             {
-                //sys_giang_vien.db.pass_word = chang_password(sys_giang_vien.db.email);
-                //sys_giang_vien.db.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var error = sys_giang_vien_part.get_list_error(sys_giang_vien);
                 var check_ma_giang_vien = _context.sys_giang_vien.Where(q => q.username == sys_giang_vien.db.ma_giang_vien && q.status_del == 1).Select(q => q.ma_giang_vien).ToList();

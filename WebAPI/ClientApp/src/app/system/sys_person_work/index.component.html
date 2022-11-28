@@ -10,7 +10,7 @@
         <div class="flex-1  px-2">
           <mat-label>Công việc</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select (selectionChange)="DataHanlderUser()">
+            <mat-select [(ngModel)]="filter.id_cong_viec" (selectionChange)="DataHanlderUser()">
               <mat-option *ngFor="let item of lst_cong_viec" [value]="item.id">
                 {{ item.name }}
               </mat-option>
@@ -20,7 +20,7 @@
         <div class="flex-1  px-2">
           <mat-label>Trạng thái</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select (selectionChange)="DataHanlderUser()">
+            <mat-select [(ngModel)]="filter.status_del" (selectionChange)="DataHanlderUser()">
               <mat-option *ngFor="let item of lst_status" [value]="item.id">
                 {{ item.name }}
               </mat-option>
@@ -52,40 +52,75 @@
     <div class="flex mt-10">
       <mat-card class="w-full">
 
-        <table id="data "  class="w-full table_admin">
+        <table id="excel-table" class="w-full table_admin">
           <thead class="">
-            <th class=" text-base" style="width: 5%; height: 60px"> No. </th>
-            <th class=" text-base" style="height: 60px">Tên công việc</th>
-            <th class=" text-base" style="height: 60px">Ngày bắt đầu</th>
-            <th class=" text-base" style="height: 60px">Giờ bắt đầu</th>
-            <th class=" text-base" style="height: 60px">Số giờ</th>
-            <th class=" text-base" style="height: 60px">Ghi chú</th>
+            <!-- <th class=" text-base" style="width: 5%; height: 60px"></th> -->
+            <th class=" text-base" style="width: 5%; height: 60px">
+              No.
+            </th>
+            <th class=" text-base" style="height: 60px">
+              Tên giảng viên
+            </th>
+            <th class=" text-base" style="height: 60px">Công việc</th>
             <th class=" text-base" style="height: 60px">Trạng thái</th>
+            <th class=" text-base" style="height: 60px">Người tạo</th>
+            <th class=" text-base" style="height: 60px">Ngày tạo</th>
+            <th class=" text-base" style="height: 60px">Ghi chú</th>
           </thead>
-          <tbody *ngFor="let item of listData|paginate: { itemsPerPage: 5, currentPage: p, totalItems: total } ; index as i">
+          <tbody
+            *ngFor="let item of listData|paginate: { itemsPerPage: 5, currentPage: p, totalItems: total } ; index as i">
             <tr>
-            <td id="no_No">
-                <span class="p-4">{{ i + 1 }} </span>
+              <!-- <td class="">
+                <div class="flex justify-center item-center">
+                  <div class="flex justify-center items-center ng-star-inserted" *ngIf="item.db.status_del==1"
+                    (click)="delete(item.db.id)"><span class="material-icons"
+                      style="color: rgb(255, 0, 0);">cancel</span></div>
+                  <div class="flex justify-center items-center ng-star-inserted" *ngIf="item.db.status_del==2"
+                    (click)="reven_status(item.db.id)"><span class="material-icons" style="color: rgb(16, 222, 36)">
+                      <mat-icon>done_outline</mat-icon>
+                    </span></div>
+                  <div class="flex justify-center items-center ng-star-inserted" (click)="openDialogDetail(item)"><span
+                      class="material-icons">
+                      <mat-icon>build</mat-icon>
+                    </span></div>
+                </div>
+              </td> -->
+              <td class="">
+                <span class="p-4">
+                  {{ i + 1 }}
+                </span>
               </td>
               <td class="">
-                <span>{{ item.db.ten_cong_viec }}</span>
+                <span>{{ item.ten_giang_vien }}</span><br>
+                <span>Chức vụ:{{ item.ten_chuc_vu }}</span><br>
+                <span>Khoa:{{ item.ten_khoa }}</span><br>
               </td>
-              <td class="">{{ item.db.ngay_bat_dau }}
-              </td>
-              <td class="">{{ item.db.gio_bat_dau }}
-              </td>
-              <td class="">{{ item.db.so_gio }}
-              </td>
-              <td class="">{{ item.db.note }}</td>
-
               <td class="">
-                <div *ngIf="item.db.status_del==1" class="border-2 border-black rounded-full w-8 h-8 "
+                <span class="text-base text-blue-600">
+                  {{ item.ten_loai_cong_viec }}
+                </span>
+                <br>
+                <span>Công việc:{{ item.ten_cong_viec }}</span>
+                <br>
+                <span class="text-base text-blue-600">
+                  Số giờ:{{ item.db.so_gio }}
+                </span>
+              </td>
+              <td class="">
+                <div *ngIf="item.trang_thai==1" class="border-2 border-black rounded-full w-8 h-8"
                   style="background-color: rgb(16, 188, 56);"></div>
-                <div *ngIf="item.db.status_del==2" class="border-2 border-black rounded-full w-8 h-8"
+                <div *ngIf="item.trang_thai==2" class="border-2 border-black rounded-full w-8 h-8"
                   style="background-color: rgb(188, 23, 39);"></div>
-                <div *ngIf="item.db.status_del==3" class="border-2 border-black rounded-full w-8 h-8"
+                <div *ngIf="item.trang_thai==3" class="border-2 border-black rounded-full w-8 h-8"
                   style="background-color: rgb(230, 238, 22);"></div>
               </td>
+              <td class="">
+                {{ item.create_name }}
+              </td>
+              <td class="">
+                {{ item.db.create_date | date :'dd/MM/YYYY HH:mm' }}
+              </td>
+              <td class="">{{ item.db.note }}</td>
             </tr>
           </tbody>
         </table>
