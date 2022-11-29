@@ -49,16 +49,16 @@
 
       <div class="flex pl-6 pt-6 justify-end">
         <div class="flex mr-3">
-          <button mat-raised-button (click)="Close()">Close</button>
+          <button mat-raised-button (click)="Close()">Đóng</button>
         </div>
         <div>
           <button mat-raised-button color="primary" *ngIf="sys_chuc_vu_model.db.id == 0" (click)="Save()">
-            Save
+            Lưu
           </button>
         </div>
         <div>
           <button mat-raised-button color="primary" *ngIf="sys_chuc_vu_model.db.id != 0" (click)="Edit()">
-            Edit
+            Sửa
           </button>
         </div>
       </div>

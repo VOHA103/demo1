@@ -205,7 +205,7 @@ namespace WebAPI.Controllers
             var giang_vien = _context.sys_giang_vien.Where(q => q.id == item).Select(q => q.email).SingleOrDefault();
             _context.sys_cong_viec_giang_vien.Add(cong_viec_giang_vien.db);
             _context.SaveChangesAsync();
-            Mail.send_work(giang_vien, model.db.ten_cong_viec, model.db.ngay_bat_dau, model.db.gio_bat_dau, model.db.so_gio, model.db.note);
+            Mail.send_work(giang_vien, model.db.ten_cong_viec, (DateTime)model.db.ngay_bat_dau,(DateTime)model.db.ngay_ket_thuc, model.db.gio_bat_dau, (int)model.db.so_gio, model.db.note);
         }
         private string get_id_primary_key_cong_viec()
         {

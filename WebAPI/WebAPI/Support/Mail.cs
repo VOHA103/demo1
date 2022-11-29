@@ -132,7 +132,7 @@ namespace WebAPI.Support
             }
             return 1;
         }
-        public static int send_work(string email, string ten_cong_viec, DateTime? ngay_bat_dau, string gio_bat_dau, int? so_gio, string ghi_chu)
+        public static int send_work(string email, string ten_cong_viec, DateTime ngay_bat_dau,DateTime ngay_ket_thuc, string gio_bat_dau, int so_gio, string ghi_chu)
         {
             var title = "Trường đại học Công Nghiệp Thực Phẩm Thành phố Hồ Chí Minh";
             var message = new MimeMessage();
@@ -176,20 +176,25 @@ namespace WebAPI.Support
                         <th style="" border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc; width:20%  ;padding: 10px; padding-left: 30px; border-right: 0.001px solid #ccc;"">Ngày bắt đầu</th>
                         <td style="" border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc;padding: 10px; width:80% ;padding-left: 30px; border-right: 0.001px solid #ccc;"">{1}</td>
                     </tr>
+    <tr>
+
+                        <th style="" border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc; width:20%  ;padding: 10px; padding-left: 30px; border-right: 0.001px solid #ccc;"">Ngày kết thúc</th>
+                        <td style="" border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc;padding: 10px; width:80% ;padding-left: 30px; border-right: 0.001px solid #ccc;"">{2}</td>
+                    </tr>
 
                     <tr>
 
                         <th style=""border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc; width:20%  ;padding: 10px; padding-left: 30px; border-right: 0.001px solid #ccc;"">Giờ bắt đầu </th>
-                        <td style="" border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc; padding: 10px; width:80% ;padding-left: 30px; border-right: 0.001px solid #ccc;"">{2}</td>
+                        <td style="" border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc; padding: 10px; width:80% ;padding-left: 30px; border-right: 0.001px solid #ccc;"">{3}</td>
                     </tr>
                     <tr>
                         <th style=""border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc; width:20%  ;padding: 10px; padding-left: 30px; border-right: 0.001px solid #ccc;"">Số giờ</th>
-                        <td style=""border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc; padding: 10px; width:80% ;padding-left: 30px; border-right: 0.001px solid #ccc;""> {3}</td>
+                        <td style=""border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc; padding: 10px; width:80% ;padding-left: 30px; border-right: 0.001px solid #ccc;""> {4}</td>
                     </tr>
                     <tr>
 
                         <th style=""border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc; width: 20% ;padding: 10px; padding-left: 30px; border-right: 0.001px solid #ccc;"">Ghi chú</th>
-                        <td style=""border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc; padding: 10px;width:80% ; padding-left: 30px; border-right: 0.001px solid #ccc;"">{4}</td>
+                        <td style=""border-top: 0.001px solid #ccc; border-bottom: 0.001px solid #ccc; padding: 10px;width:80% ; padding-left: 30px; border-right: 0.001px solid #ccc;"">{5}</td>
 
                     </tr>
                 </thead>
@@ -231,7 +236,7 @@ namespace WebAPI.Support
             </div >
         </div >
     //</div >
-", ten_cong_viec, ngay_bat_dau, gio_bat_dau, so_gio, ghi_chu);
+", ten_cong_viec, ngay_bat_dau, ngay_ket_thuc, gio_bat_dau, so_gio, ghi_chu);
 
             //var image = builder.LinkedResources.Add(@"../Resources/Images/logo_hufi.jfif");
 

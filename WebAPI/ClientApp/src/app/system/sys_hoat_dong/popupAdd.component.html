@@ -4,7 +4,7 @@
   </div>
   <div class="w-full p-6 sm:p-8 space-y-1 overflow-y-auto">
     <div class="flex flex-col">
-      <div class="flex pl-6 pb-6 pt-6 justify-end">
+      <!-- <div class="flex pl-6 pb-6 pt-6 justify-end">
         <div class="flex mr-3">
           <button mat-raised-button (click)="Close()">Close</button>
         </div>
@@ -18,7 +18,7 @@
             Edit
           </button>
         </div>
-      </div>
+      </div> -->
       <div class="flex">
         <div class="flex-1 px-2">
           <mat-label>Tên hoạt động
@@ -46,16 +46,16 @@
 
       <div class="flex pl-6 pt-6 justify-end">
         <div class="flex mr-3">
-          <button mat-raised-button (click)="Close()">Close</button>
+          <button mat-raised-button (click)="Close()">Đóng</button>
         </div>
         <div>
           <button mat-raised-button color="primary" *ngIf="sys_hoat_dong_model.db.id == 0" (click)="Save()">
-            Save
+            Lưu
           </button>
         </div>
         <div>
           <button mat-raised-button color="primary" *ngIf="sys_hoat_dong_model.db.id != 0" (click)="Edit()">
-            Edit
+            Sửa
           </button>
         </div>
       </div>

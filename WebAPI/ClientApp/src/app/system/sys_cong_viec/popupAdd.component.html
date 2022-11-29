@@ -78,9 +78,9 @@
             </span>
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <input matInput [matDatepicker]="picker" [(ngModel)]="sys_cong_viec_model.db.ngay_ket_thuc">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="sys_cong_viec_model.db.ngay_ket_thuc">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
           </mat-form-field>
         </div>
       </div>
@@ -165,16 +165,16 @@
       </div>
       <div class="flex pl-6 pt-6 justify-end">
         <div class="flex mr-3">
-          <button mat-raised-button (click)="Close()">Close</button>
+          <button mat-raised-button (click)="Close()">Đóng</button>
         </div>
         <div>
           <button mat-raised-button color="primary" *ngIf="sys_cong_viec_model.db.id == '0'" (click)="Save()">
-            Save
+            Lưu
           </button>
         </div>
         <div>
           <button mat-raised-button color="primary" *ngIf="sys_cong_viec_model.db.id != '0'" (click)="Edit()">
-            Edit
+            Sửa
           </button>
         </div>
       </div>

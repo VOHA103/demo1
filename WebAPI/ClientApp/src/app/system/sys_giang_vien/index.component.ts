@@ -124,7 +124,8 @@ export class sys_giang_vien_indexComponent implements OnInit {
     });
   }
   DataHanlder(): void {
-    this.loading = false;
+    // debugger;
+     this.loading = false;
     this.sys_giang_vien_service.DataHanlder(this.filter).subscribe((resp) => {
       var model: any;
       this.listData = resp;

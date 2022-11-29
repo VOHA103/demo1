@@ -266,7 +266,8 @@ namespace WebAPI.Controllers
                         sys_cong_viec_giang_vien.db.id = get_id_primary_key();
                         sys_cong_viec_giang_vien.db.id_giang_vien = id_giang_vien;
                         var giang_vien = _context.sys_giang_vien.Where(q => q.id == id_giang_vien).Select(q => q.email).SingleOrDefault();
-                        Mail.send_work(giang_vien, work.ten_cong_viec, work.ngay_bat_dau, work.gio_bat_dau, work.so_gio, work.note);
+                       
+                        Mail.send_work(giang_vien, work.ten_cong_viec, (DateTime)work.ngay_bat_dau, (DateTime)work.ngay_ket_thuc, work.gio_bat_dau, (int)work.so_gio, work.note);
                         _context.sys_cong_viec_giang_vien.Add(sys_cong_viec_giang_vien.db);
                         _context.SaveChanges();
                     }

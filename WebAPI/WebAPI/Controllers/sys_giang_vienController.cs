@@ -263,6 +263,7 @@ namespace WebAPI.Controllers
                             model.db.id = get_id_primary_key();
                             model.db.pass_word = chang_password(model);
                             model.db.status_del = 1;
+                            model.db.id_bo_mon = null;
                             model.db.username = model.db.ma_giang_vien;
 
                             _context.sys_giang_vien.Add(model.db);
@@ -457,7 +458,7 @@ namespace WebAPI.Controllers
               .ToList();
             result.ForEach(q =>
             {
-                if (q.db.id_bo_mon!=null)
+                if (q.db.id_bo_mon!=null )
                 {
                     q.list_bo_mon = q.db.id_bo_mon.Split(",").ToList();
                     foreach (var item in q.list_bo_mon)
@@ -602,7 +603,7 @@ namespace WebAPI.Controllers
             {
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var error = sys_giang_vien_part.get_list_error(sys_giang_vien);
-                var check_ma_giang_vien = _context.sys_giang_vien.Where(q => q.username == sys_giang_vien.db.ma_giang_vien && q.status_del == 1).Select(q => q.ma_giang_vien).ToList();
+                var check_ma_giang_vien = _context.sys_giang_vien.Where(q => q.username == sys_giang_vien.db.ma_giang_vien && q.status_del == 1).Select(q => q.ma_giang_vien).SingleOrDefault();
                 if (check_ma_giang_vien != null && sys_giang_vien.db.ma_giang_vien!="")
                 {
                     error.Add(set_error.set("db.ma_giang_vien", "Trùng mã giảng viên!"));

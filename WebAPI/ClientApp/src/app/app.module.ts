@@ -1,13 +1,13 @@
 
 import { NgModule } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatButtonModule} from '@angular/material/button';
 import { sys_user_indexComponent } from './system/sys_user/index.component';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
@@ -91,9 +91,15 @@ import { sys_person_work_indexComponent } from './system/sys_person_work/index.c
 import { NgxPaginationModule } from 'ngx-pagination';
 import { sys_thong_ke_user_indexComponent } from './system/sys_thong_ke_user/index.component';
 import { sys_giang_vien_edit_popupComponent } from './auth/user_menu/popupAdd.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { sys_cau_hinh_giao_dien_indexComponent } from './system/sys_cau_hinh_giao_dien/index.component';
+import { sys_cau_hinh_giao_dien_popupComponent } from './system/sys_cau_hinh_giao_dien/popupAdd.component';
+
 @NgModule({
   declarations: [
     AppComponent,
+    sys_cau_hinh_giao_dien_indexComponent,
+    sys_cau_hinh_giao_dien_popupComponent,
     sys_giang_vien_edit_popupComponent,
     sys_thong_ke_user_indexComponent,
     sys_person_work_indexComponent,
