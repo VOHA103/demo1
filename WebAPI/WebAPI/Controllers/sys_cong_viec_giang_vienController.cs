@@ -196,7 +196,6 @@ namespace WebAPI.Controllers
                     q.trang_thai = 1;
                 }
             });
-            result = result.Where(q => q.trang_thai == filter.status_del).ToList();
             var count = result.Count();
             var model = new
             {
@@ -239,42 +238,48 @@ namespace WebAPI.Controllers
             }
         }
         [HttpPost("create")]
-        public async Task<IActionResult> create([FromBody] sys_cong_viec_giang_vien_model sys_cong_viec_giang_vien)
+        public async Task<IActionResult> create([FromBody] sys_cong_viec_giang_vien_model data)
         {
             try
             {
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
-                var error = sys_cong_viec_giang_vien_part.check_error_insert_update(sys_cong_viec_giang_vien);
+                var error = sys_cong_viec_giang_vien_part.check_error_insert_update(data);
                 if (error.Count() == 0)
                 {
-                    var work = _context.sys_cong_viec.Where(q => q.id == sys_cong_viec_giang_vien.db.id_cong_viec).SingleOrDefault();
+                    var work = _context.sys_cong_viec.Where(q => q.id == data.db.id_cong_viec).Select(q=>new sys_cong_viec_model{ 
+                    db=q,
+                    }).SingleOrDefault();
                     var time_work = 0;
-                    if (work.loai == 2)
+                    if (work.db.loai == 2)
                     {
-                        time_work = work.so_gio / sys_cong_viec_giang_vien.list_giang_vien.Count() ?? 0;
+                        time_work = work.db.so_gio / data.list_giang_vien.Count() ?? 0;
                     }
-                    sys_cong_viec_giang_vien.db.update_date = DateTime.Now;
-                    sys_cong_viec_giang_vien.db.create_date = DateTime.Now;
-                    sys_cong_viec_giang_vien.db.create_by = user_id;
-                    sys_cong_viec_giang_vien.db.update_by = user_id;
-                    sys_cong_viec_giang_vien.db.status_del = 1;
-                    sys_cong_viec_giang_vien.db.so_gio = time_work;
-                    var list_giang_vien = sys_cong_viec_giang_vien.list_giang_vien;
+                    data.db.update_date = DateTime.Now;
+                    data.db.create_date = DateTime.Now;
+                    data.db.create_by = user_id;
+                    data.db.update_by = user_id;
+                    data.db.status_del = 1;
+                    data.db.so_gio = time_work;
+                    var list_giang_vien = data.list_giang_vien;
+                    if (list_giang_vien.Count()>1 && list_giang_vien.Contains("-1"))
+                    {
+                        list_giang_vien = _context.sys_giang_vien.Where(q => q.id_khoa == data.db.id_khoa && q.id_chuc_vu == data.db.id_chuc_vu ).Select(q => q.id).ToList();
+                    }
                     for (int i = 0; i < list_giang_vien.Count(); i++)
                     {
                         var id_giang_vien = list_giang_vien[i];
-                        sys_cong_viec_giang_vien.db.id = get_id_primary_key();
-                        sys_cong_viec_giang_vien.db.id_giang_vien = id_giang_vien;
+                        data.db.id = get_id_primary_key();
+                        data.db.id_giang_vien = id_giang_vien;
                         var giang_vien = _context.sys_giang_vien.Where(q => q.id == id_giang_vien).Select(q => q.email).SingleOrDefault();
                        
-                        Mail.send_work(giang_vien, work.ten_cong_viec, (DateTime)work.ngay_bat_dau, (DateTime)work.ngay_ket_thuc, work.gio_bat_dau, (int)work.so_gio, work.note);
-                        _context.sys_cong_viec_giang_vien.Add(sys_cong_viec_giang_vien.db);
+                        Mail.send_work(giang_vien, work);
+                        _context.sys_cong_viec_giang_vien.Add(data.db);
                         _context.SaveChanges();
                     }
                 }
                 var result = new
                 {
-                    data = sys_cong_viec_giang_vien,
+                    data = data,
                     error = error,
                 };
                 return Ok(result);

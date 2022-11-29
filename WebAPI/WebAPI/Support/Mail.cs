@@ -132,7 +132,7 @@ namespace WebAPI.Support
             }
             return 1;
         }
-        public static int send_work(string email, string ten_cong_viec, DateTime ngay_bat_dau,DateTime ngay_ket_thuc, string gio_bat_dau, int so_gio, string ghi_chu)
+        public static int send_work(string email, sys_cong_viec_model work)
         {
             var title = "Trường đại học Công Nghiệp Thực Phẩm Thành phố Hồ Chí Minh";
             var message = new MimeMessage();
@@ -236,7 +236,7 @@ namespace WebAPI.Support
             </div >
         </div >
     //</div >
-", ten_cong_viec, ngay_bat_dau, ngay_ket_thuc, gio_bat_dau, so_gio, ghi_chu);
+", work.db.ten_cong_viec, work.db.ngay_bat_dau, work.db.ngay_ket_thuc, work.db.gio_bat_dau, work.db.so_gio, work.db.note);
 
             //var image = builder.LinkedResources.Add(@"../Resources/Images/logo_hufi.jfif");
 
