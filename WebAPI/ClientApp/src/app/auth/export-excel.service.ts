@@ -50,27 +50,28 @@ export class ExportExcelService {
     const wb = new Excel.Workbook();
     const ws = wb.addWorksheet(sheetName);
     const colums = myHeader?.length;
-    // report = ws.addRow([
-    //   'Date : ' + this.datePipe.transform(new Date(), 'medium'),
-    // ]);
     const data = {
       border: true,
       height: 30,
       font: {
         size: 20,
         bold: false,
-      // underline: 'single',
         color: { argb: '000000' },
       },
-      alignment: null,
-      fill: null,
+      alignment: { horizontal: 'center', vertical: 'center' },
+      fill: {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: {
+          argb: '0000FF',
+        },
+      },
     };
 
     const title = {
       border: true,
       height: 70,
       font: {
-
         family: 4,
         size: 50,
         bold: true,
@@ -91,7 +92,7 @@ export class ExportExcelService {
       height: 40,
       font: {
         size: 40,
-       // underline: 'double',
+        // underline: 'double',
         bold: false,
         color: { argb: 'FFFFFF' },
         align: 'center',
@@ -108,10 +109,6 @@ export class ExportExcelService {
         },
       },
     };
-
-    // if (widths && widths.length > 0) {
-    //   ws.colums = widths;
-    // }
     let row = this.addRow(ws, [report], title);
     this.mergeCells(ws, row, 1, colums);
 
@@ -125,6 +122,7 @@ export class ExportExcelService {
   }
 
   private addRow(ws, data, section) {
+    debugger
     const borderStyles = {
       top: { style: 'thin' },
       left: { stype: 'thin' },
@@ -133,29 +131,18 @@ export class ExportExcelService {
     };
     const row = ws.addRow(data);
 
-    console.log('addRow', section, data);
     ws.getColumn(1).width = 40;
     ws.getColumn(2).width = 30;
-    ws.getColumn(3).width =10;
+    ws.getColumn(3).width = 10;
     ws.getColumn(4).width = 30;
     ws.getColumn(5).width = 30;
     ws.getColumn(6).width = 20;
-
-    // if (section?.boder) {
-    //   row.boder = borderStyles;
-    // }
 
     if (section?.alignment) {
       row.alignment = section.alignment;
     } else {
       row.alignment = { vertical: 'middle' };
     }
-    // if (section?.font) {
-    //   row.font = section.font;
-    // }
-    // if (section?.fill) {
-    //   row.fill = section.file;
-    // }
     if (section?.height > 0) {
       row.height = section.height;
     }

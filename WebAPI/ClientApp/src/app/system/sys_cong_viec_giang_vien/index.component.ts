@@ -1,7 +1,7 @@
 import { sys_cong_viec_giang_vien_service } from '../../service/sys_cong_viec_giang_vien.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { user_model } from '@/app/model/user.model';
 import Swal from 'sweetalert2';
@@ -14,6 +14,7 @@ import { sys_khoa_service } from '../../service/sys_khoa.service';
 import { sys_bo_mon_service } from '../../service/sys_bo_mon.service';
 import { sys_cong_viec_giang_vien_popupComponent } from './popupAdd.component';
 import { ExportExcelService } from '@/app/auth/export-excel.service';
+import { environment } from '@/environments/environment';
 @Component({
   selector: 'sys_cong_viec_giang_vien_index',
   templateUrl: './index.component.html',
@@ -49,6 +50,8 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
     id_bo_mon: 0,
     id_khoa: 0,
   };
+  private REST_API_URL = environment.api;
+  public file: any;
   public pageIndex: number = 1;
   public pageSize: number = 20;
   public pageDisplay: number = 10;
@@ -69,12 +72,68 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
     private excelServicesService: ExcelServicesService,
     private exportExcelService: ExportExcelService
   ) {}
+  exportToExcel() {
+    const params = new HttpParams()
+        .set('search', this.filter.search)
+        ;
+
+    let uri = '/exportExcel';
+    this.http.get(uri, { params, responseType: 'blob', observe: 'response' })
+        .subscribe(resp => {
+            var res;
+            debugger
+            res = resp;
+            var downloadedFile = new Blob([res.body], { type: res.body.type });
+            const a = document.createElement('a');
+            a.setAttribute('style', 'display:none;');
+            document.body.appendChild(a);
+            a.href = URL.createObjectURL(downloadedFile);
+            a.target = '_dAblank';
+            a.download = 'DanhSachBill.xlsx'
+            a.click();
+            document.body.removeChild(a);
+
+        })
+
+
+}
+onFileSelected(event: any) {
+  this.file = event.target.files[0];
+ //this.onSubmitFile();
+  event.target.value = null;
+}
+dowloadFileMau() {
+  // var url = '/sys_user.ctr/downloadtemp';
+  // window.location.href = url;
+}
+onSubmitFile() {
+  if (this.file == null || this.file == undefined) {
+    Swal.fire('Phải chọn file import', '', 'warning');
+  } else {
+    var formData = new FormData();
+    formData.append('file', this.file);
+    this.http
+      .post(this.REST_API_URL+'/sys_cong_viec_giang_vien/ImportFromExcel/', formData, {})
+      .subscribe((res) => {
+          console.log(res);
+        if (res == '') {
+
+          Swal.fire('Lưu thành công', '', 'success');
+          this.DataHanlder();
+        } else {
+          Swal.fire(res.toString(), '', 'warning');
+        }
+      });
+  }
+}
   ExportExcel(): void {
     this.sys_cong_viec_giang_vien_service
       .ExportExcel(this.filter)
       .subscribe((resp) => {
         var res;
+        debugger
         res = resp;
+        console.log(res);
         var downloadedFile = new Blob([res.body], { type: res.body.type });
         const a = document.createElement('a');
         a.setAttribute('style', 'display:none;');
@@ -141,14 +200,14 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
   }
 
   export_Excel(): void {
-    const exportData = this.listData.map((da_ta) => {
+    const exportData = this.listData.map((data) => {
       return {
-        ten_giang_vien: da_ta.ten_giang_vien,
-        ten_cong_viec: da_ta.ten_cong_viec,
-        status_del: da_ta.db.status_del,
-        create_name: da_ta.create_name,
-        create_date: da_ta.db.create_date,
-        note: da_ta.db.note,
+        ten_giang_vien: data.ten_giang_vien,
+        ten_cong_viec: data.ten_cong_viec,
+        status_del: data.db.status_del,
+        create_name: data.create_name,
+        create_date: data.db.create_date,
+        note: data.db.note,
       };
     });
     this.exportExcelService.exportToExcelPro({

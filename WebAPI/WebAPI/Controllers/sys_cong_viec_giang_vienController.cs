@@ -1,28 +1,22 @@
 ﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Data;
 using WebAPI.Model;
-using WebAPI.System;
 using WebAPI.Support;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Authorization;
-using WebAPI.Services.Interfaces;
 using WebAPI.Part;
 using ClosedXML.Excel;
 using System.IO;
-using Syncfusion.XlsIO;
-using Syncfusion.Drawing;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using DocumentFormat.OpenXml.Spreadsheet;
+using NPOI.SS.UserModel;
+using NPOI.HSSF.UserModel;
+using NPOI.XSSF.UserModel;
+
 namespace WebAPI.Controllers
 {
     [ApiController]
@@ -31,9 +25,244 @@ namespace WebAPI.Controllers
     public class sys_cong_viec_giang_vienController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        public sys_cong_viec_giang_vienController(ApplicationDbContext _context)
+        private readonly ApplicationSettings _appSettings;
+        public sys_cong_viec_giang_vienController(ApplicationDbContext _context, IOptions<ApplicationSettings> appSettings)
         {
             this._context = _context;
+            _appSettings = appSettings.Value;
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> ImportFromExcel()
+        {
+            var error = "";
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            IFormFile file = Request.Form.Files[0];
+
+            string folderName = "import_excel";
+
+            var currentpath = Directory.GetCurrentDirectory();
+
+            string newPath = Path.Combine(currentpath, "file_upload", folderName);
+            var tick = Guid.NewGuid();
+            if (!Directory.Exists(newPath))
+
+            {
+
+                Directory.CreateDirectory(newPath);
+
+            }
+
+            var list_cell = new List<cell>();
+
+            var list_row = new List<row>();
+            if (file.Length > 0)
+
+            {
+
+                string sFileExtension = Path.GetExtension(file.FileName).ToLower();
+
+                ISheet sheet;
+
+                string fullPath = Path.Combine(newPath, tick + "." + file.FileName.Split(".").Last());
+
+                try
+                {
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+
+                    {
+
+                        file.CopyTo(stream);
+
+                        stream.Position = 0;
+
+                        if (sFileExtension == ".xls")
+
+                        {
+
+                            HSSFWorkbook hssfwb = new HSSFWorkbook(stream); //This will read the Excel 97-2000 formats  
+
+                            sheet = hssfwb.GetSheetAt(0); //get first sheet from workbook  
+
+                        }
+
+                        else
+
+                        {
+
+                            XSSFWorkbook hssfwb = new XSSFWorkbook(stream); //This will read 2007 Excel format  
+
+                            sheet = hssfwb.GetSheetAt(0); //get first sheet from workbook   
+
+                        }
+
+                        IRow headerRow = sheet.GetRow(0); //Get Header Row
+
+                        int cellCount = headerRow.LastCellNum;
+
+
+                        for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
+
+                        {
+
+                            IRow row = sheet.GetRow(i);
+
+                            if (row == null) continue;
+
+                            if (row.Cells.All(d => d.CellType == NPOI.SS.UserModel.CellType.Blank)) continue;
+
+                            for (int j = row.FirstCellNum; j < cellCount; j++)
+
+                            {
+
+                                if (row.GetCell(j) != null)
+                                {
+                                    var cell = new cell();
+
+                                    var value = row.GetCell(j).ToString();
+
+
+                                    cell.value = value;
+                                    list_cell.Add(cell);
+                                }
+
+                            }
+
+                            var data_row = new row();
+
+
+                            data_row.key = i.ToString();
+                            data_row.list_cell = list_cell;
+                            list_cell = new List<cell>();
+                            list_row.Add(data_row);
+                        }
+
+
+                    }
+
+
+                    for (int ct = 0; ct < list_row.Count(); ct++)
+                    {
+                        var fileImport = list_row[ct].list_cell.ToList();
+
+
+                        var model = new sys_cong_viec_giang_vien_model();
+
+                        var ten_cong_viec = (fileImport[0].value.ToString() ?? "").Trim();
+                        var ten_giang_vien = (fileImport[1].value.ToString() ?? "").Trim();
+                        var chuc_vu = (fileImport[2].value.ToString() ?? "").Trim();
+                        var khoa = (fileImport[3].value.ToString() ?? "").Trim();
+
+
+                        if (String.IsNullOrEmpty(ten_cong_viec))
+                        {
+                            error += "Phải nhập công việc tại dòng" + (ct + 1) + "<br />";
+                        }
+                        else
+                        {
+                            var cong_viec = _context.sys_cong_viec.Where(q => q.ten_cong_viec.ToLower().Trim() == ten_cong_viec.ToLower().Trim()).Select(q => q.id).SingleOrDefault();
+                            if (cong_viec==null)
+                            {
+
+                                error += "Không có công việc tại dòng" + (ct + 1) + "<br />";
+                            }else
+                            model.db.id_cong_viec = cong_viec;
+                        }
+                        if (String.IsNullOrEmpty(ten_giang_vien))
+                        {
+                            error += "Phải nhập giảng viên tại dòng" + (ct + 1) + "<br />";
+                        }
+                        else
+                        {
+                            var giang_vien = _context.sys_giang_vien.Where(q => q.ten_giang_vien.ToLower().Trim() == ten_giang_vien.ToLower().Trim()).Select(q => q.id).SingleOrDefault();
+                            if (giang_vien == null)
+                            {
+
+                                error += "Không có giảng viên tại dòng" + (ct + 1) + "<br />";
+                            }else
+                            model.db.id_giang_vien = giang_vien;
+                        }
+                        if (chuc_vu == null || chuc_vu == "")
+                        {
+                            error += "Phải nhập chức vụ tại dòng" + (ct + 1) + "<br />";
+                        }
+                        else
+                        {
+                            var id_chuc_vu = _context.sys_chuc_vu.Where(q => q.ten_chuc_vu.ToLower().Trim().Equals(chuc_vu.ToLower().Trim())).Select(q => q.id).SingleOrDefault();
+                            if (id_chuc_vu != 0)
+                            {
+                                model.db.id_chuc_vu = id_chuc_vu;
+                            }
+                            else
+                            {
+                                error += "Không có khoa tại dòng" + (ct + 1) + "<br />";
+                            }
+                        }
+                        if (khoa == null || khoa == "")
+                        {
+                            error += "Phải nhập khoa vụ tại dòng" + (ct + 1) + "<br />";
+                        }
+                        else
+                        {
+                            var id_khoa = _context.sys_khoa.Where(q => q.ten_khoa.ToLower().Trim().Equals(khoa.ToLower().Trim())).Select(q => q.id).SingleOrDefault();
+                            if (id_khoa != 0)
+                            {
+                                model.db.id_khoa = id_khoa;
+                            }
+                            else
+                            {
+                                error += "Không có khoa tại dòng" + (ct + 1) + "<br />";
+                            }
+                        }
+
+                        if (!string.IsNullOrEmpty(error))
+                        {
+
+                        }
+                        else
+                        {
+                            model.db.create_date = DateTime.Now;
+                            model.db.update_date = DateTime.Now;
+                            model.db.create_by = user_id;
+                            model.db.update_by = user_id;
+                            model.db.id = get_id_primary_key();
+                            model.db.status_del = 1;
+
+                            _context.sys_cong_viec_giang_vien.Add(model.db);
+                            _context.SaveChanges();
+
+                        }
+
+
+                    }
+                    return Ok(error);
+                }
+                catch
+                {
+                    return Ok("File không đúng định dạng");
+                }
+
+
+            }
+            else
+            {
+                return Ok("File không đúng định dạng");
+
+            }
+
+        }
+        private string CheckErrorImport(sys_giang_vien_model model, int ct, string error)
+        {
+           
+            if (String.IsNullOrEmpty(model.db.ten_giang_vien))
+            {
+                error += "Phải nhập tên giảng viên tại dòng" + (ct + 1) + "<br />";
+            }
+            if (model.db.gioi_tinh == null)
+            {
+                error += "Phải nhập giới tính tại dòng" + (ct + 1) + "<br />";
+            }
+
+            return error;
         }
         [HttpPost("[action]")]
         public IActionResult ExportExcel([FromBody] filter_data_cong_viec_giang_vien_user filter)
@@ -75,6 +304,7 @@ namespace WebAPI.Controllers
                 worksheet.Cell(currentRow, 2).Value = "320 giờ";
                 using (var stream = new MemoryStream())
                 {
+
                     workbook.SaveAs(stream);
                     var content = stream.ToArray();
                     string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
