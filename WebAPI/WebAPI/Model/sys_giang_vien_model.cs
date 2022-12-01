@@ -29,14 +29,11 @@ namespace WebAPI.Model
     public class filter_data_giang_vien
     {
         public string search { get; set; }
-        public string total { get; set; }
-        public string page { get; set; }
-        public string limit { get; set; }
         public string status_del { get; set; }
-        public string id_chuc_vu { get; set; }
-        public string id_khoa { get; set; }
+        public int? id_chuc_vu { get; set; }
+        public int? id_khoa { get; set; }
         public string id_bo_mon { get; set; }
-        public string id_chuyen_nghanh { get; set; }
+        public int? id_chuyen_nghanh { get; set; }
 
     }
 }

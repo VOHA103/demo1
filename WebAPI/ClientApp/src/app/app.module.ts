@@ -92,6 +92,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { sys_thong_ke_user_indexComponent } from './system/sys_thong_ke_user/index.component';
 import { sys_giang_vien_edit_popupComponent } from './auth/user_menu/popupAdd.component';
 import { MatPaginator } from '@angular/material/paginator';
+import { sys_giang_vien_khoa_popupComponent } from './system/sys_giang_vien_khoa/popupAdd.component';
+import { sys_giang_vien_khoa_indexComponent } from './system/sys_giang_vien_khoa/index.component';
 // import { sys_cau_hinh_giao_dien_indexComponent } from './system/sys_cau_hinh_giao_dien/index.component';
 // import { sys_cau_hinh_giao_dien_popupComponent } from './system/sys_cau_hinh_giao_dien/popupAdd.component';
 
@@ -100,6 +102,8 @@ import { MatPaginator } from '@angular/material/paginator';
     AppComponent,
     // sys_cau_hinh_giao_dien_indexComponent,
     // sys_cau_hinh_giao_dien_popupComponent,
+    sys_giang_vien_khoa_popupComponent,
+    sys_giang_vien_khoa_indexComponent,
     sys_giang_vien_edit_popupComponent,
     sys_thong_ke_user_indexComponent,
     sys_person_work_indexComponent,

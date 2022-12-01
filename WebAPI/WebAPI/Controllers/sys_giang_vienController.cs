@@ -434,12 +434,53 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
         [HttpPost("[action]")]
+        public IActionResult DataHanlderKhoa([FromBody] filter_data_giang_vien filter)
+       {
+
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
+            var result = _context.sys_giang_vien
+              .Select(d => new sys_giang_vien_model()
+              {
+                  db = d,
+                  create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == d.id_chuc_vu).Select(q => q.ten_chuc_vu).SingleOrDefault(),
+                  ten_khoa = _context.sys_khoa.Where(q => q.id == d.id_khoa).Select(q => q.ten_khoa).SingleOrDefault(),
+
+              })
+              .Where(q => q.db.ten_giang_vien.Contains(filter.search) || filter.search == "")
+              .Where(q => q.db.id_chuc_vu == filter.id_chuc_vu || filter.id_chuc_vu == -1)
+              .Where(q => q.db.id_khoa == id_khoa)
+              .ToList();
+            result.ForEach(q =>
+            {
+                if (q.db.id_bo_mon != null)
+                {
+                    q.list_bo_mon = q.db.id_bo_mon.Split(",").ToList();
+                    foreach (var item in q.list_bo_mon)
+                    {
+                        var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
+                        q.ten_bo_mon += name;
+                        if (!item.Equals(q.list_bo_mon.Last()))
+                        {
+                            q.ten_bo_mon += ", ";
+                        }
+                    }
+                }
+            });
+            result = result.OrderByDescending(q => q.db.update_date).ToList();
+            var model = new
+            {
+                data = result,
+                total = result.Count(),
+            };
+            return Ok(model);
+        }
+        [HttpPost("[action]")]
         public IActionResult DataHanlder([FromBody] filter_data_giang_vien filter)
         {
             var status_del = Int32.Parse(filter.status_del);
-            var id_chuc_vu = Int32.Parse(filter.id_chuc_vu);
-            var id_khoa = Int32.Parse(filter.id_khoa);
-            var id_chuyen_nghanh = Int32.Parse(filter.id_chuyen_nghanh);
             var result = _context.sys_giang_vien
               .Select(d => new sys_giang_vien_model()
               {
@@ -452,9 +493,9 @@ namespace WebAPI.Controllers
               })
               .Where(q => q.db.ten_giang_vien.Contains(filter.search) || filter.search == "")
               .Where(q => q.db.status_del == status_del)
-              .Where(q => q.db.id_chuc_vu == id_chuc_vu || id_chuc_vu == -1)
-              .Where(q => q.db.id_khoa == id_khoa || id_khoa == -1)
-              .Where(q => q.db.id_chuyen_nghanh == id_chuyen_nghanh || id_chuyen_nghanh == -1)
+              .Where(q => q.db.id_chuc_vu == filter.id_chuc_vu || filter.id_chuc_vu == -1)
+              .Where(q => q.db.id_khoa == filter.id_khoa || filter.id_khoa == -1)
+              .Where(q => q.db.id_chuyen_nghanh == filter.id_chuyen_nghanh || filter.id_chuyen_nghanh == -1)
               .ToList();
             result.ForEach(q =>
             {
@@ -581,6 +622,48 @@ namespace WebAPI.Controllers
                     model.dia_chi = sys_giang_vien.db.dia_chi;
                     model.gioi_tinh = sys_giang_vien.db.gioi_tinh;
                     model.id_bo_mon = sys_giang_vien.list_bo_mon.Join(",");
+                    await _context.SaveChangesAsync();
+                }
+                var result = new
+                {
+                    data = sys_giang_vien,
+                    error = error,
+                };
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
+
+        }
+        [HttpPost("create")]
+        public async Task<IActionResult> create_giang_vien_khoa([FromBody] sys_giang_vien_model sys_giang_vien)
+        {
+            try
+            {
+                string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+                var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
+                var error = sys_giang_vien_part.get_list_error(sys_giang_vien);
+                var check_ma_giang_vien = _context.sys_giang_vien.Where(q => q.username == sys_giang_vien.db.ma_giang_vien && q.status_del == 1).Select(q => q.ma_giang_vien).SingleOrDefault();
+                if (check_ma_giang_vien != null && sys_giang_vien.db.ma_giang_vien != "")
+                {
+                    error.Add(set_error.set("db.ma_giang_vien", "Trùng mã giảng viên!"));
+                }
+                if (error.Count() == 0)
+                {
+                    sys_giang_vien.db.id = get_id_primary_key();
+                    sys_giang_vien.db.pass_word = chang_password(sys_giang_vien);
+                    sys_giang_vien.db.update_date = DateTime.Now;
+                    sys_giang_vien.db.create_date = DateTime.Now;
+                    sys_giang_vien.db.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
+                    sys_giang_vien.db.update_by = user_id;
+                    sys_giang_vien.db.create_by = user_id;
+                    sys_giang_vien.db.id_khoa = id_khoa;
+                    sys_giang_vien.db.username = sys_giang_vien.db.ma_giang_vien;
+                    sys_giang_vien.db.id_bo_mon = sys_giang_vien.list_bo_mon.Join(",");
+                    sys_giang_vien.db.status_del = 1;
+                    _context.sys_giang_vien.Add(sys_giang_vien.db);
                     await _context.SaveChangesAsync();
                 }
                 var result = new
