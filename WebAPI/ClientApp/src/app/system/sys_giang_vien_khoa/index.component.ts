@@ -58,6 +58,7 @@ export class sys_giang_vien_khoa_indexComponent implements OnInit {
     this.get_list_khoa();
     this.get_list_chuc_vu();
   }
+  export_Excel(){}
   submit_file(event: any) {
     debugger
     let file = event.target.files[0];

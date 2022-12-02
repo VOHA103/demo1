@@ -28,7 +28,7 @@
         <div class="flex-1  px-2">
           <mat-label>Loại công việc</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="filter.status_del" (selectionChange)="DataHanlder()">
+            <mat-select [(ngModel)]="filter.id_loai_cong_viec" (selectionChange)="DataHanlder()">
               <mat-option *ngFor="let item of list_loai_cong_viec" [value]="item.id">
                 {{ item.name }}
               </mat-option>

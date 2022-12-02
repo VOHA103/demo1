@@ -71,6 +71,26 @@ export class sys_person_work_indexComponent implements OnInit {
       this.lst_cong_viec = result;
     });
   }
+  
+  export_Excel(): void {
+    this.sys_cong_viec_giang_vien_service
+      .ExportExcel(this.filter)
+      .subscribe((resp) => {
+        // var res;
+        // debugger
+        // res = resp;
+        // console.log(res);
+        // var downloadedFile = new Blob([res.body], { type: res.body.type });
+        // const a = document.createElement('a');
+        // a.setAttribute('style', 'display:none;');
+        // document.body.appendChild(a);
+        // a.href = URL.createObjectURL(downloadedFile);
+        // a.target = '_dAblank';
+        // a.download = 'DanhSachBill.xlsx';
+        // a.click();
+        // document.body.removeChild(a);
+      });
+  }
   ngOnInit(): void {
     this.get_list_cong_viec();
     this.DataHanlderUser();

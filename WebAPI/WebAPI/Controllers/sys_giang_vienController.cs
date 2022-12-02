@@ -637,7 +637,7 @@ namespace WebAPI.Controllers
             }
 
         }
-        [HttpPost("create")]
+        [HttpPost("action")]
         public async Task<IActionResult> create_giang_vien_khoa([FromBody] sys_giang_vien_model sys_giang_vien)
         {
             try

@@ -42,9 +42,9 @@ export class sys_giang_vien_indexComponent implements OnInit {
     page: '0',
     limit: '10',
     status_del: '1',
-    id_chuc_vu: '-1',
-    id_khoa: '-1',
-    id_chuyen_nghanh: '-1',
+    id_chuc_vu: -1,
+    id_khoa: -1,
+    id_chuyen_nghanh: -1,
   };
   searchKey: string;
   data: any;
@@ -61,6 +61,7 @@ export class sys_giang_vien_indexComponent implements OnInit {
     this.get_list_khoa();
     this.get_list_chuc_vu();
   }
+  export_Excel(){}
   submit_file(event: any) {
     debugger
     let file = event.target.files[0];
@@ -137,6 +138,8 @@ export class sys_giang_vien_indexComponent implements OnInit {
       this.pageIndex = model.pageIndex;
       this.pageSize = model.pageSize;
       this.totalRow = model.totalRow;
+
+  
     });
   }
   openDialogDetail(item): void {

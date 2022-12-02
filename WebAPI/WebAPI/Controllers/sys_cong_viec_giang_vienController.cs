@@ -292,11 +292,15 @@ namespace WebAPI.Controllers
                 currentRow++;
                 worksheet.Cell(currentRow, 1).Value = "Công việc";
                 worksheet.Cell(currentRow, 2).Value = "Giảng viên";
+                //worksheet.Cell(currentRow, 3).Value = "Người tạo";
+                //worksheet.Cell(currentRow, 4).Value = "Ngày tạo";
                 foreach (var item in result)
                 {
                     currentRow++;
                     worksheet.Cell(currentRow, 1).Value = item.ten_cong_viec;
                     worksheet.Cell(currentRow, 2).Value = item.ten_giang_vien;
+                    //worksheet.Cell(currentRow, 3).Value = item.create_name;
+                    //worksheet.Cell(currentRow, 4).Value = item.create_day;
 
                 }
                 currentRow++;
