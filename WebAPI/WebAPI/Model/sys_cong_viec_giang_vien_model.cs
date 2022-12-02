@@ -29,6 +29,8 @@ namespace WebAPI.Model
     public class filter_thong_ke_user
     {
         public int? id_loai_cong_viec { get; set; }
+        public DateTime? tu { get; set; }
+        public DateTime? den { get; set; }
 
     }
     public class filter_thong_ke

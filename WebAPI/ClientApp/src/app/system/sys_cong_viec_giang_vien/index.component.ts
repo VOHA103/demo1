@@ -126,26 +126,25 @@ onSubmitFile() {
       });
   }
 }
-export_Excel(): void {
-    this.sys_cong_viec_giang_vien_service
-      .ExportExcel(this.filter)
-      .subscribe((resp) => {
-
-        var res;
-        //debugger
-        res = resp;
-        console.log(res);
-        var downloadedFile = new Blob([res.body], { type: res.body.type });
-        const a = document.createElement('a');
-        a.setAttribute('style', 'display:none;');
-        document.body.appendChild(a);
-        a.href = URL.createObjectURL(downloadedFile);
-        a.target = '_dAblank';
-        a.download = 'DanhSachBill.xlsx';
-        a.click();
-        document.body.removeChild(a);
-      });
-  }
+// export_Excel(): void {
+//     this.sys_cong_viec_giang_vien_service
+//       .ExportExcel(this.filter)
+//       .subscribe((resp) => {
+//         var res;
+//         //debugger
+//         res = resp;
+//         console.log(res);
+//         var downloadedFile = new Blob([res.body], { type: res.body.type });
+//         const a = document.createElement('a');
+//         a.setAttribute('style', 'display:none;');
+//         document.body.appendChild(a);
+//         a.href = URL.createObjectURL(downloadedFile);
+//         a.target = '_dAblank';
+//         a.download = 'DanhSachBill.xlsx';
+//         a.click();
+//         document.body.removeChild(a);
+//       });
+//   }
   // let uri = this.controller + '.ctr/exportExcel';
   //       this.http.get(uri, { params, responseType: 'blob', observe: 'response' })
   //           .subscribe(resp => {
@@ -200,39 +199,39 @@ export_Excel(): void {
     });
   }
 
-  // export_Excel(): void {
-  //   const exportData = this.listData.map((data) => {
-  //     return {
-  //       ten_giang_vien: data.ten_giang_vien,
-  //       ten_cong_viec: data.ten_cong_viec,
-  //       status_del: data.db.status_del,
-  //       create_name: data.create_name,
-  //       create_date: data.db.create_date,
-  //       note: data.db.note,
-  //     };
-  //   });
-  //   this.exportExcelService.exportToExcelPro({
-  //     myData: exportData,
-  //     fileName: 'DSCViecGV',
-  //     sheetName: 'CVGV',
-  //     report: 'CÔNG VIỆC GIẢNG VIÊN',
-  //     myHeader: [
-  //       'Tên giảng viên',
-  //       'Công việc',
-  //       'Trạng thái',
-  //       'Người tạo',
-  //       'Ngày tạo',
-  //       'Ghi chú',
-  //     ],
-  //     widths: [
-  //       { width: 30 },
-  //       { width: 25 },
-  //       { width: 25 },
-  //       { width: 35 },
-  //       { width: 40 },
-  //     ],
-  //   });
-  // }
+  export_Excel(): void {
+    const exportData = this.listData.map((data) => {
+      return {
+        ten_giang_vien: data.ten_giang_vien,
+        ten_cong_viec: data.ten_cong_viec,
+        status_del: data.db.status_del,
+        create_name: data.create_name,
+        create_date: data.db.create_date,
+        note: data.db.note,
+      };
+    });
+    this.exportExcelService.exportToExcelPro({
+      myData: exportData,
+      fileName: 'DSCViecGV',
+      sheetName: 'CVGV',
+      report: 'CÔNG VIỆC GIẢNG VIÊN',
+      myHeader: [
+        'Tên giảng viên',
+        'Công việc',
+        'Trạng thái',
+        'Người tạo',
+        'Ngày tạo',
+        'Ghi chú',
+      ],
+      widths: [
+        { width: 30 },
+        { width: 25 },
+        { width: 25 },
+        { width: 35 },
+        { width: 40 },
+      ],
+    });
+  }
   delete(id): void {
     this.sys_cong_viec_giang_vien_service.delete(id).subscribe((result) => {
       Swal.fire({
@@ -302,7 +301,6 @@ export_Excel(): void {
   }
   ngOnInit(): void {
     this.DataHanlder();
-    this.export_Excel();
     this.get_list_chuc_vu();
     this.get_list_khoa();
     this.get_list_cong_viec();

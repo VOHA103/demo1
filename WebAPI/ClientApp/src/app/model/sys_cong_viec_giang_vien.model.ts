@@ -12,3 +12,8 @@ export class sys_cong_viec_giang_vien_model {
   trang_thai: number | null;
   list_giang_vien: string[];
 }
+export class filter_thong_ke_user {
+  id_loai_cong_viec: number | null;
+  tu: Date | null;
+  den: Date | null;
+}

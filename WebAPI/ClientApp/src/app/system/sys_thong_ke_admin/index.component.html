@@ -37,6 +37,13 @@
           </mat-form-field>
         </div>
       </div>
+      <div class="flex justify-end mt-5">
+        <div class="flex justify-end mr-10">
+          <button mat-raised-button color="primary" (click)="export_Excel()">
+            <mat-icon>cloud_download</mat-icon> Export Excel
+          </button>
+        </div>
+        </div>
     </mat-card>
     <mat-progress-bar *ngIf="loading==false" mode="indeterminate"></mat-progress-bar>
     <mat-card *ngIf="loading==true">

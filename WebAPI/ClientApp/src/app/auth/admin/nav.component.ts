@@ -103,10 +103,6 @@ export class nav_indexComponent implements OnInit {
         link: 'sys_cong_viec_index',
         label: 'Công việc',
       },
-      // {
-      //   link: 'sys_hoat_dong_index',
-      //   label: 'Hoạt động',
-      // },
       {
         link: 'sys_loai_cong_viec_index',
         label: 'Loại công việc',
