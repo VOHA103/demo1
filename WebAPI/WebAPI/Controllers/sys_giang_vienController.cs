@@ -460,16 +460,20 @@ namespace WebAPI.Controllers
             {
                 if (q.db.id_bo_mon != null)
                 {
-                    q.list_bo_mon = q.db.id_bo_mon.Split(",").ToList();
-                    foreach (var item in q.list_bo_mon)
+                    if (q.db.id_bo_mon != "")
                     {
-                        var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
-                        q.ten_bo_mon += name;
-                        if (!item.Equals(q.list_bo_mon.Last()))
+                        q.list_bo_mon = q.db.id_bo_mon.Split(",").ToList();
+                        foreach (var item in q.list_bo_mon)
                         {
-                            q.ten_bo_mon += ", ";
+                            var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
+                            q.ten_bo_mon += name;
+                            if (!item.Equals(q.list_bo_mon.Last()))
+                            {
+                                q.ten_bo_mon += ", ";
+                            }
                         }
                     }
+
                 }
             });
             result = result.OrderByDescending(q => q.db.update_date).ToList();
@@ -503,18 +507,22 @@ namespace WebAPI.Controllers
               .ToList();
             result.ForEach(q =>
             {
-                if (q.db.id_bo_mon!=null )
+                if (q.db.id_bo_mon != null)
                 {
-                    q.list_bo_mon = q.db.id_bo_mon.Split(",").ToList();
-                    foreach (var item in q.list_bo_mon)
+                    if (q.db.id_bo_mon != "")
                     {
-                        var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
-                        q.ten_bo_mon += name;
-                        if (!item.Equals(q.list_bo_mon.Last()))
+                        q.list_bo_mon = q.db.id_bo_mon.Split(",").ToList();
+                        foreach (var item in q.list_bo_mon)
                         {
-                            q.ten_bo_mon += ", ";
+                            var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
+                            q.ten_bo_mon += name;
+                            if (!item.Equals(q.list_bo_mon.Last()))
+                            {
+                                q.ten_bo_mon += ", ";
+                            }
                         }
                     }
+
                 }
             });
             result = result.OrderByDescending(q => q.db.update_date).ToList();
@@ -641,6 +649,20 @@ namespace WebAPI.Controllers
                 return Ok(ex.Message);
             }
 
+        }
+        [HttpGet("[action]")]
+        public IActionResult get_list_giang_vien_change_khoa(int id_chuc_vu)
+        {
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
+            var result = _context.sys_giang_vien.Where(q => q.id_chuc_vu == id_chuc_vu && q.id_khoa == id_khoa)
+              .Select(d => new
+              {
+                  id = d.id,
+                  name = d.ten_giang_vien
+              })
+              .ToList();
+            return Ok(result);
         }
         [HttpPost("[action]")]
         public async Task<IActionResult> create_giang_vien_khoa([FromBody] sys_giang_vien_model sys_giang_vien)

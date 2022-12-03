@@ -444,6 +444,24 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
         [HttpPost("[action]")]
+        public async Task<IActionResult> get_thong_ke_cong_viec_khoa([FromBody] filter_thong_ke filter)
+        {
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
+            var result = _context.sys_cong_viec_giang_vien
+                .Where(q => q.id_chuc_vu == filter.id_chuc_vu || filter.id_chuc_vu == -1)
+                .Where(q => q.id_khoa == id_khoa)
+                .Where(q => q.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
+                .Where(q => q.ngay_bat_dau >= filter.tu)
+                .Where(q => q.ngay_ket_thuc <= filter.den)
+               .GroupBy(q => new { q.id_giang_vien }).Select(q => new
+               {
+                   label = _context.sys_giang_vien.Where(d => d.id == q.Key.id_giang_vien).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                   y = _context.sys_cong_viec_giang_vien.Where(d => d.id_giang_vien == q.Key.id_giang_vien).Where(q => q.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "").Sum(q => q.so_gio) ?? 0,
+               }).ToList();
+            return Ok(result);
+        }
+        [HttpPost("[action]")]
         public async Task<IActionResult> DataHanlderAdmin([FromBody] filter_data_cong_viec_giang_vien filter)
         {
             var result = _context.sys_cong_viec_giang_vien
@@ -490,6 +508,36 @@ namespace WebAPI.Controllers
                 total = count,
             };
             return Ok(model);
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> get_list_cong_viec_admin([FromBody] filter_thong_ke filter)
+        {
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var result = _context.sys_cong_viec_giang_vien
+                .Where(q => q.id_chuc_vu == filter.id_chuc_vu || filter.id_chuc_vu == -1)
+                .Where(q => q.id_khoa == filter.id_khoa || filter.id_khoa == -1)
+                .Where(q => q.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
+                .Where(q => q.ngay_bat_dau >= filter.tu)
+                .Where(q => q.ngay_ket_thuc <= filter.den).ToList();
+            var count = result.Count();
+            var list = result.Select(q => new
+            {
+                giang_vien = _context.sys_giang_vien.Where(d => d.id == q.id_giang_vien).Select(q => q.ten_giang_vien).SingleOrDefault(),
+
+                ten_cong_viec = _context.sys_cong_viec.Where(d => d.id == q.id_cong_viec).Select(q => q.ten_cong_viec).SingleOrDefault(),
+
+                ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(d => d.id == _context.sys_cong_viec.Where(d => d.id == q.id_cong_viec)
+                .Select(q => q.id_loai_cong_viec).SingleOrDefault())
+                .Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
+
+                so_gio = q.so_gio,
+
+                ngay_bat_dau = q.ngay_bat_dau.Value.Date.ToString(),
+
+                ngay_ket_thuc = q.ngay_ket_thuc.Value.Date.ToString(),
+            });
+
+            return Ok(list.OrderByDescending(q => q.ngay_bat_dau));
         }
         [HttpPost("[action]")]
         public async Task<IActionResult> DataHanlder([FromBody] filter_data_cong_viec_giang_vien filter)

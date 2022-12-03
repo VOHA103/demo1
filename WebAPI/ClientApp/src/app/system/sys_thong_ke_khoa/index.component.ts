@@ -14,11 +14,11 @@ import { sys_cong_viec_giang_vien_service } from '../../service/sys_cong_viec_gi
 import { ExportExcelService } from '@/app/auth/export-excel.service';
 import { filter_thong_ke } from '@/app/model/sys_cong_viec_giang_vien.model';
 @Component({
-  selector: 'sys_thong_ke_index',
+  selector: 'sys_thong_ke_khoa_index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.scss'],
 })
-export class sys_thong_ke_indexComponent implements OnInit {
+export class sys_thong_ke_khoa_indexComponent implements OnInit {
   public lst_status: any = [];
   public lst_khoa: any = [];
   public lst_giang_vien: any = [];
@@ -100,7 +100,7 @@ export class sys_thong_ke_indexComponent implements OnInit {
   get_thong_ke_cong_viec(): void {
     this.loading = false;
     this.sys_cong_viec_giang_vien_service
-      .get_thong_ke_cong_viec(this.filter)
+      .get_thong_ke_cong_viec_khoa(this.filter)
       .subscribe((result) => {
         this.lst_data = result;
         this.load_data(result);

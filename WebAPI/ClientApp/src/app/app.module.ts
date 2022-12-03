@@ -96,12 +96,14 @@ import { sys_giang_vien_khoa_popupComponent } from './system/sys_giang_vien_khoa
 import { sys_giang_vien_khoa_indexComponent } from './system/sys_giang_vien_khoa/index.component';
 import { sys_cong_viec_giang_vien_admin_popupComponent } from './system/sys_cong_viec_giang_vien_admin/popupAdd.component';
 import { sys_cong_viec_giang_vien_admin_indexComponent } from './system/sys_cong_viec_giang_vien_admin/index.component';
+import { sys_thong_ke_khoa_indexComponent } from './system/sys_thong_ke_khoa/index.component';
 // import { sys_cau_hinh_giao_dien_indexComponent } from './system/sys_cau_hinh_giao_dien/index.component';
 // import { sys_cau_hinh_giao_dien_popupComponent } from './system/sys_cau_hinh_giao_dien/popupAdd.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    sys_thong_ke_khoa_indexComponent,
     sys_cong_viec_giang_vien_admin_popupComponent,
     sys_cong_viec_giang_vien_admin_indexComponent,
     // sys_cau_hinh_giao_dien_indexComponent,

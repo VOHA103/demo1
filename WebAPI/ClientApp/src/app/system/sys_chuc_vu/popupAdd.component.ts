@@ -34,7 +34,7 @@ export class sys_chuc_vu_popupComponent {
     this.list_role=[
       {
         id: "admin",
-        name:"QUản trị"
+        name:"Quản trị"
       },
       {
         id: "sub_admin",
