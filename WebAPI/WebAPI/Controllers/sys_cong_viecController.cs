@@ -150,8 +150,6 @@ namespace WebAPI.Controllers
                 if (error.Count() == 0)
                 {
                     sys_cong_viec.db.id = get_id_primary_key_cong_viec();
-                    sys_cong_viec.db.ngay_bat_dau = sys_cong_viec.db.ngay_bat_dau.Value.AddDays(1);
-                    sys_cong_viec.db.ngay_ket_thuc = sys_cong_viec.db.ngay_ket_thuc.Value.AddDays(1);
                     sys_cong_viec.db.gio_bat_dau = sys_cong_viec.gio + ":" + sys_cong_viec.phut;
                     sys_cong_viec.db.status_del = 1;
                     sys_cong_viec.db.create_by = user_id;
@@ -195,6 +193,8 @@ namespace WebAPI.Controllers
             cong_viec_giang_vien.db.id_cong_viec = model.db.id;
             cong_viec_giang_vien.db.id_chuc_vu = model.id_chuc_vu;
             cong_viec_giang_vien.db.id_khoa = model.id_khoa;
+            cong_viec_giang_vien.db.ngay_bat_dau = model.db.ngay_bat_dau;
+            cong_viec_giang_vien.db.ngay_ket_thuc = model.db.ngay_ket_thuc;
             cong_viec_giang_vien.db.update_date = DateTime.Now;
             cong_viec_giang_vien.db.create_date = DateTime.Now;
             cong_viec_giang_vien.db.create_by = user_id;

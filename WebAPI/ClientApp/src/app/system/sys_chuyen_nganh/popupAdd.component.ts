@@ -6,7 +6,7 @@ import {
 import { Component, OnInit, Input, Inject } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { sys_chuyen_nganh_service } from '../../service/sys_chuyen_nganh.service';
+import { sys_chuyen_nganh_service } from '../../service/sys_chuyen_nghanh.service';
 import Swal from 'sweetalert2';
 import { sys_user_service } from '../../service/sys_user.service';
 import { sys_chuyen_nganh_model } from '@/app/model/sys_chuyen_nganh.model';

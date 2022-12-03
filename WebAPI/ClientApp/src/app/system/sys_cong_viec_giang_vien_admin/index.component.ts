@@ -12,7 +12,7 @@ import { sys_cong_viec_service } from '../../service/sys_cong_viec.service';
 import { sys_chuc_vu_service } from '../../service/sys_chuc_vu.service';
 import { sys_khoa_service } from '../../service/sys_khoa.service';
 import { sys_bo_mon_service } from '../../service/sys_bo_mon.service';
-import { sys_cong_viec_giang_vien_popupComponent } from './popupAdd.component';
+import { sys_cong_viec_giang_vien_admin_popupComponent } from './popupAdd.component';
 import { ExportExcelService } from '@/app/auth/export-excel.service';
 import { environment } from '@/environments/environment';
 @Component({
@@ -20,7 +20,7 @@ import { environment } from '@/environments/environment';
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.scss'],
 })
-export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
+export class sys_cong_viec_giang_vien_admin_indexComponent implements OnInit {
   public foods: any = [];
   public listData: any = [];
   public lst_status: any = [];
@@ -119,7 +119,7 @@ onSubmitFile() {
         if (res == '') {
 
           Swal.fire('Lưu thành công', '', 'success');
-          this.DataHanlder();
+          this.DataHanlderAdmin();
         } else {
           Swal.fire(res.toString(), '', 'warning');
         }
@@ -164,11 +164,11 @@ onSubmitFile() {
   // })
   pageChangeEvent(event: number) {
     this.p = event;
-    this.DataHanlder();
+    this.DataHanlderAdmin();
   }
   openDialogDetail(item): void {
     const dialogRef = this.dialog.open(
-      sys_cong_viec_giang_vien_popupComponent,
+      sys_cong_viec_giang_vien_admin_popupComponent,
       {
         width: '850px',
         data: item,
@@ -176,12 +176,12 @@ onSubmitFile() {
     );
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.DataHanlder();
+      this.DataHanlderAdmin();
     });
   }
   openDialogAdd(): void {
     const dialogRef = this.dialog.open(
-      sys_cong_viec_giang_vien_popupComponent,
+      sys_cong_viec_giang_vien_admin_popupComponent,
       {
         width: '850px',
         data: {
@@ -195,7 +195,7 @@ onSubmitFile() {
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
-      this.DataHanlder();
+      this.DataHanlderAdmin();
     });
   }
 
@@ -240,7 +240,7 @@ onSubmitFile() {
         showConfirmButton: false,
         timer: 1500,
       }).then((result) => {
-        this.DataHanlder();
+        this.DataHanlderAdmin();
       });
     });
   }
@@ -254,14 +254,14 @@ onSubmitFile() {
           showConfirmButton: false,
           timer: 1500,
         }).then((result) => {
-          this.DataHanlder();
+          this.DataHanlderAdmin();
         });
       });
   }
-  DataHanlder(): void {
+  DataHanlderAdmin(): void {
     this.loading = false;
     this.sys_cong_viec_giang_vien_service
-      .DataHanlder(this.filter)
+      .DataHanlderAdmin(this.filter)
       .subscribe((resp) => {
         var model: any;
         this.listData = resp;
@@ -303,7 +303,7 @@ onSubmitFile() {
     });
   }
   ngOnInit(): void {
-    this.DataHanlder();
+    this.DataHanlderAdmin();
     this.get_list_chuc_vu();
     this.get_list_khoa();
     this.get_list_cong_viec();

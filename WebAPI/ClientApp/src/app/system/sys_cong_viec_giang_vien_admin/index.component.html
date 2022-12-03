@@ -6,18 +6,62 @@
       <h1 class="font-bold text-xl uppercase">Công Việc giảng viên</h1>
     </div>
     <mat-card>
-      <div class="flex">
-        <div class="flex-1 px-2">
-          <mat-label>Tìm kiếm</mat-label>
-          <mat-form-field class="w-full" appearance="outline" class="w-full">
-            <input [(ngModel)]="filter.search" matInput (keyup.enter)="DataHanlderUser()">
-          </mat-form-field>
+      <div class="w-full max-w-sm" style="min-width:500px">
+        <div class="flex items-center border-b border-teal-500 py-2">
+          <input
+            class="appearance-none border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+            type="file" (change)="onFileSelected($event)" #fileUpLoad>
+
+          <button
+            class="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-base py-1 px-2 rounded"
+            type="button" (click)="dowloadFileMau()">
+            Mẫu Import
+          </button>
+          <button
+            class="flex-shrink-0 bg-teal-500 hover:bg-teal-500 border-teal-500 hover:border-teal-700 text-base border-4 text-white py-1 px-2 rounded"
+            type="button" (click)="onSubmitFile()">
+            Upload
+          </button>
         </div>
+      </div>
+      <div class="flex">
         <div class="flex-1  px-2">
           <mat-label>Công việc</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="filter.id_cong_viec" (selectionChange)="DataHanlderUser()">
+            <mat-select [(ngModel)]="filter.id_cong_viec" (selectionChange)="DataHanlderAdmin()">
               <mat-option *ngFor="let item of lst_cong_viec" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex-1  px-2">
+          <mat-label>Khoa</mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="filter.id_khoa" (selectionChange)="DataHanlderAdmin()">
+              <mat-option *ngFor="let item of lst_khoa" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1  px-2">
+          <mat-label>Chức vụ</mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="filter.id_chuc_vu" (selectionChange)="get_list_giang_vien()">
+              <mat-option *ngFor="let item of lst_chuc_vu" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex-1  px-2">
+          <mat-label>Giảng viên</mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="filter.id_giang_vien" (selectionChange)="DataHanlderAdmin()">
+              <mat-option *ngFor="let item of lst_giang_vien" [value]="item.id">
                 {{ item.name }}
               </mat-option>
             </mat-select>
@@ -26,21 +70,19 @@
       </div>
       <div class="flex">
         <div class="flex-1 px-2">
-          <mat-label>Từ ngày
-          </mat-label>
-          <mat-form-field appearance="outline" class="w-full">
-            <input matInput [matDatepicker]="picker"  [(ngModel)]="filter.tu">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+          <mat-label>Tìm kiếm</mat-label>
+          <mat-form-field class="w-full" appearance="outline" class="w-full">
+            <input [(ngModel)]="filter.search" matInput (keyup.enter)="DataHanlderAdmin()">
           </mat-form-field>
         </div>
-        <div class="flex-1 px-2">
-          <mat-label>Đến ngày
-          </mat-label>
+        <div class="flex-1  px-2">
+          <mat-label>Trạng thái</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <input matInput [matDatepicker]="picker1" [(ngModel)]="filter.den">
-            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-            <mat-datepicker #picker1></mat-datepicker>
+            <mat-select [(ngModel)]="filter.status_del" (selectionChange)="DataHanlderAdmin()">
+              <mat-option *ngFor="let item of lst_status" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
       </div>
@@ -48,21 +90,25 @@
 
     <div class="flex justify-end mt-5">
       <div class="flex justify-end mr-10">
-        <button mat-raised-button (click)="DataHanlderUser()">Tìm kiếm</button>
+        <button mat-raised-button (click)="DataHanlderAdmin()">Tìm kiếm</button>
       </div>
       <div class="flex justify-end mr-10">
-        <button mat-raised-button color="primary"   (click)="export_Excel()">
-          <mat-icon>cloud_download</mat-icon>  Export Excel
+        <button mat-raised-button color="primary" (click)="export_Excel()">
+          <mat-icon>cloud_download</mat-icon> Export Excel
         </button>
       </div>
 
+      <div class="flex justify-end mr-10">
+        <button mat-raised-button color="primary" (click)="openDialogAdd()">
+          <mat-icon>add</mat-icon>Thêm
+        </button>
+      </div>
     </div>
     <div class="flex mt-10">
       <mat-card class="w-full">
-
         <table id="excel-table" class="w-full table_admin">
           <thead class="">
-            <!-- <th class=" text-base" style="width: 5%; height: 60px"></th> -->
+            <th class=" text-base" style="width: 5%; height: 60px"></th>
             <th class=" text-base" style="width: 5%; height: 60px">
               STT
             </th>
@@ -78,7 +124,7 @@
           <tbody
             *ngFor="let item of listData|paginate: { itemsPerPage: 5, currentPage: p, totalItems: total } ; index as i">
             <tr>
-              <!-- <td class="">
+              <td class="">
                 <div class="flex justify-center item-center">
                   <div class="flex justify-center items-center ng-star-inserted" *ngIf="item.db.status_del==1"
                     (click)="delete(item.db.id)"><span class="material-icons"
@@ -87,12 +133,12 @@
                     (click)="reven_status(item.db.id)"><span class="material-icons" style="color: rgb(16, 222, 36)">
                       <mat-icon>done_outline</mat-icon>
                     </span></div>
-                  <div class="flex justify-center items-center ng-star-inserted" (click)="openDialogDetail(item)"><span
+                  <!-- <div class="flex justify-center items-center ng-star-inserted" (click)="openDialogDetail(item)"><span
                       class="material-icons">
                       <mat-icon>build</mat-icon>
-                    </span></div>
+                    </span></div> -->
                 </div>
-              </td> -->
+              </td>
               <td class="">
                 <span class="p-4">
                   {{ i + 1 }}

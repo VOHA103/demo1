@@ -45,7 +45,7 @@ namespace WebAPI.Controllers
               })
               .Where(q => q.db.ten_chuc_vu.Contains(filter.search) || filter.search == "")
               .Where(q => q.db.status_del == status_del)
-              .ToList(); 
+              .ToList();
             result = result.OrderByDescending(q => q.db.update_date).ToList();
             var model = new
             {
@@ -57,10 +57,26 @@ namespace WebAPI.Controllers
         [HttpGet("[action]")]
         public IActionResult get_list_chuc_vu()
         {
-            var result = _context.sys_chuc_vu.Select(q=>new { 
-            id=q.id,
-            name=q.ten_chuc_vu,
-            }).ToList();
+            var result = _context.sys_chuc_vu
+                .Where(q => q.status_del == 1)
+                .Select(q => new
+                {
+                    id = q.id,
+                    name = q.ten_chuc_vu,
+                }).ToList();
+            return Ok(result);
+        }
+        [HttpGet("[action]")]
+        public IActionResult get_list_chuc_vu_change()
+        {
+            var result = _context.sys_chuc_vu
+                .Where(q => q.status_del == 1)
+                .Where(q => q.code != "admin")
+                .Select(q => new
+                {
+                    id = q.id,
+                    name = q.ten_chuc_vu,
+                }).ToList();
             return Ok(result);
         }
         [HttpGet("[action]")]
@@ -125,7 +141,7 @@ namespace WebAPI.Controllers
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var error = sys_chuc_vu_part.check_error_insert_update(sys_chuc_vu);
                 var check_chuc_vu = _context.sys_chuc_vu.Where(q => q.ten_chuc_vu == sys_chuc_vu.db.ten_chuc_vu && q.status_del == 1).SingleOrDefault();
-                if (check_chuc_vu != null && sys_chuc_vu.db.ten_chuc_vu!="")
+                if (check_chuc_vu != null && sys_chuc_vu.db.ten_chuc_vu != "")
                 {
                     error.Add(set_error.set("db.ten_chuc_vu", "Chức vụ đã tồn tại"));
                 }

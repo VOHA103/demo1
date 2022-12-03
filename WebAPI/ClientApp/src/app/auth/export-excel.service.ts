@@ -4,6 +4,7 @@ import { WorkBook, WorkSheet } from 'xlsx/types';
 import * as fs from 'file-saver';
 import { DatePipe } from '@angular/common';
 import * as Excel from 'exceljs/dist/exceljs.min.js';
+import Swal from 'sweetalert2';
 @Injectable({
   providedIn: 'root',
 })
@@ -42,11 +43,15 @@ export class ExportExcelService {
     widths,
   }) {
     if (!myData || myData.length === 0) {
-      console.error('Chưa có data');
+      Swal.fire({
+        icon: 'warning',
+        title: 'Chưa có dữ liệu',
+        showConfirmButton: false,
+        timer: 1500,
+      }).then((result) => {
+      });
       return;
     }
-    console.log('exportToExcel', myData);
-
     const wb = new Excel.Workbook();
     const ws = wb.addWorksheet(sheetName);
     const colums = myHeader?.length;
@@ -92,7 +97,6 @@ export class ExportExcelService {
       height: 40,
       font: {
         size: 40,
-        // underline: 'double',
         bold: false,
         color: { argb: 'FFFFFF' },
         align: 'center',
@@ -122,7 +126,6 @@ export class ExportExcelService {
   }
 
   private addRow(ws, data, section) {
-    debugger
     const borderStyles = {
       top: { style: 'thin' },
       left: { stype: 'thin' },

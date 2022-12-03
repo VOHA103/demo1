@@ -23,6 +23,7 @@ import { sys_thong_ke_indexComponent } from './system/sys_thong_ke_admin/index.c
 import { sys_person_work_indexComponent } from './system/sys_person_work/index.component';
 import { sys_thong_ke_user_indexComponent } from './system/sys_thong_ke_user/index.component';
 import { sys_giang_vien_khoa_indexComponent } from './system/sys_giang_vien_khoa/index.component';
+import { sys_cong_viec_giang_vien_admin_indexComponent } from './system/sys_cong_viec_giang_vien_admin/index.component';
 
 const routes: Routes = [
   { path: "login", component: login_indexComponent },
@@ -30,6 +31,10 @@ const routes: Routes = [
   { path: "home", component: nav_indexComponent,canActivate:[AuthGuard] },
   { path: "", component: nav_indexComponent ,children: [
 
+    {
+      path: "sys_cong_viec_giang_vien_admin_index",
+      component: sys_cong_viec_giang_vien_admin_indexComponent
+    },
     {
       path: "sys_giang_vien_khoa_index",
       component: sys_giang_vien_khoa_indexComponent

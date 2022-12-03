@@ -25,7 +25,16 @@ namespace WebAPI.Model
         public int? trang_thai { get; set; }
         public List<string> list_giang_vien { get; set; }
     }
-    
+
+    public class filter_thong_ke_user_data
+    {
+        public string id_cong_viec { get; set; }
+        public string search { get; set; }
+        public int? id_loai_cong_viec { get; set; }
+        public DateTime? tu { get; set; }
+        public DateTime? den { get; set; }
+
+    }
     public class filter_thong_ke_user
     {
         public int? id_loai_cong_viec { get; set; }
@@ -38,6 +47,8 @@ namespace WebAPI.Model
         public string id_cong_viec { get; set; }
         public int? id_chuc_vu { get; set; }
         public int? id_khoa { get; set; }
+        public DateTime? tu { get; set; }
+        public DateTime? den { get; set; }
 
     }
     public class filter_data_cong_viec_giang_vien
@@ -56,6 +67,8 @@ namespace WebAPI.Model
         public string search { get; set; }
         public string id_cong_viec { get; set; }
         public int? status_del { get; set; }
+        public DateTime? tu { get; set; }
+        public DateTime? den { get; set; }
 
     }
 }

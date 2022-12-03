@@ -18,6 +18,7 @@ namespace WebAPI.Model
         public string update_name { get; set; }
         public string ten_chuc_vu { get; set; }
         public string ten_khoa { get; set; }
+        public string ten_chuyen_nghanh { get; set; }
         public string ten_bo_mon { get; set; }
         public List<string> list_bo_mon { get; set; }
     }

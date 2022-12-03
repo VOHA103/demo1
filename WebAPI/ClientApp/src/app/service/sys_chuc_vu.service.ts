@@ -59,6 +59,11 @@ export class sys_chuc_vu_service {
     return this.http.get<any[]>(url);
   }
   //lấy danh sách sys_chuc_vu
+  public get_list_chuc_vu_change(): Observable<any[]> {
+    const url = this.REST_API_URL + '/sys_chuc_vu/get_list_chuc_vu_change';
+    return this.http.get<any[]>(url);
+  }
+  //lấy danh sách sys_chuc_vu
   public DataHanlder(filter:any){
     const url = this.REST_API_URL + '/sys_chuc_vu/DataHanlder';
     return this.http.post(url,filter);

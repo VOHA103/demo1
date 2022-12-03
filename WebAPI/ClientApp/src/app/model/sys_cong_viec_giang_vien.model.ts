@@ -17,3 +17,24 @@ export class filter_thong_ke_user {
   tu: Date | null;
   den: Date | null;
 }
+export class filter_thong_ke {
+  id_cong_viec: string;
+  id_chuc_vu: number | null;
+  id_khoa: number | null;
+  tu: Date | null;
+  den: Date | null;
+}
+export class filter_thong_ke_user_data {
+  id_cong_viec: string;
+  search: string;
+  id_loai_cong_viec: number | null;
+  tu: Date | null;
+  den: Date | null;
+}
+export class filter_data_cong_viec_giang_vien_user {
+  search: string;
+  id_cong_viec: string;
+  status_del: number | null;
+  tu: Date | null;
+  den: Date | null;
+}

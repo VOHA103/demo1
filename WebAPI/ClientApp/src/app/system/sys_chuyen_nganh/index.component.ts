@@ -1,4 +1,4 @@
-import { sys_chuyen_nganh_service } from '../../service/sys_chuyen_nganh.service';
+import { sys_chuyen_nganh_service } from '../../service/sys_chuyen_nghanh.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';

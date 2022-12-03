@@ -5,6 +5,8 @@ export class sys_cong_viec_giang_vien {
   so_gio: number | null;
   create_by: string;
   create_date: string | null;
+  ngay_bat_dau: string | null;
+  ngay_ket_thuc: string | null;
   update_by: string;
   update_date: string | null;
   status_del: number | null;

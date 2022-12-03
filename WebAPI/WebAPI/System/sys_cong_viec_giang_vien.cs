@@ -13,6 +13,8 @@ namespace WebAPI.System
         public int? so_gio { get; set; }
         public string create_by { get; set; }
         public DateTime? create_date { get; set; }
+        public DateTime? ngay_bat_dau { get; set; }
+        public DateTime? ngay_ket_thuc { get; set; }
         public string update_by { get; set; }
         public DateTime? update_date { get; set; }
         public int? status_del { get; set; }

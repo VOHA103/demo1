@@ -56,6 +56,10 @@ export class nav_indexComponent implements OnInit {
         label: 'Thống kê',
       },
       {
+        link: 'sys_cong_viec_giang_vien_admin_index',
+        label: 'Công việc giảng viên',
+      },
+      {
         link: 'sys_giang_vien_index',
         label: 'Giảng viên',
       },
@@ -68,20 +72,10 @@ export class nav_indexComponent implements OnInit {
         label: 'Khoa',
       },
     ];
-    this.menu_user = [
-      {
-        link: 'sys_person_work_index',
-        label: 'Công việc người dùng',
-      },
-      {
-        link: 'sys_thong_ke_user_index',
-        label: 'Thống kê người dùng',
-      },
-    ];
     this.menu_sub_admin = [
       {
         link: 'sys_giang_vien_khoa_index',
-        label: 'Giảng viên khoa',
+        label: 'Giảng viên',
       },
       {
         link: 'sys_bo_mon_index',
@@ -114,7 +108,21 @@ export class nav_indexComponent implements OnInit {
     ];
     if (this.profile.code === 'admin') this.menu = this.menu_admin;
     if (this.profile.code === 'sub_admin') this.menu = this.menu_sub_admin;
+    this.menu_user = [
+      {
+        link: 'sys_person_work_index',
+        label: 'Công việc người dùng',
+      },
+      {
+        link: 'sys_thong_ke_user_index',
+        label: 'Thống kê người dùng',
+      },
+    ];
     if (this.profile.code === 'user') this.menu = this.menu_user;
+
+
+
+
     if(this.profile.code=="admin" && this.profile.name=="administrator")
     this.menu=[
       {
@@ -133,14 +141,6 @@ export class nav_indexComponent implements OnInit {
         link: 'sys_khoa_index',
         label: 'Khoa',
       },
-      // {
-      //   link: 'sys_person_work_index',
-      //   label: 'Công việc người dùng',
-      // },
-      // {
-      //   link: 'sys_thong_ke_user_index',
-      //   label: 'Thống kê người dùng',
-      // },
       {
         link: 'sys_bo_mon_index',
         label: 'Bộ môn',
@@ -165,10 +165,6 @@ export class nav_indexComponent implements OnInit {
         link: 'sys_giang_vien_index',
         label: 'Giảng viên',
       },
-      // {
-      //   link: 'sys_hoat_dong_index',
-      //   label: 'Hoạt động',
-      // },
       {
         link: 'sys_loai_cong_viec_index',
         label: 'Loại công việc',

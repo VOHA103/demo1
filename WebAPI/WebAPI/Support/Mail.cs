@@ -76,12 +76,16 @@ namespace WebAPI.Support
         
                
                 <div style=""font-size: 15px; "">
-                    <label>Tài khoản:</label>
+                    <label>Tên:</label>
                     <label style = ""font-size:30px;font-weight: bold;"" > {0} </label >
                 </div >
                 <div style=""font-size: 15px; "">
-                    <label>Mật khẩu:</label>
+                    <label>Tài khoản:</label>
                     <label style = ""font-size:30px;font-weight: bold;"" > {1} </label >
+                </div >
+                <div style=""font-size: 15px; "">
+                    <label>Mật khẩu:</label>
+                    <label style = ""font-size:30px;font-weight: bold;"" > {2} </label >
                 </div >
             </div >
         </div >
@@ -119,7 +123,7 @@ namespace WebAPI.Support
             </div >
         </div >
     </div >
-",model.db.username, pass);
+", model.db.ten_giang_vien,model.db.ma_giang_vien, pass);
             message.Body = builder.ToMessageBody();
 
             using (var client = new SmtpClient())

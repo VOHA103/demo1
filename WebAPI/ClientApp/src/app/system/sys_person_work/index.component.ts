@@ -8,6 +8,7 @@ import { user_model } from '@/app/model/user.model';
 import Swal from 'sweetalert2';
 import { MatPaginator } from '@angular/material/paginator';
 import { sys_loai_cong_viec_service } from '../../service/sys_loai_cong_viec.service';
+import { filter_data_cong_viec_giang_vien_user, filter_thong_ke_user, filter_thong_ke_user_data } from '@/app/model/sys_cong_viec_giang_vien.model';
 @Component({
   selector: 'sys_cong_viec_index',
   templateUrl: './index.component.html',
@@ -21,11 +22,7 @@ export class sys_person_work_indexComponent implements OnInit {
   public lst_cong_viec: any = [];
   public model: user_model;
   public loading = false;
-  filter = {
-    search: '',
-    status_del: 1,
-    id_cong_viec: '',
-  };
+  public filter = new filter_data_cong_viec_giang_vien_user();
   public pageIndex: number = 1;
   public pageSize: number = 20;
   public pageDisplay: number = 10;
@@ -41,6 +38,12 @@ export class sys_person_work_indexComponent implements OnInit {
     private sys_loai_cong_viec_service: sys_loai_cong_viec_service,
     public dialog: MatDialog
   ) {
+    this.filter.id_cong_viec = "";
+    this.filter.search = "";
+    this.filter.status_del = 1;
+    this.filter.den = new Date();
+    this.filter.tu = new Date();
+    this.filter.tu.setDate(this.filter.den.getDate() - 7);
     this.DataHanlderUser();
   }
   pageChangeEvent(event: number) {
@@ -48,7 +51,6 @@ export class sys_person_work_indexComponent implements OnInit {
     this.DataHanlderUser();
   }
   DataHanlderUser(): void {
-    debugger;
     this.loading = false;
     this.sys_cong_viec_giang_vien_service
       .DataHanlderUser(this.filter)
@@ -69,9 +71,10 @@ export class sys_person_work_indexComponent implements OnInit {
   get_list_cong_viec(): void {
     this.sys_cong_viec_service.get_list_cong_viec().subscribe((result) => {
       this.lst_cong_viec = result;
+      this.lst_cong_viec.splice(0, 0, { id: "", name: 'Tất cả' });
     });
   }
-  
+
   export_Excel(): void {
     this.sys_cong_viec_giang_vien_service
       .ExportExcel(this.filter)

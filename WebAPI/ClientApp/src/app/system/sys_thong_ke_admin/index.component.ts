@@ -12,6 +12,7 @@ import { sys_khoa_service } from '../../service/sys_khoa.service';
 import { sys_bo_mon_service } from '../../service/sys_bo_mon.service';
 import { sys_cong_viec_giang_vien_service } from '../../service/sys_cong_viec_giang_vien.service';
 import { ExportExcelService } from '@/app/auth/export-excel.service';
+import { filter_thong_ke } from '@/app/model/sys_cong_viec_giang_vien.model';
 @Component({
   selector: 'sys_thong_ke_index',
   templateUrl: './index.component.html',
@@ -26,11 +27,7 @@ export class sys_thong_ke_indexComponent implements OnInit {
   public lst_chuc_vu: any = [];
   public chartOptions: any;
   public loading: any;
-  filter = {
-    id_cong_viec: '',
-    id_chuc_vu: -1,
-    id_khoa: -1,
-  };
+  public filter = new filter_thong_ke();
   constructor(
     private http: HttpClient,
     public dialog: MatDialog,
@@ -40,9 +37,16 @@ export class sys_thong_ke_indexComponent implements OnInit {
     private sys_khoa_service: sys_khoa_service,
     private exportExcelService: ExportExcelService,
     private sys_cong_viec_giang_vien_service: sys_cong_viec_giang_vien_service
-  ) {}
+  ) {
+    this.filter.id_chuc_vu = -1;
+    this.filter.id_khoa = -1;
+    this.filter.id_cong_viec = '';
+    this.filter.den = new Date();
+    this.filter.tu = new Date();
+    this.filter.tu.setDate(this.filter.den.getDate() - 7);
+  }
   export_Excel(): void {
-     const exportData =""
+    const exportData = '';
     this.exportExcelService.exportToExcelPro({
       myData: exportData,
       fileName: 'DSCViecGV',
@@ -65,7 +69,7 @@ export class sys_thong_ke_indexComponent implements OnInit {
       ],
     });
   }
-  load_data(data:any): void {
+  load_data(data: any): void {
     this.chartOptions = {
       title: {
         text: 'Thống kê',
@@ -84,16 +88,16 @@ export class sys_thong_ke_indexComponent implements OnInit {
         },
       ],
     };
-    this.loading=true;
+    this.loading = true;
   }
   get_list_cong_viec(): void {
     this.sys_cong_viec_service.get_list_cong_viec().subscribe((result) => {
       this.lst_cong_viec = result;
-      this.lst_cong_viec.splice(0,0,{id:"",name:"Tất cả"})
+      this.lst_cong_viec.splice(0, 0, { id: '', name: 'Tất cả' });
     });
   }
   get_thong_ke_cong_viec(): void {
-    this.loading=false;
+    this.loading = false;
     this.sys_cong_viec_giang_vien_service
       .get_thong_ke_cong_viec(this.filter)
       .subscribe((result) => {
@@ -104,14 +108,14 @@ export class sys_thong_ke_indexComponent implements OnInit {
   get_list_khoa(): void {
     this.sys_khoa_service.get_list_khoa().subscribe((data) => {
       this.lst_khoa = data;
-      this.lst_khoa.splice(0,0,{id:-1,name:"Tất cả"})
+      this.lst_khoa.splice(0, 0, { id: -1, name: 'Tất cả' });
       this.get_list_chuc_vu();
     });
   }
   get_list_chuc_vu(): void {
     this.sys_chuc_vu_service.get_list_chuc_vu().subscribe((data) => {
       this.lst_chuc_vu = data;
-      this.lst_chuc_vu.splice(0,0,{id:-1,name:"Tất cả"})
+      this.lst_chuc_vu.splice(0, 0, { id: -1, name: 'Tất cả' });
       this.get_list_cong_viec();
     });
   }

@@ -112,6 +112,7 @@ export class sys_giang_vien_khoa_indexComponent implements OnInit {
       var result: any;
       result = data;
       this.lst_khoa = result;
+      this.lst_khoa.splice(0, 0, { id: -1, name: 'Tất cả' });
     });
   }
   get_list_chuc_vu(): void {
@@ -119,6 +120,7 @@ export class sys_giang_vien_khoa_indexComponent implements OnInit {
       var result: any;
       result = data;
       this.lst_chuc_vu = result;
+      this.lst_chuc_vu.splice(0, 0, { id: -1, name: 'Tất cả' });
     });
   }
   DataHanlderKhoa(): void {

@@ -39,6 +39,11 @@ export class sys_giang_vien_service {
     const url = this.REST_API_URL + '/sys_giang_vien/create';
     return this.http.post(url, sys_giang_viens);
   }
+  // thêm sys_giang_vien
+  public add_GV_khoa(sys_giang_viens: sys_giang_vien_model) {
+    const url = this.REST_API_URL + '/sys_giang_vien/create_giang_vien_khoa';
+    return this.http.post(url, sys_giang_viens);
+  }
   // edit sys_giang_vien
   public edit(sys_giang_viens: sys_giang_vien_model) {
     const url = this.REST_API_URL + '/sys_giang_vien/edit';

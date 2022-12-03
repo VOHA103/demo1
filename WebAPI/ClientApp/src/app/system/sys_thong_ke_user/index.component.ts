@@ -14,12 +14,11 @@ export class sys_thong_ke_user_indexComponent implements OnInit {
   public lst_loai_cong_viec: any = [];
   public lst_data: any = [];
   public loading: any;
- public filter =new filter_thong_ke_user()
+  public filter = new filter_thong_ke_user();
   public chartOptions: any;
+  public data_excel: any;
   constructor(
-    private http: HttpClient,
     public dialog: MatDialog,
-
     private exportExcelService: ExportExcelService,
     private sys_loai_cong_viec_service: sys_loai_cong_viec_service,
     private sys_cong_viec_giang_vien_service: sys_cong_viec_giang_vien_service
@@ -27,36 +26,38 @@ export class sys_thong_ke_user_indexComponent implements OnInit {
     this.filter.id_loai_cong_viec = -1;
     this.filter.den = new Date();
     this.filter.tu = new Date();
-    this.filter.tu.setDate(this.filter.den.getDate()-7);
-    console.log(this.filter.den);
-    console.log(this.filter.tu);
-
+    this.filter.tu.setDate(this.filter.den.getDate() - 7);
+    this.get_list_loai_cong_viec();
+    this.get_thong_ke_cong_viec_nguoi_dung();
   }
   export_Excel(): void {
-     const exportData =""
-    this.exportExcelService.exportToExcelPro({
-      myData: exportData,
-      fileName: 'DSCViecGV',
-      sheetName: 'CVGV',
-      report: 'CÔNG VIỆC GIẢNG VIÊN',
-      myHeader: [
-        'Tên giảng viên',
-        'Công việc',
-        'Trạng thái',
-        'Người tạo',
-        'Ngày tạo',
-        'Ghi chú',
-      ],
-      widths: [
-        { width: 30 },
-        { width: 25 },
-        { width: 25 },
-        { width: 35 },
-        { width: 40 },
-      ],
-    });
+    this.sys_cong_viec_giang_vien_service
+      .get_list_cong_viec_nguoi_dung(this.filter)
+      .subscribe((result) => {
+        this.data_excel = result;
+        this.exportExcelService.exportToExcelPro({
+          myData: this.data_excel,
+          fileName: 'DSCViecGV',
+          sheetName: 'CVGV',
+          report: 'CÔNG VIỆC GIẢNG VIÊN',
+          myHeader: [
+            'Tên công việc',
+            'Tên loại công việc',
+            'Số giờ',
+            'Ngày bắt đầu',
+            'Ngày kết thúc',
+          ],
+          widths: [
+            { width: 30 },
+            { width: 25 },
+            { width: 25 },
+            { width: 35 },
+            { width: 40 },
+          ],
+        });
+      });
   }
-  load_data(data:any): void {
+  load_data(data: any): void {
     this.chartOptions = {
       title: {
         text: 'Thống kê',
@@ -75,12 +76,12 @@ export class sys_thong_ke_user_indexComponent implements OnInit {
         },
       ],
     };
-    this.loading=true;
+    this.loading = true;
   }
   get_list_loai_cong_viec(): void {
     this.sys_loai_cong_viec_service.get_list_use().subscribe((result) => {
       this.lst_loai_cong_viec = result;
-      this.lst_loai_cong_viec.splice(0,0,{id:-1,name:"Tất cả"})
+      this.lst_loai_cong_viec.splice(0, 0, { id: -1, name: 'Tất cả' });
     });
   }
   get_thong_ke_cong_viec_nguoi_dung(): void {
@@ -93,7 +94,5 @@ export class sys_thong_ke_user_indexComponent implements OnInit {
       });
   }
   ngOnInit(): void {
-    this.get_list_loai_cong_viec();
-    this.get_thong_ke_cong_viec_nguoi_dung();
   }
 }

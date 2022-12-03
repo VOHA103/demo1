@@ -87,12 +87,9 @@
           <thead class="">
             <th class=" text-base" style="width: 10%; height: 60px"></th>
             <th class=" text-base" style="width: 5%; height: 60px">STT</th>
-            <th class=" text-base" style="height: 60px">Tên giảng viên</th>
-            <th class=" text-base" style="height: 60px">Mã giảng viên</th>
-            <th class=" text-base" style="height: 60px">Tài khoản</th>
+            <th class=" text-base" style="height: 60px">Giảng viên</th>
             <th class=" text-base" style="height: 60px">Thông tin</th>
-            <th class=" text-base" style="height: 60px">Bộ môn</th>
-            <th class=" text-base" style="height: 60px">Ngày sinh</th>
+            <th class=" text-base" style="height: 60px">Chuyên môn</th>
             <th class=" text-base" style="height: 60px">Người tạo</th>
             <th class=" text-base" style="height: 60px">Ngày tạo</th>
           </thead>
@@ -130,17 +127,22 @@
 
               </td>
               <td class=""><span class="p-4">{{ i + 1 }}</span></td>
-              <td class="">{{ item.db.ten_giang_vien }}</td>
-              <td class="">{{ item.db.ma_giang_vien }}</td>
-              <td class="">{{ item.db.username }}</td>
+              <td class="">
+                <span>{{ item.db.ten_giang_vien }}</span><br>
+                <span>{{ item.db.ma_giang_vien }}</span><br>
+              </td>
               <td class="">
                 <span>Chức vụ: </span> <span>{{ item.ten_chuc_vu }}</span><br>
                 <span>Tên khoa: </span> <span>{{ item.ten_khoa }}</span><br>
                 <span>Email: </span> <span>{{ item.db.email }}</span><br>
                 <span>Địa chỉ: </span> <span>{{ item.db.dia_chi }}</span><br>
+                <span>Ngày sinh: </span> <span>{{ item.db.ngay_sinh | date :'dd/MM/YYYY' }}</span><br>
               </td>
-              <td class="">{{ item.ten_bo_mon }}</td>
-              <td class="">{{ item.db.ngay_sinh | date :'dd/MM/YYYY' }}</td>
+              <td class="">
+
+                <span>Tên chuyên nghành: </span> <span>{{ item.ten_chuyen_nghanh }}</span><br>
+                <span>Bộ môn: </span> <span> {{ item.ten_bo_mon }}</span>
+              </td>
               <td class="">{{ item.create_name }}</td>
               <td class="">{{ item.db.create_date | date :'dd/MM/YYYY' }}</td>
             </tr>

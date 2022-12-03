@@ -13,7 +13,7 @@
 
           </mat-label>
           <mat-form-field class="w-full" appearance="outline">
-            <input matInput [(ngModel)]="sys_giang_vien_model.db.ten_giang_vien" />
+            <input matInput [(ngModel)]="record.db.ten_giang_vien" />
           </mat-form-field>
         </div>
       </div>
@@ -25,8 +25,7 @@
             </span>
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <!-- [(ngModel)]="sys_giang_vien_model.db.id_chuc_vu"== [value]="item.id" -->
-            <mat-select [(ngModel)]="sys_giang_vien_model.db.id_chuc_vu">
+            <mat-select [(ngModel)]="record.db.id_chuc_vu">
               <mat-option *ngFor="let item of lst_chuc_vu" [value]="item.id">
                 {{ item.name }}
               </mat-option>
@@ -40,7 +39,7 @@
             </span>
           </mat-label>
           <mat-form-field class="w-full" appearance="outline">
-            <input matInput [(ngModel)]="sys_giang_vien_model.db.ma_giang_vien" />
+            <input matInput [(ngModel)]="record.db.ma_giang_vien" />
           </mat-form-field>
         </div>
       </div>
@@ -52,8 +51,7 @@
             </span>
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <!-- [(ngModel)]="sys_giang_vien_model.db.id_chuc_vu"== [value]="item.id" -->
-            <mat-select [(ngModel)]="sys_giang_vien_model.db.id_chuyen_nghanh">
+            <mat-select [(ngModel)]="record.db.id_chuyen_nghanh">
               <mat-option *ngFor="let item of lst_chuyen_nghanh" [value]="item.id">
                 {{ item.name }}
               </mat-option>
@@ -67,8 +65,7 @@
             </span>
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <!-- [(ngModel)]="sys_giang_vien_model.db.id_chuc_vu"== [value]="item.id" -->
-            <mat-select [(ngModel)]="sys_giang_vien_model.list_bo_mon" multiple>
+            <mat-select [(ngModel)]="record.list_bo_mon" multiple>
               <mat-option *ngFor="let item of lst_bo_mon" [value]="item.id">
                 {{ item.name }}
               </mat-option>
@@ -85,7 +82,7 @@
 
           </mat-label>
           <mat-form-field class="w-full" appearance="outline">
-            <input matInput [(ngModel)]="sys_giang_vien_model.db.sdt" />
+            <input matInput [(ngModel)]="record.db.sdt" />
           </mat-form-field>
         </div>
         <div class="flex-1 px-2">
@@ -96,7 +93,7 @@
 
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <input matInput [(ngModel)]="sys_giang_vien_model.db.email" />
+            <input matInput [(ngModel)]="record.db.email" />
           </mat-form-field>
         </div>
       </div>
@@ -109,7 +106,7 @@
 
           </mat-label>
           <mat-form-field class="w-full" appearance="outline">
-            <input matInput [(ngModel)]="sys_giang_vien_model.db.dia_chi" />
+            <input matInput [(ngModel)]="record.db.dia_chi" />
           </mat-form-field>
         </div>
         <div class="flex-1 px-2">
@@ -119,7 +116,7 @@
             </span>
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <input matInput [matDatepicker]="picker" [(ngModel)]="sys_giang_vien_model.db.ngay_sinh">
+            <input matInput [matDatepicker]="picker" [(ngModel)]="record.db.ngay_sinh">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
@@ -134,8 +131,7 @@
             </span>
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <!-- [(ngModel)]="sys_giang_vien_model.db.id_chuc_vu"== [value]="item.id" -->
-            <mat-select [(ngModel)]="sys_giang_vien_model.db.gioi_tinh">
+            <mat-select [(ngModel)]="record.db.gioi_tinh">
               <mat-option *ngFor="let item of lst_gioi_tinh" [value]="item.id">
                 {{ item.name }}
               </mat-option>
@@ -148,12 +144,12 @@
           <button mat-raised-button (click)="Close()">Đóng</button>
         </div>
         <div>
-          <button mat-raised-button color="primary" *ngIf="sys_giang_vien_model.db.id == '0'" (click)="Save()">
+          <button mat-raised-button color="primary" *ngIf="record.db.id == '0'" (click)="Save()">
             Lưu
           </button>
         </div>
         <div>
-          <button mat-raised-button color="primary" *ngIf="sys_giang_vien_model.db.id != '0'" (click)="Edit()">
+          <button mat-raised-button color="primary" *ngIf="record.db.id != '0'" (click)="Edit()">
             Sửa
           </button>
         </div>

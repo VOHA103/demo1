@@ -24,6 +24,11 @@ export class sys_cong_viec_giang_vien_service {
   };
   constructor(private http: HttpClient) {}
   //lấy danh sách sys_khoa
+  public DataHanlderAdmin(filter: any) {
+    const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/DataHanlderAdmin';
+    return this.http.post(url, filter);
+  }
+  //lấy danh sách sys_khoa
   public DataHanlder(filter: any) {
     const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/DataHanlder';
     return this.http.post(url, filter);
@@ -64,6 +69,12 @@ export class sys_cong_viec_giang_vien_service {
   public get_thong_ke_cong_viec_nguoi_dung(filter: any) {
     const url =
       this.REST_API_URL + '/sys_cong_viec_giang_vien/get_thong_ke_cong_viec_nguoi_dung';
+    return this.http.post(url,filter);
+  }
+  // reven status sys_cong_viec_giang_vien
+  public get_list_cong_viec_nguoi_dung(filter: any) {
+    const url =
+      this.REST_API_URL + '/sys_cong_viec_giang_vien/get_list_cong_viec_nguoi_dung';
     return this.http.post(url,filter);
   }
   //lấy danh sách sys_cong_viec
