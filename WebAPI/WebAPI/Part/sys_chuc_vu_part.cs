@@ -18,6 +18,10 @@ namespace WebAPI.Part
             {
                 list_error.Add(set_error.set("db.ten_chuc_vu", "Bắt buộc"));
             }
+            if (string.IsNullOrEmpty(item.db.code))
+            {
+                list_error.Add(set_error.set("db.code", "Bắt buộc"));
+            }
             return list_error;
         }
     }

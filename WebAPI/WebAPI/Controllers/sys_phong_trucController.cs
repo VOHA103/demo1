@@ -102,9 +102,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> edit([FromBody] sys_phong_truc_model sys_phong_truc)
         {
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var error = sys_phong_truc_part.check_error_insert_update(sys_phong_truc);
+            var check = _context.sys_phong_truc.Where(q => q.ten_phong_truc == sys_phong_truc.db.ten_phong_truc && q.status_del == 1).SingleOrDefault();
+            if (check != null && sys_phong_truc.db.ten_phong_truc != "")
+            {
+                error.Add(set_error.set("db.ten_phong_truc", "Phòng trực đã tồn tại"));
+            }
             try
             {
-                var error = sys_phong_truc_part.check_error_insert_update(sys_phong_truc);
                 if (error.Count() == 0)
                 {
                     var model = _context.sys_phong_truc.Where(q => q.id == sys_phong_truc.db.id).SingleOrDefault();
@@ -136,6 +141,11 @@ namespace WebAPI.Controllers
 
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var error = sys_phong_truc_part.check_error_insert_update(sys_phong_truc);
+                var check = _context.sys_phong_truc.Where(q => q.ten_phong_truc == sys_phong_truc.db.ten_phong_truc && q.status_del == 1).SingleOrDefault();
+                if (check != null && sys_phong_truc.db.ten_phong_truc != "")
+                {
+                    error.Add(set_error.set("db.ten_phong_truc", "Phòng trực đã tồn tại"));
+                }
                 if (error.Count() == 0)
                 {
                     sys_phong_truc.db.id = 0;

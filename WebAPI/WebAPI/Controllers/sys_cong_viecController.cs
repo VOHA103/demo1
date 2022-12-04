@@ -37,7 +37,8 @@ namespace WebAPI.Controllers
         [HttpGet("[action]")]
         public IActionResult get_list_cong_viec_khoa([FromQuery] int id_khoa)
         {
-            var result = _context.sys_cong_viec.Where(q => q.id_khoa == id_khoa).Select(q => new {
+            var result = _context.sys_cong_viec.Where(q => q.id_khoa == id_khoa).Select(q => new
+            {
                 id = q.id.ToString(),
                 name = q.ten_cong_viec,
             }).ToList();
@@ -61,6 +62,8 @@ namespace WebAPI.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> DataHanlder([FromBody] filter_data_cong_viec filter)
         {
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
             var result = _context.sys_cong_viec
               .Select(d => new sys_cong_viec_model()
               {
@@ -71,6 +74,7 @@ namespace WebAPI.Controllers
               })
               .Where(q => q.db.ten_cong_viec.Contains(filter.search) || filter.search == "")
               .Where(q => q.db.status_del == filter.status_del)
+              .Where(q => q.db.id_khoa == id_khoa)
               .Where(q => q.db.id_loai_cong_viec == filter.id_loai_cong_viec || filter.id_loai_cong_viec == -1)
               .ToList();
             result = result.OrderByDescending(q => q.db.update_date).ToList();
@@ -155,12 +159,14 @@ namespace WebAPI.Controllers
             try
             {
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+                var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
                 var error = sys_cong_viec_part.check_error_insert_update(sys_cong_viec);
                 if (error.Count() == 0)
                 {
                     sys_cong_viec.db.id = get_id_primary_key_cong_viec();
                     sys_cong_viec.db.gio_bat_dau = sys_cong_viec.gio + ":" + sys_cong_viec.phut;
                     sys_cong_viec.db.status_del = 1;
+                    sys_cong_viec.db.id_khoa = id_khoa;
                     sys_cong_viec.db.create_by = user_id;
                     sys_cong_viec.db.create_date = DateTime.Now;
                     var time_work = 0;
@@ -170,13 +176,11 @@ namespace WebAPI.Controllers
                     }
                     else
                     {
-                        time_work = sys_cong_viec.db.so_gio??0;
+                        time_work = sys_cong_viec.db.so_gio ?? 0;
                     }
-                    for (int i = 0; i < sys_cong_viec.list_giang_vien.Count(); i++)
-                    {
 
-                        insert_cong_viec_giang_vien(sys_cong_viec, i, time_work);
-                    }
+                    get_list_giang_vien(sys_cong_viec, time_work);
+
                     _context.sys_cong_viec.Add(sys_cong_viec.db);
                     await _context.SaveChangesAsync();
                 }
@@ -192,15 +196,32 @@ namespace WebAPI.Controllers
                 return Ok(ex.Message);
             }
         }
-        private void insert_cong_viec_giang_vien(sys_cong_viec_model model, int i, int time_work)
+        private void get_list_giang_vien(sys_cong_viec_model model, int time_work)
+        {
+            var cong_viec_giang_vien = new sys_cong_viec_giang_vien_model();
+            if (model.id_bo_mon == -1)
+            {
+                var list_giang_vien = _context.sys_giang_vien.Where(q => q.id_khoa == model.id_khoa).Select(q => q.id).ToList();
+                foreach (var item in list_giang_vien)
+                {
+                    insert_cong_viec_giang_vien(model, item, time_work);
+                }
+            }
+            else
+            {
+                foreach (var item in model.list_giang_vien)
+                {
+                    insert_cong_viec_giang_vien(model, item, time_work);
+                }
+            }
+
+        }
+        private void insert_cong_viec_giang_vien(sys_cong_viec_model model, string id_giang_vien, int time_work)
         {
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
             var cong_viec_giang_vien = new sys_cong_viec_giang_vien_model();
-            var item = model.list_giang_vien[i];
             cong_viec_giang_vien.db.id = get_id_primary_key_cong_viec_gv();
-            cong_viec_giang_vien.db.id_giang_vien = item;
             cong_viec_giang_vien.db.id_cong_viec = model.db.id;
-            cong_viec_giang_vien.db.id_chuc_vu = model.id_chuc_vu;
             cong_viec_giang_vien.db.id_khoa = model.id_khoa;
             cong_viec_giang_vien.db.ngay_bat_dau = model.db.ngay_bat_dau;
             cong_viec_giang_vien.db.ngay_ket_thuc = model.db.ngay_ket_thuc;
@@ -210,8 +231,7 @@ namespace WebAPI.Controllers
             cong_viec_giang_vien.db.update_by = user_id;
             cong_viec_giang_vien.db.status_del = 1;
             cong_viec_giang_vien.db.so_gio = time_work;
-            cong_viec_giang_vien.db.id_bo_mon = 1;
-            var giang_vien = _context.sys_giang_vien.Where(q => q.id == item).Select(q => q.email).SingleOrDefault();
+            var giang_vien = _context.sys_giang_vien.Where(q => q.id == id_giang_vien).Select(q => q.email).SingleOrDefault();
             _context.sys_cong_viec_giang_vien.Add(cong_viec_giang_vien.db);
             _context.SaveChangesAsync();
             Mail.send_work(giang_vien, model);

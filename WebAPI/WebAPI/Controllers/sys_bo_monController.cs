@@ -35,6 +35,8 @@ namespace WebAPI.Controllers
         [HttpPost("[action]")]
         public IActionResult DataHanlder([FromBody] filter_data_bo_mon filter)
         {
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
             var status_del = Int32.Parse(filter.status_del);
             var result = _context.sys_bo_mon
               .Select(d => new sys_bo_mon_model()
@@ -45,6 +47,7 @@ namespace WebAPI.Controllers
               })
               .Where(q => q.db.ten_bo_mon.Contains(filter.search) || filter.search == "")
               .Where(q => q.db.status_del == status_del)
+              .Where(q => q.db.id_khoa == id_khoa)
               .ToList();
             result = result.OrderByDescending(q => q.db.update_date).ToList();
             var model = new
@@ -57,8 +60,10 @@ namespace WebAPI.Controllers
         [HttpGet("[action]")]
         public IActionResult get_list_bo_mon()
         {
-            var result = _context.sys_bo_mon.Select(q => new {
-                id = q.id.ToString(),
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
+            var result = _context.sys_bo_mon.Where(q=>q.status_del==1 && q.id_khoa==id_khoa).Select(q => new {
+                id = q.id,
                 name = q.ten_bo_mon,
             }).ToList();
             return Ok(result);
@@ -67,7 +72,7 @@ namespace WebAPI.Controllers
         public IActionResult get_list_bo_mon_khoa([FromQuery] int id_khoa)
         {
             var result = _context.sys_bo_mon.Where(q=>q.id_khoa==id_khoa).Select(q => new {
-                id = q.id.ToString(),
+                id = q.id,
                 name = q.ten_bo_mon,
             }).ToList();
             return Ok(result);
@@ -118,6 +123,11 @@ namespace WebAPI.Controllers
             try
             {
                 var error = sys_bo_mon_part.check_error_insert_update(sys_bo_mon);
+                var check_bo_mon = _context.sys_bo_mon.Where(q => q.ten_bo_mon == sys_bo_mon.db.ten_bo_mon && q.status_del == 1).SingleOrDefault();
+                if (check_bo_mon != null && sys_bo_mon.db.ten_bo_mon != "")
+                {
+                    error.Add(set_error.set("db.ten_bo_mon", "Tên bộ môn đã tồn tại"));
+                }
                 if (error.Count() == 0)
                 {
                     var model = _context.sys_bo_mon.Where(q => q.id == sys_bo_mon.db.id).SingleOrDefault();
@@ -146,8 +156,9 @@ namespace WebAPI.Controllers
             try
             {
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+                var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
                 var error = sys_bo_mon_part.check_error_insert_update(sys_bo_mon);
-                var check_bo_mon = _context.sys_bo_mon.Where(q => q.ten_bo_mon == sys_bo_mon.db.ten_bo_mon && q.status_del == 1).SingleOrDefault();
+                var check_bo_mon = _context.sys_bo_mon.Where(q => q.ten_bo_mon == sys_bo_mon.db.ten_bo_mon && q.status_del == 1 && q.id_khoa == id_khoa).SingleOrDefault();
                 if (check_bo_mon != null && sys_bo_mon.db.ten_bo_mon!="")
                 {
                     error.Add(set_error.set("db.ten_bo_mon", "Tên bộ môn đã tồn tại"));
@@ -158,6 +169,7 @@ namespace WebAPI.Controllers
                     sys_bo_mon.db.update_date = DateTime.Now;
                     sys_bo_mon.db.create_date = DateTime.Now;
                     sys_bo_mon.db.update_by = user_id;
+                    sys_bo_mon.db.id_khoa = id_khoa;
                     sys_bo_mon.db.status_del = 1;
                     _context.sys_bo_mon.Add(sys_bo_mon.db);
                     await _context.SaveChangesAsync();

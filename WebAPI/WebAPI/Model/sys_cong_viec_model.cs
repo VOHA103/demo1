@@ -21,6 +21,7 @@ namespace WebAPI.Model
         public string phut { get; set; }
         public int? id_chuc_vu { get; set; }
         public int? id_khoa { get; set; }
+        public int? id_bo_mon { get; set; }
         public List<string> list_giang_vien { get; set; }
     }
     public class filter_data_cong_viec

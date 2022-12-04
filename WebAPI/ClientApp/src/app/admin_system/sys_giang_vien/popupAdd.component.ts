@@ -72,7 +72,6 @@ export class sys_giang_vien_popupComponent {
         var result:any;
         result=data;
         this.lst_chuc_vu = result;
-        this.sys_giang_vien_model.db.id_chuc_vu=this.lst_chuc_vu[0].id
       });
   }
   Close(): void {

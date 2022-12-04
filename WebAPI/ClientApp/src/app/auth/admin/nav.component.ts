@@ -59,10 +59,10 @@ export class nav_indexComponent implements OnInit {
       //   link: 'sys_cong_viec_giang_vien_admin_index',
       //   label: 'Công việc giảng viên',
       // },
-      {
-        link: 'sys_giang_vien_index',
-        label: 'Giảng viên',
-      },
+      // {
+      //   link: 'sys_giang_vien_index',
+      //   label: 'Giảng viên',
+      // },
       {
         link: 'sys_chuc_vu_index',
         label: 'Chức vụ',
@@ -101,14 +101,14 @@ export class nav_indexComponent implements OnInit {
         link: 'sys_loai_cong_viec_index',
         label: 'Loại công việc',
       },
-      {
-        link: 'sys_phong_truc_index',
-        label: 'Phòng trực',
-      },
-      {
-        link: 'sys_ky_truc_khoa_index',
-        label: 'Kỳ trực khoa',
-      },
+      // {
+      //   link: 'sys_phong_truc_index',
+      //   label: 'Phòng trực',
+      // },
+      // {
+      //   link: 'sys_ky_truc_khoa_index',
+      //   label: 'Kỳ trực khoa',
+      // },
     ];
     if (this.profile.code === 'admin') this.menu = this.menu_admin;
     if (this.profile.code === 'sub_admin') this.menu = this.menu_sub_admin;

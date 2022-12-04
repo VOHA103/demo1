@@ -65,7 +65,7 @@
             </span>
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="record.list_bo_mon" multiple>
+            <mat-select [(ngModel)]="record.db.id_bo_mon">
               <mat-option *ngFor="let item of lst_bo_mon" [value]="item.id">
                 {{ item.name }}
               </mat-option>

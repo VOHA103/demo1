@@ -71,6 +71,8 @@ export class sys_bo_mon_popupComponent {
   }
   Edit(): void {
     this.sys_bo_mon_service.edit(this.sys_bo_mon_model).subscribe((result) => {
+      var data: any = result;
+      this.check_error = data.error;
       if (this.check_error.length === 0) {
         this.Close();
         Swal.fire({

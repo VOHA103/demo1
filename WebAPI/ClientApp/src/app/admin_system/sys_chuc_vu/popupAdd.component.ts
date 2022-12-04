@@ -42,7 +42,11 @@ export class sys_chuc_vu_popupComponent {
       },
       {
         id: "user",
-        name:"Người dùng"
+        name:"Giảng viên"
+      },
+      {
+        id: "admin_bo_mon",
+        name:"Trưởng bộ môn"
       }
     ]
   }

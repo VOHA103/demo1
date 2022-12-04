@@ -71,7 +71,6 @@ export class sys_bo_mon_indexComponent implements OnInit {
         lst_cong_viec: null,
       },
     });
-
     dialogRef.afterClosed().subscribe((result) => {
       this.DataHanlder();
     });

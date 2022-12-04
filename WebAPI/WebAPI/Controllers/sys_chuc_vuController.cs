@@ -110,6 +110,11 @@ namespace WebAPI.Controllers
             try
             {
                 var error = sys_chuc_vu_part.check_error_insert_update(sys_chuc_vu);
+                var check_chuc_vu = _context.sys_chuc_vu.Where(q => q.ten_chuc_vu == sys_chuc_vu.db.ten_chuc_vu && q.status_del == 1).SingleOrDefault();
+                if (check_chuc_vu != null && sys_chuc_vu.db.ten_chuc_vu != "")
+                {
+                    error.Add(set_error.set("db.ten_chuc_vu", "Chức vụ đã tồn tại"));
+                }
                 if (error.Count() == 0)
                 {
                     var model = _context.sys_chuc_vu.Where(q => q.id == sys_chuc_vu.db.id).SingleOrDefault();

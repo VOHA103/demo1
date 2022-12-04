@@ -69,8 +69,10 @@ export class sys_khoa_popupComponent {
     });
   }
   Edit(): void {
-    debugger;
     this.sys_khoa_service.edit(this.sys_khoa_model).subscribe((result) => {
+      var data: any = result;
+      this.check_error = data.error;
+      if (this.check_error.length === 0) {
       this.Close();
       Swal.fire({
         icon: 'success',
@@ -78,6 +80,7 @@ export class sys_khoa_popupComponent {
         showConfirmButton: false,
         timer: 2000,
       }).then((result) => {});
+    }
     });
   }
 

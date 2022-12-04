@@ -18,7 +18,10 @@ namespace WebAPI.Part
             {
                 list_error.Add(set_error.set("db.ten_phong_truc", "Bắt buộc"));
             }
-            
+            if (string.IsNullOrEmpty(item.db.so_phong))
+            {
+                list_error.Add(set_error.set("db.so_phong", "Bắt buộc"));
+            }
             return list_error;
         }
     }

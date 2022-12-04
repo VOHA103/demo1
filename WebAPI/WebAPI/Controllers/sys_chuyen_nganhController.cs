@@ -35,7 +35,9 @@ namespace WebAPI.Controllers
         [HttpGet("[action]")]
         public IActionResult get_list_chuyen_nganh()
         {
-            var result = _context.sys_chuyen_nganh.Select(q => new
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
+            var result = _context.sys_chuyen_nganh.Where(q=>q.status_del==1 && q.id_khoa==id_khoa).Select(q => new
             {
                 id = q.id,
                 name = q.ten_chuyen_nganh,
@@ -69,6 +71,8 @@ namespace WebAPI.Controllers
         [HttpPost("[action]")]
         public IActionResult DataHanlder([FromBody] filter_data_chuyen_nghanh filter)
         {
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
             var status_del = Int32.Parse(filter.status_del);
             var result = _context.sys_chuyen_nganh
               .Select(d => new sys_chuyen_nganh_model()
@@ -79,6 +83,7 @@ namespace WebAPI.Controllers
               })
               .Where(q => q.db.ten_chuyen_nganh.Contains(filter.search) || filter.search == "")
               .Where(q => q.db.status_del == status_del)
+              .Where(q => q.db.id_khoa == id_khoa)
               .ToList();
             result = result.OrderByDescending(q => q.db.update_date).ToList();
             var model = new
@@ -95,6 +100,11 @@ namespace WebAPI.Controllers
             try
             {
                 var error = sys_chuyen_nganh_part.check_error_insert_update(sys_chuyen_nganh);
+                var check = _context.sys_chuyen_nganh.Where(q => q.ten_chuyen_nganh == sys_chuyen_nganh.db.ten_chuyen_nganh && q.status_del == 1).SingleOrDefault();
+                if (check != null && sys_chuyen_nganh.db.ten_chuyen_nganh != "")
+                {
+                    error.Add(set_error.set("db.ten_chuyen_nganh", "Chuyên nghành đã tồn tại"));
+                }
                 if (error.Count() == 0)
                 {
                     var model = _context.sys_chuyen_nganh.Where(q => q.id == sys_chuyen_nganh.db.id).SingleOrDefault();
@@ -124,8 +134,9 @@ namespace WebAPI.Controllers
             {
 
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+                var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
                 var error = sys_chuyen_nganh_part.check_error_insert_update(sys_chuyen_nganh);
-                var check = _context.sys_chuyen_nganh.Where(q => q.ten_chuyen_nganh == sys_chuyen_nganh.db.ten_chuyen_nganh && q.status_del == 1).SingleOrDefault();
+                var check = _context.sys_chuyen_nganh.Where(q => q.ten_chuyen_nganh == sys_chuyen_nganh.db.ten_chuyen_nganh && q.status_del == 1 && q.id_khoa == id_khoa).SingleOrDefault();
                 if (check != null && sys_chuyen_nganh.db.ten_chuyen_nganh != "")
                 {
                     error.Add(set_error.set("db.ten_chuyen_nganh", "Chuyên nghành đã tồn tại"));
@@ -137,6 +148,7 @@ namespace WebAPI.Controllers
                     sys_chuyen_nganh.db.create_date = DateTime.Now;
                     sys_chuyen_nganh.db.create_by = user_id;
                     sys_chuyen_nganh.db.update_by = user_id;
+                    sys_chuyen_nganh.db.id_khoa = id_khoa;
                     sys_chuyen_nganh.db.status_del = 1;
                     _context.sys_chuyen_nganh.Add(sys_chuyen_nganh.db);
                     await _context.SaveChangesAsync();

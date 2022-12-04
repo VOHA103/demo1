@@ -62,7 +62,6 @@ export class sys_giang_vien_khoa_popupComponent {
         var result:any;
         result=data;
         this.lst_chuc_vu = result;
-        this.record.db.id_chuc_vu=this.lst_chuc_vu[0].id
       });
   }
   get_list_chuyen_nganh(): void {
@@ -72,7 +71,6 @@ export class sys_giang_vien_khoa_popupComponent {
         var result:any;
         result=data;
         this.lst_chuyen_nghanh = result;
-        this.record.db.id_chuyen_nghanh=this.lst_chuyen_nghanh[0].id
       });
   }
   Close(): void {

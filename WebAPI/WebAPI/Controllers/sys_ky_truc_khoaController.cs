@@ -109,6 +109,11 @@ namespace WebAPI.Controllers
             try
             {
                 var error = sys_ky_truc_khoa_part.check_error_insert_update(sys_ky_truc_khoa);
+                var check = _context.sys_ky_truc_khoas.Where(q => q.ten_ky == sys_ky_truc_khoa.db.ten_ky && q.status_del == 1).SingleOrDefault();
+                if (check != null && sys_ky_truc_khoa.db.ten_ky != "")
+                {
+                    error.Add(set_error.set("db.ten_ky", "Kỳ trực khoa đã tồn tại"));
+                }
                 if (error.Count() == 0)
                 {
                     var model = _context.sys_ky_truc_khoas.Where(q => q.id == sys_ky_truc_khoa.db.id).SingleOrDefault();
@@ -142,6 +147,11 @@ namespace WebAPI.Controllers
 
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
                 var error = sys_ky_truc_khoa_part.check_error_insert_update(sys_ky_truc_khoa);
+                var check = _context.sys_ky_truc_khoas.Where(q => q.ten_ky == sys_ky_truc_khoa.db.ten_ky && q.status_del == 1).SingleOrDefault();
+                if (check != null && sys_ky_truc_khoa.db.ten_ky != "")
+                {
+                    error.Add(set_error.set("db.ten_ky", "Kỳ trực khoa đã tồn tại"));
+                }
                 if (error.Count() == 0)
                 {
                     sys_ky_truc_khoa.db.id = 0;

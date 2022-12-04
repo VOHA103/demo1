@@ -15,13 +15,14 @@ import { sys_loai_cong_viec_service } from '../../service/sys_loai_cong_viec.ser
 import { sys_chuc_vu_service } from '../../service/sys_chuc_vu.service';
 import { sys_khoa_service } from '../../service/sys_khoa.service';
 import { sys_giang_vien_service } from '../../service/sys_giang_vien.service';
+import { sys_bo_mon_service } from '../../service/sys_bo_mon.service';
 @Component({
   selector: 'sys_cong_viec_popup',
   templateUrl: './popupAdd.component.html',
   styleUrls: ['./popupAdd.component.scss'],
 })
 export class sys_cong_viec_popupComponent {
-  public sys_cong_viec_model = new sys_cong_viec_model();
+  public record = new sys_cong_viec_model();
   public lst_status: any = [];
   public check_error: any = [];
   public lst_loai: any = [];
@@ -31,47 +32,43 @@ export class sys_cong_viec_popupComponent {
   public list_giang_vien: any;
   public lst_khoa: any = [];
   public lst_chuc_vu: any = [];
+  public lst_bo_mon: any = [];
   constructor(
     private http: HttpClient,
     private sys_cong_viec_service: sys_cong_viec_service,
     private sys_loai_cong_viec_service: sys_loai_cong_viec_service,
     public dialog: MatDialog,
     private sys_giang_vien_service: sys_giang_vien_service,
-    private sys_chuc_vu_service: sys_chuc_vu_service,
-    private sys_khoa_service: sys_khoa_service,
+    private sys_bo_mon_service: sys_bo_mon_service,
     public dialogRef: MatDialogRef<sys_cong_viec_popupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: sys_cong_viec_model
   ) {
-    //this.user = data;
-    this.sys_cong_viec_model = data;
-    if (this.sys_cong_viec_model.db.id == '0') this.Save();
-    this.get_list_chuc_vu();
-    this.get_list_khoa();
+    this.record = data;
+    if (this.record.db.id == '0') this.Save();
+    this.get_list_bo_mon();
   }
-  get_list_chuc_vu(): void {
-    this.sys_chuc_vu_service
-      .get_list_chuc_vu()
-      .subscribe((data) => {
-        this.lst_chuc_vu = data
-        this.get_list_giang_vien();
+  get_list_bo_mon(): void {
+    this.sys_bo_mon_service.get_list_bo_mon().subscribe((data) => {
+      this.lst_bo_mon = data;
+      this.list_giang_vien = this.list_giang_vien.split(0, 0, {
+        id: -1,
+        name: 'Tất cả',
       });
-  }
-  get_list_giang_vien( ): void {
-    var all={"id":"-1","name":"Tất cả"}
-    this.sys_giang_vien_service.get_list_giang_vien_change(this.sys_cong_viec_model.id_chuc_vu,this.sys_cong_viec_model.id_khoa).subscribe((result) => {
-      this.list_giang_vien = result;
-      this.list_giang_vien=this.list_giang_vien.split(0,all);
+      this.get_list_giang_vien();
     });
   }
-  get_list_khoa(): void {
-    this.sys_khoa_service
-      .get_list_khoa()
-      .subscribe((data) => {
-        this.lst_khoa = data
+  get_list_giang_vien(): void {
+    this.sys_giang_vien_service
+      .get_list_giang_vien_change(this.record.id_chuc_vu, this.record.id_khoa)
+      .subscribe((result) => {
+        this.list_giang_vien = result;
+        this.list_giang_vien = this.list_giang_vien.split(0, 0, {
+          id: '-1',
+          name: 'Tất cả',
+        });
       });
   }
   get_list_loai_cong_viec(): void {
-    debugger;
     this.sys_loai_cong_viec_service.get_list_use().subscribe((result) => {
       this.list_loai_cong_viec = result;
     });
@@ -80,42 +77,41 @@ export class sys_cong_viec_popupComponent {
     this.dialogRef.close();
   }
   Save(): void {
-    this.sys_cong_viec_service
-      .add(this.sys_cong_viec_model)
-      .subscribe((result) => {
-        var data: any = result;
-        this.check_error = data.error;
-        if (this.check_error.length === 0) {
-          this.Close();
-          Swal.fire({
-            icon: 'success',
-            title: 'Thành công',
-            showConfirmButton: false,
-            timer: 2000,
-          }).then((result) => {});
-        }
-      });
+    this.sys_cong_viec_service.add(this.record).subscribe((result) => {
+      var data: any = result;
+      this.check_error = data.error;
+      if (this.check_error.length === 0) {
+        this.Close();
+        Swal.fire({
+          icon: 'success',
+          title: 'Thành công',
+          showConfirmButton: false,
+          timer: 2000,
+        }).then((result) => {});
+      }
+    });
   }
   Edit(): void {
-    this.sys_cong_viec_service
-      .edit(this.sys_cong_viec_model)
-      .subscribe((result) => {
-        var data: any = result;
-        this.check_error = data.error;
-        if (this.check_error.length === 0) {
-          this.Close();
-          Swal.fire({
-            icon: 'success',
-            title: 'Thành công',
-            showConfirmButton: false,
-            timer: 2000,
-          }).then((result) => {});
-        }
-      });
+    this.sys_cong_viec_service.edit(this.record).subscribe((result) => {
+      var data: any = result;
+      this.check_error = data.error;
+      if (this.check_error.length === 0) {
+        this.Close();
+        Swal.fire({
+          icon: 'success',
+          title: 'Thành công',
+          showConfirmButton: false,
+          timer: 2000,
+        }).then((result) => {});
+      }
+    });
   }
 
   ngOnInit(): void {
     this.get_list_loai_cong_viec();
+    this.load_filter();
+  }
+  load_filter() {
     this.lst_gio = [
       {
         id: '1',

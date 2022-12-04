@@ -419,19 +419,9 @@ namespace WebAPI.Controllers
                     update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
                     ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == d.id_chuc_vu).Select(q => q.ten_chuc_vu).SingleOrDefault(),
                     ten_khoa = _context.sys_khoa.Where(q => q.id == d.id_khoa).Select(q => q.ten_khoa).SingleOrDefault(),
-
+                    ten_bo_mon = _context.sys_bo_mon.Where(q => q.id == d.id_bo_mon).Select(q => q.ten_bo_mon).SingleOrDefault(),
                 }).SingleOrDefault();
 
-            result.list_bo_mon = result.db.id_bo_mon.Split(",").ToList();
-            foreach (var item in result.list_bo_mon)
-            {
-                var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
-                result.ten_bo_mon += name;
-                if (!item.Equals(result.list_bo_mon.Last()))
-                {
-                    result.ten_bo_mon += ", ";
-                }
-            }
             return Ok(result);
         }
         [HttpPost("[action]")]
@@ -448,34 +438,15 @@ namespace WebAPI.Controllers
                   update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
                   ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == d.id_chuc_vu).Select(q => q.ten_chuc_vu).SingleOrDefault(),
                   ten_khoa = _context.sys_khoa.Where(q => q.id == d.id_khoa).Select(q => q.ten_khoa).SingleOrDefault(),
+                  ten_bo_mon = _context.sys_bo_mon.Where(q => q.id == d.id_bo_mon).Select(q => q.ten_bo_mon).SingleOrDefault(),
                   ten_chuyen_nghanh = _context.sys_chuyen_nganh.Where(q => q.id == d.id_chuyen_nghanh).Select(q => q.ten_chuyen_nganh).SingleOrDefault(),
 
               })
+              .Where(q => q.db.id_khoa == id_khoa)
               .Where(q => q.db.ten_giang_vien.Contains(filter.search) || filter.search == "")
               .Where(q => q.db.id_chuc_vu == filter.id_chuc_vu || filter.id_chuc_vu == -1)
               .Where(q => q.db.id_chuyen_nghanh == filter.id_chuyen_nghanh || filter.id_chuyen_nghanh == -1)
-              .Where(q => q.db.id_khoa == id_khoa)
               .ToList();
-            result.ForEach(q =>
-            {
-                if (q.db.id_bo_mon != null)
-                {
-                    if (q.db.id_bo_mon != "")
-                    {
-                        q.list_bo_mon = q.db.id_bo_mon.Split(",").ToList();
-                        foreach (var item in q.list_bo_mon)
-                        {
-                            var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
-                            q.ten_bo_mon += name;
-                            if (!item.Equals(q.list_bo_mon.Last()))
-                            {
-                                q.ten_bo_mon += ", ";
-                            }
-                        }
-                    }
-
-                }
-            });
             result = result.OrderByDescending(q => q.db.update_date).ToList();
             var model = new
             {
@@ -496,6 +467,7 @@ namespace WebAPI.Controllers
                   update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
                   ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == d.id_chuc_vu).Select(q => q.ten_chuc_vu).SingleOrDefault(),
                   ten_khoa = _context.sys_khoa.Where(q => q.id == d.id_khoa).Select(q => q.ten_khoa).SingleOrDefault(),
+                  ten_bo_mon = _context.sys_bo_mon.Where(q => q.id == d.id_bo_mon).Select(q => q.ten_bo_mon).SingleOrDefault(),
                   ten_chuyen_nghanh = _context.sys_chuyen_nganh.Where(q => q.id == d.id_chuyen_nghanh).Select(q => q.ten_chuyen_nganh).SingleOrDefault(),
 
               })
@@ -505,26 +477,7 @@ namespace WebAPI.Controllers
               .Where(q => q.db.id_khoa == filter.id_khoa || filter.id_khoa == -1)
               .Where(q => q.db.id_chuyen_nghanh == filter.id_chuyen_nghanh || filter.id_chuyen_nghanh == -1)
               .ToList();
-            result.ForEach(q =>
-            {
-                if (q.db.id_bo_mon != null)
-                {
-                    if (q.db.id_bo_mon != "")
-                    {
-                        q.list_bo_mon = q.db.id_bo_mon.Split(",").ToList();
-                        foreach (var item in q.list_bo_mon)
-                        {
-                            var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
-                            q.ten_bo_mon += name;
-                            if (!item.Equals(q.list_bo_mon.Last()))
-                            {
-                                q.ten_bo_mon += ", ";
-                            }
-                        }
-                    }
-
-                }
-            });
+           
             result = result.OrderByDescending(q => q.db.update_date).ToList();
             var model = new
             {
@@ -560,7 +513,6 @@ namespace WebAPI.Controllers
         public IActionResult delete([FromQuery] string id)
         {
             var result = _context.sys_giang_vien.Find(id);
-            //_context.sys_giang_vien.Remove(result);
             result.status_del = 2;
             _context.SaveChanges();
             return Ok();
@@ -588,58 +540,35 @@ namespace WebAPI.Controllers
             _context.SaveChanges();
             return Ok(result);
         }
-        [HttpGet("[action]")]
-        public IActionResult GetAll()
-        {
-            var result = _context.sys_giang_vien
-              .Select(d => new sys_giang_vien_model()
-              {
-                  db = d,
-                  create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
-                  update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
-                  ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == d.id_chuc_vu).Select(q => q.ten_chuc_vu).SingleOrDefault(),
-                  ten_khoa = _context.sys_khoa.Where(q => q.id == d.id_khoa).Select(q => q.ten_khoa).SingleOrDefault(),
-
-              }).ToList();
-            result.ForEach(q =>
-            {
-                q.list_bo_mon = q.db.id_bo_mon.Split(",").ToList();
-                foreach (var item in q.list_bo_mon)
-                {
-                    var name = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(item)).Select(q => q.ten_bo_mon).SingleOrDefault();
-                    q.ten_bo_mon += name + ", ";
-                }
-            });
-            return Ok(result);
-        }
+     
         [HttpPost("[action]")]
-        public async Task<IActionResult> edit([FromBody] sys_giang_vien_model sys_giang_vien)
+        public async Task<IActionResult> edit([FromBody] sys_giang_vien_model record)
         {
             try
             {
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
-                var error = sys_giang_vien_part.get_list_error(sys_giang_vien);
+                var error = sys_giang_vien_part.get_list_error(record);
                 if (error.Count() == 0)
                 {
-                    var model = _context.sys_giang_vien.Where(q=>q.id==sys_giang_vien.db.id).SingleOrDefault();
+                    var model = _context.sys_giang_vien.Where(q=>q.id==record.db.id).SingleOrDefault();
                     model.update_date = DateTime.Now;
                     model.update_by = user_id;
                     model.status_del = 1;
-                    model.id_chuyen_nghanh = sys_giang_vien.db.id_chuyen_nghanh;
-                    model.id_chuc_vu = sys_giang_vien.db.id_chuc_vu;
-                    model.id_khoa = sys_giang_vien.db.id_khoa;
-                    model.ten_giang_vien = sys_giang_vien.db.ten_giang_vien;
-                    model.sdt = sys_giang_vien.db.sdt;
-                    model.email = sys_giang_vien.db.email;
-                    model.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
-                    model.dia_chi = sys_giang_vien.db.dia_chi;
-                    model.gioi_tinh = sys_giang_vien.db.gioi_tinh;
-                    model.id_bo_mon = sys_giang_vien.list_bo_mon.Join(",");
+                    model.id_chuyen_nghanh = record.db.id_chuyen_nghanh;
+                    model.id_chuc_vu = record.db.id_chuc_vu;
+                    model.id_khoa = record.db.id_khoa;
+                    model.ten_giang_vien = record.db.ten_giang_vien;
+                    model.sdt = record.db.sdt;
+                    model.email = record.db.email;
+                    model.ngay_sinh = record.db.ngay_sinh.Value.AddDays(1);
+                    model.dia_chi = record.db.dia_chi;
+                    model.gioi_tinh = record.db.gioi_tinh;
+                    model.id_bo_mon = record.db.id_bo_mon;
                     await _context.SaveChangesAsync();
                 }
                 var result = new
                 {
-                    data = sys_giang_vien,
+                    data = record,
                     error = error,
                 };
                 return Ok(result);
@@ -687,7 +616,7 @@ namespace WebAPI.Controllers
                     sys_giang_vien.db.update_by = user_id;
                     sys_giang_vien.db.create_by = user_id;
                     sys_giang_vien.db.username = sys_giang_vien.db.ma_giang_vien;
-                    sys_giang_vien.db.id_bo_mon = sys_giang_vien.list_bo_mon.Join(",");
+                    sys_giang_vien.db.id_bo_mon = sys_giang_vien.db.id_bo_mon;
                     sys_giang_vien.db.status_del = 1;
                     sys_giang_vien.db.pass_word = chang_password(sys_giang_vien);
                     _context.sys_giang_vien.Add(sys_giang_vien.db);
@@ -727,7 +656,7 @@ namespace WebAPI.Controllers
                     sys_giang_vien.db.update_by = user_id;
                     sys_giang_vien.db.create_by = user_id;
                     sys_giang_vien.db.username = sys_giang_vien.db.ma_giang_vien;
-                    sys_giang_vien.db.id_bo_mon = sys_giang_vien.list_bo_mon.Join(",");
+                    sys_giang_vien.db.id_bo_mon = sys_giang_vien.db.id_bo_mon;
                     sys_giang_vien.db.status_del = 1;
                     sys_giang_vien.db.pass_word = chang_password(sys_giang_vien);
                     _context.sys_giang_vien.Add(sys_giang_vien.db);

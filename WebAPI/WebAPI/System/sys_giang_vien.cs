@@ -11,7 +11,7 @@ namespace WebAPI.System
         public int? id_chuc_vu { get; set; }
         public int? id_khoa { get; set; }
         public int? gioi_tinh { get; set; }
-        public string id_bo_mon { get; set; }
+        public int? id_bo_mon { get; set; }
         public int? id_chuyen_nghanh { get; set; }
         public string ten_giang_vien { get; set; }
         public string ma_giang_vien { get; set; }

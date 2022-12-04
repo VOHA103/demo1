@@ -8,6 +8,7 @@ export class sys_cong_viec_model {
   phut: string;
   id_chuc_vu: number | null;
   id_khoa: number | null;
+  id_bo_mon: number | null;
   list_giang_vien: string[];
 }
 

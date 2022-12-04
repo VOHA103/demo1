@@ -18,10 +18,21 @@ namespace WebAPI.Part
             {
                 list_error.Add(set_error.set("db.ten_cong_viec", "Bắt buộc"));
             }
-            //if (string.IsNullOrEmpty(item.db.ngay_ket_thuc.ToString()))
-            //{
-            //    list_error.Add(set_error.set("db.ngay_ket_thuc", "Bắt buộc"));
-            //}
+            if (string.IsNullOrEmpty(item.db.ngay_ket_thuc.ToString()))
+            {
+                list_error.Add(set_error.set("db.ngay_ket_thuc", "Bắt buộc"));
+            }
+            if (string.IsNullOrEmpty(item.db.ngay_bat_dau.ToString()))
+            {
+                list_error.Add(set_error.set("db.ngay_bat_dau", "Bắt buộc"));
+            }
+            if (!string.IsNullOrEmpty(item.db.ngay_ket_thuc.ToString()) && !string.IsNullOrEmpty(item.db.ngay_bat_dau.ToString()))
+            {
+                if (item.db.ngay_ket_thuc < item.db.ngay_bat_dau)
+                {
+                    list_error.Add(set_error.set("db.ngay_ket_thuc", "Ngày kết thúc lớn hơn ngày bắt đầu"));
+                }
+            }
             if (item.db.id_loai_cong_viec==0)
             {
                 list_error.Add(set_error.set("db.id_loai_cong_viec", "Bắt buộc"));
@@ -34,10 +45,6 @@ namespace WebAPI.Part
             {
                 list_error.Add(set_error.set("db.loai", "Bắt buộc"));
             }
-            //if (string.IsNullOrEmpty(item.db.ngay_bat_dau.ToString()))
-            //{
-            //    list_error.Add(set_error.set("db.ngay_bat_dau", "Bắt buộc"));
-            //}
             if (string.IsNullOrEmpty(item.id_khoa.ToString()))
             {
                 list_error.Add(set_error.set("db.id_khoa", "Bắt buộc"));

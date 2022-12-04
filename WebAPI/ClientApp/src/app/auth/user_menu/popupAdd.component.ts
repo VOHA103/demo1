@@ -73,8 +73,6 @@ export class sys_giang_vien_edit_popupComponent {
       var result: any;
       result = data;
       this.lst_khoa = result;
-      debugger;
-      this.record.db.id_khoa = this.lst_khoa[0].id;
     });
   }
   get_list_chuc_vu(): void {
@@ -82,7 +80,6 @@ export class sys_giang_vien_edit_popupComponent {
       var result: any;
       result = data;
       this.lst_chuc_vu = result;
-      this.record.db.id_chuc_vu = this.lst_chuc_vu[0].id;
     });
   }
   Close(): void {

@@ -35,6 +35,8 @@ namespace WebAPI.Controllers
         public IActionResult DataHanlder([FromBody] filter_data_loai_cong_viec filter)
         {
             var status_del = Int32.Parse(filter.status_del);
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
             var result = _context.sys_loai_cong_viec
               .Select(d => new sys_loai_cong_viec_model()
               {
@@ -44,6 +46,7 @@ namespace WebAPI.Controllers
               })
               .Where(q => q.db.ten_loai_cong_viec.Contains(filter.search) || filter.search == "")
               .Where(q => q.db.status_del == status_del)
+              .Where(q => q.db.id_khoa == id_khoa)
               .ToList();
             result = result.OrderByDescending(q => q.db.update_date).ToList();
             var model = new
@@ -56,7 +59,9 @@ namespace WebAPI.Controllers
         [HttpGet("[action]")]
         public IActionResult get_list_use()
         {
-            var result = _context.sys_loai_cong_viec.Where(q => q.status_del == 1).Select(q => new
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
+            var result = _context.sys_loai_cong_viec.Where(q => q.status_del == 1 && q.id_khoa== id_khoa).Select(q => new
             {
                 id = q.id,
                 name = q.ten_loai_cong_viec,
@@ -139,16 +144,13 @@ namespace WebAPI.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> create([FromBody] sys_loai_cong_viec_model sys_loai_cong_viec)
         {
-            // sys_loai_cong_viec.db.id = 0;
-            // _context.sys_loai_cong_viec.Add(sys_loai_cong_viec.db);
-            //await _context.SaveChangesAsync();
-            // return Ok(sys_loai_cong_viec);
             try
             {
 
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+                var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
                 var error = sys_loai_cong_viec_part.check_error_insert_update(sys_loai_cong_viec);
-                var check = _context.sys_loai_cong_viec.Where(q => q.ten_loai_cong_viec == sys_loai_cong_viec.db.ten_loai_cong_viec && q.status_del == 1).SingleOrDefault();
+                var check = _context.sys_loai_cong_viec.Where(q => q.ten_loai_cong_viec == sys_loai_cong_viec.db.ten_loai_cong_viec && q.status_del == 1 && q.id_khoa == id_khoa).SingleOrDefault();
                 if (check != null)
                 {
                     error.Add(set_error.set("db.ten_loai_cong_viec", "Loại công việc đã tồn tại"));
@@ -161,6 +163,7 @@ namespace WebAPI.Controllers
                     sys_loai_cong_viec.db.create_by = user_id;
                     sys_loai_cong_viec.db.update_by = user_id;
                     sys_loai_cong_viec.db.status_del = 1;
+                    sys_loai_cong_viec.db.id_khoa = id_khoa;
                     _context.sys_loai_cong_viec.Add(sys_loai_cong_viec.db);
                     await _context.SaveChangesAsync();
                 }

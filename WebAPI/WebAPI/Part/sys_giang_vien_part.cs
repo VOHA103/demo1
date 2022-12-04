@@ -66,9 +66,9 @@ namespace WebAPI.Part
             {
                 list_error.Add(set_error.set("db.id_khoa", "Bắt buộc"));
             }
-            if (item.list_bo_mon == null)
+            if (item.db.id_bo_mon == null)
             {
-                list_error.Add(set_error.set("list_bo_mon", "Bắt buộc"));
+                list_error.Add(set_error.set("db.id_bo_mon", "Bắt buộc"));
             }
             if (string.IsNullOrEmpty(item.db.sdt))
             {
@@ -129,7 +129,7 @@ namespace WebAPI.Part
             }
             else
             {
-                
+
             }
             return list_error;
         }

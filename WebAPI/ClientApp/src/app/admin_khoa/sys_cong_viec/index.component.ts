@@ -28,7 +28,7 @@ export class sys_cong_viec_indexComponent implements OnInit {
   p: number = 0;
   total: number = 100;
   resp: number;
-  filter = { search: '', total: '0', page: '0', limit: '10', status_del: 1,id_loai_cong_viec:-1 };
+  filter = { search: '', status_del: 1,id_loai_cong_viec:-1 };
   constructor(
     private http: HttpClient,
     private sys_cong_viec_service: sys_cong_viec_service,
@@ -107,9 +107,9 @@ export class sys_cong_viec_indexComponent implements OnInit {
     });
   }
   get_list_loai_cong_viec(): void {
-    debugger;
     this.sys_loai_cong_viec_service.get_list_use().subscribe((result) => {
       this.list_loai_cong_viec = result;
+      this.list_loai_cong_viec=this.list_loai_cong_viec.split(0,0,{"id":-1,"name":"Tất cả"});
     });
   }
   ngOnInit(): void {
