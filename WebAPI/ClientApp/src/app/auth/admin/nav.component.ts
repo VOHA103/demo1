@@ -13,6 +13,7 @@ export class nav_indexComponent implements OnInit {
   public menu_sub_admin: any = [];
   public menu_admin: any = [];
   public menu_user: any = [];
+  public menu_admin_bo_mon: any = [];
   public menu: any = [];
   opened = false;
   public loading = false;
@@ -110,8 +111,6 @@ export class nav_indexComponent implements OnInit {
       //   label: 'Kỳ trực khoa',
       // },
     ];
-    if (this.profile.code === 'admin') this.menu = this.menu_admin;
-    if (this.profile.code === 'sub_admin') this.menu = this.menu_sub_admin;
     this.menu_user = [
       {
         link: 'sys_person_work_index',
@@ -122,6 +121,24 @@ export class nav_indexComponent implements OnInit {
         label: 'Thống kê người dùng',
       },
     ];
+    this.menu_admin_bo_mon = [
+      {
+        link: 'sys_cong_viec_giang_vien_admin_bo_mon_index',
+        label: 'Công việc giảng viên',
+      },
+      {
+        link: 'sys_person_work_index',
+        label: 'Công việc người dùng',
+      },
+      {
+        link: 'sys_thong_ke_user_index',
+        label: 'Thống kê người dùng',
+      },
+    ];
+    debugger
+    if (this.profile.code === 'admin') this.menu = this.menu_admin;
+    if (this.profile.code === 'sub_admin') this.menu = this.menu_sub_admin;
+    if (this.profile.code === 'admin_bo_mon')  this.menu = this.menu_admin_bo_mon;
     if (this.profile.code === 'user') this.menu = this.menu_user;
 
 

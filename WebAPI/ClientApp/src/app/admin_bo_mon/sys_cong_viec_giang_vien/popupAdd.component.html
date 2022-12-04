@@ -1,0 +1,110 @@
+<div class="flex flex-col flex-auto w-full  h-fit overflow-y-visible">
+  <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8">
+    <span class="text-lg font-medium uppercase">Công việc giảng viên</span>
+  </div>
+  <div class="w-full p-6 sm:p-8 space-y-1 overflow-y-auto">
+    <div class="flex flex-col">
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Công việc
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.id_cong_viec'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="sys_cong_viec_giang_vien_model.db.id_cong_viec">
+              <mat-option *ngFor="let item of list_cong_viec" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex-1 px-2">
+          <mat-label>Khoa
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.id_khoa'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="sys_cong_viec_giang_vien_model.db.id_khoa">
+              <mat-option *ngFor="let item of lst_khoa" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Chức vụ
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.id_chuc_vu'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="sys_cong_viec_giang_vien_model.db.id_chuc_vu">
+              <mat-option *ngFor="let item of lst_chuc_vu" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex-1 px-2">
+          <mat-label class="mb-5">Giảng viên
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='list_giang_vien'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="sys_cong_viec_giang_vien_model.list_giang_vien" multiple>
+              <mat-option *ngFor="let item of list_giang_vien" [value]="item.id">{{
+                item.name
+                }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Ngày bắt đầu
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.ngay_bat_dau'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput [matDatepicker]="picker" [(ngModel)]="sys_cong_viec_giang_vien_model.db.ngay_bat_dau">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="flex-1 px-2">
+          <mat-label>Ngày kết thúc
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='db.ngay_ket_thuc'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="sys_cong_viec_giang_vien_model.db.ngay_ket_thuc">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="flex pl-6 pt-6 justify-end">
+      <div class="flex mr-3">
+        <button mat-raised-button (click)="Close()">Đóng</button>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" *ngIf="sys_cong_viec_giang_vien_model.db.id == '0'" (click)="Save()">
+          Lưu
+        </button>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" *ngIf="sys_cong_viec_giang_vien_model.db.id != '0'" (click)="Edit()">
+          Sửa
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
