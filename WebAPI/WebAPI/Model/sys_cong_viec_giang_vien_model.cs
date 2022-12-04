@@ -20,6 +20,7 @@ namespace WebAPI.Model
         public string ten_loai_cong_viec { get; set; }
         public string ten_chuc_vu { get; set; }
         public string ten_khoa { get; set; }
+        public int? id_loai_cong_viec { get; set; }
         public int? so_gio { get; set; }
         //1 đã xong 2 chưa thực hiện 3 đang thực hiện
         public int? trang_thai { get; set; }
@@ -53,6 +54,16 @@ namespace WebAPI.Model
         public DateTime? den { get; set; }
 
     }
+    public class filter_cong_viec_giang_vien_khoa
+    {
+        public string search { get; set; }
+        public string id_giang_vien { get; set; }
+        public string id_cong_viec { get; set; }
+        public int? id_bo_mon { get; set; }
+        public int? status_del { get; set; }
+        public int? id_loai_cong_viec { get; set; }
+
+    }
     public class filter_data_cong_viec_giang_vien
     {
         public string search { get; set; }
@@ -62,6 +73,7 @@ namespace WebAPI.Model
         public int? id_chuc_vu { get; set; }
         public int? id_bo_mon { get; set; }
         public int? id_khoa { get; set; }
+        public int? id_loai_cong_viec { get; set; }
 
     }
     public class filter_data_cong_viec_giang_vien_user

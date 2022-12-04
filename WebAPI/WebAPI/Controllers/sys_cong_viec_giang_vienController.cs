@@ -584,7 +584,7 @@ namespace WebAPI.Controllers
             return Ok(list.OrderByDescending(q => q.ngay_bat_dau));
         }
         [HttpPost("[action]")]
-        public async Task<IActionResult> DataHanlder([FromBody] filter_data_cong_viec_giang_vien filter)
+        public async Task<IActionResult> DataHanlder([FromBody] filter_cong_viec_giang_vien_khoa filter)
         {
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
             var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
@@ -598,12 +598,13 @@ namespace WebAPI.Controllers
                   ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.id_chuc_vu).SingleOrDefault()).Select(q => q.ten_chuc_vu).SingleOrDefault(),
                   ten_khoa = _context.sys_khoa.Where(q => q.id == _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.id_khoa).SingleOrDefault()).Select(q => q.ten_khoa).SingleOrDefault(),
                   ten_cong_viec = _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.ten_cong_viec).SingleOrDefault(),
+                  id_loai_cong_viec = _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.id_loai_cong_viec).SingleOrDefault(),
                   ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(q => q.id == _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.id_loai_cong_viec).SingleOrDefault()).Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
               })
               .Where(q => q.db.id_giang_vien == filter.id_giang_vien || filter.id_giang_vien == "")
               .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
               .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || q.ten_giang_vien.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
-              .Where(q => q.db.id_chuc_vu == filter.id_chuc_vu || filter.id_chuc_vu == -1)
+              .Where(q => q.db.id_chuc_vu == filter.id_bo_mon || filter.id_bo_mon == -1)
               .Where(q => q.db.id_khoa == id_khoa)
               .ToList();
             result.ForEach(q =>
@@ -624,7 +625,9 @@ namespace WebAPI.Controllers
                     q.trang_thai = 1;
                 }
             });
-            result = result.Where(q => q.trang_thai == filter.status_del || filter.status_del == -1).ToList();
+            result = result.Where(q => q.trang_thai == filter.status_del || filter.status_del == -1)
+              .Where(q => q.id_loai_cong_viec == filter.id_loai_cong_viec || filter.id_loai_cong_viec == -1)
+              .ToList();
             var count = result.Count();
             var model = new
             {
@@ -702,7 +705,7 @@ namespace WebAPI.Controllers
                         data.db.id_giang_vien = id_giang_vien;
                         var giang_vien = _context.sys_giang_vien.Where(q => q.id == id_giang_vien).Select(q => q.email).SingleOrDefault();
 
-                        Mail.send_work(giang_vien, work);
+                        Mail.send_work(giang_vien, work, time_work);
                         _context.sys_cong_viec_giang_vien.Add(data.db);
                         _context.SaveChanges();
                     }

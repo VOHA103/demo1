@@ -26,6 +26,16 @@
       </div>
       <div class="flex">
         <div class="flex-1  px-2">
+          <mat-label>Loại công việc</mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="filter.id_loai_cong_viec" (selectionChange)="DataHanlder()">
+              <mat-option *ngFor="let item of list_loai_cong_viec" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="flex-1  px-2">
           <mat-label>Công việc</mat-label>
           <mat-form-field appearance="outline" class="w-full">
             <mat-select [(ngModel)]="filter.id_cong_viec" (selectionChange)="DataHanlder()">
@@ -35,23 +45,13 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="flex-1  px-2">
-          <mat-label>Khoa</mat-label>
-          <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="filter.id_khoa" (selectionChange)="DataHanlder()">
-              <mat-option *ngFor="let item of lst_khoa" [value]="item.id">
-                {{ item.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
       </div>
       <div class="flex">
         <div class="flex-1  px-2">
-          <mat-label>Chức vụ</mat-label>
+          <mat-label>Bộ môn</mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="filter.id_chuc_vu" (selectionChange)="get_list_giang_vien()">
-              <mat-option *ngFor="let item of lst_chuc_vu" [value]="item.id">
+            <mat-select [(ngModel)]="filter.id_bo_mon" (selectionChange)="get_list_giang_vien()">
+              <mat-option *ngFor="let item of lst_bo_mon" [value]="item.id">
                 {{ item.name }}
               </mat-option>
             </mat-select>
@@ -133,10 +133,6 @@
                     (click)="reven_status(item.db.id)"><span class="material-icons" style="color: rgb(16, 222, 36)">
                       <mat-icon>done_outline</mat-icon>
                     </span></div>
-                  <!-- <div class="flex justify-center items-center ng-star-inserted" (click)="openDialogDetail(item)"><span
-                      class="material-icons">
-                      <mat-icon>build</mat-icon>
-                    </span></div> -->
                 </div>
               </td>
               <td class="">

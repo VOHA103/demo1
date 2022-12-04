@@ -593,6 +593,20 @@ namespace WebAPI.Controllers
               .ToList();
             return Ok(result);
         }
+        [HttpGet("[action]")]
+        public IActionResult get_list_giang_vien_bo_mon(int id_bo_mon)
+        {
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
+            var result = _context.sys_giang_vien.Where(q => q.id_bo_mon == id_bo_mon && q.id_khoa == id_khoa)
+              .Select(d => new
+              {
+                  id = d.id,
+                  name = d.ten_giang_vien
+              })
+              .ToList();
+            return Ok(result);
+        }
         [HttpPost("[action]")]
         public async Task<IActionResult> create_giang_vien_khoa([FromBody] sys_giang_vien_model sys_giang_vien)
         {

@@ -45,10 +45,6 @@ namespace WebAPI.Part
             {
                 list_error.Add(set_error.set("db.loai", "Bắt buộc"));
             }
-            if (string.IsNullOrEmpty(item.id_khoa.ToString()))
-            {
-                list_error.Add(set_error.set("db.id_khoa", "Bắt buộc"));
-            }
             if (item.gio==null)
             {
                 list_error.Add(set_error.set("gio", "Bắt buộc"));
@@ -57,9 +53,9 @@ namespace WebAPI.Part
             {
                 list_error.Add(set_error.set("phut", "Bắt buộc"));
             }
-            if (string.IsNullOrEmpty(item.id_chuc_vu.ToString()))
+            if (string.IsNullOrEmpty(item.id_bo_mon.ToString()))
             {
-                list_error.Add(set_error.set("db.id_chuc_vu", "Bắt buộc"));
+                list_error.Add(set_error.set("db.id_bo_mon", "Bắt buộc"));
             }
             if (item.list_giang_vien.Count()==0 || item.list_giang_vien==null)
             {

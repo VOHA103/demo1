@@ -76,4 +76,9 @@ export class sys_cong_viec_service {
     const url = this.REST_API_URL + '/sys_cong_viec/get_list_cong_viec_khoa?id_khoa=' + id;
     return this.http.get(url);
   }
+  // edit sys_cong_viec
+  public change_cong_viec_khoa() {
+    const url = this.REST_API_URL + '/sys_cong_viec/change_cong_viec_khoa';
+    return this.http.get(url);
+  }
 }

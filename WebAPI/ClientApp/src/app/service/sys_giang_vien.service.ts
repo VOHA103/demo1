@@ -84,6 +84,11 @@ export class sys_giang_vien_service {
     const url =  this.REST_API_URL + '/sys_giang_vien/get_list_giang_vien_change?id_chuc_vu='+id_chuc_vu+'&id_khoa='+id_khoa;
     return this.http.get<sys_giang_vien_model[]>(url);
   }
+  //lấy danh sách sys_giang_vien
+  public get_list_giang_vien_bo_mon(id_bo_mon:any): Observable<sys_giang_vien_model[]> {
+    const url =  this.REST_API_URL + '/sys_giang_vien/get_list_giang_vien_bo_mon?id_bo_mon='+id_bo_mon;
+    return this.http.get<sys_giang_vien_model[]>(url);
+  }
   //string pass, string pass_new, string pass_new_reset
   public reset_pass(pass:string,pass_new:string,pass_new_reset:string): Observable<sys_giang_vien_model[]> {
     const url =  this.REST_API_URL + '/sys_giang_vien/reset_pass?pass='+pass+'&pass_new='+pass_new+'&pass_new_reset='+pass_new_reset;

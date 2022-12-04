@@ -45,6 +45,18 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
         [HttpGet("[action]")]
+        public IActionResult change_cong_viec_khoa()
+        {
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
+            var result = _context.sys_cong_viec.Where(q => q.id_khoa == id_khoa).Select(q => new
+            {
+                id = q.id.ToString(),
+                name = q.ten_cong_viec,
+            }).ToList();
+            return Ok(result);
+        }
+        [HttpGet("[action]")]
         public IActionResult get_list_person_cong_viec()
         {
             var result = _context.sys_cong_viec.Select(q => new
@@ -222,7 +234,8 @@ namespace WebAPI.Controllers
             var cong_viec_giang_vien = new sys_cong_viec_giang_vien_model();
             cong_viec_giang_vien.db.id = get_id_primary_key_cong_viec_gv();
             cong_viec_giang_vien.db.id_cong_viec = model.db.id;
-            cong_viec_giang_vien.db.id_khoa = model.id_khoa;
+            cong_viec_giang_vien.db.id_khoa = model.db.id_khoa;
+            cong_viec_giang_vien.db.id_bo_mon = model.id_bo_mon;
             cong_viec_giang_vien.db.ngay_bat_dau = model.db.ngay_bat_dau;
             cong_viec_giang_vien.db.ngay_ket_thuc = model.db.ngay_ket_thuc;
             cong_viec_giang_vien.db.update_date = DateTime.Now;
@@ -231,10 +244,11 @@ namespace WebAPI.Controllers
             cong_viec_giang_vien.db.update_by = user_id;
             cong_viec_giang_vien.db.status_del = 1;
             cong_viec_giang_vien.db.so_gio = time_work;
+            cong_viec_giang_vien.db.id_giang_vien = id_giang_vien;
             var giang_vien = _context.sys_giang_vien.Where(q => q.id == id_giang_vien).Select(q => q.email).SingleOrDefault();
             _context.sys_cong_viec_giang_vien.Add(cong_viec_giang_vien.db);
             _context.SaveChangesAsync();
-            Mail.send_work(giang_vien, model);
+            Mail.send_work(giang_vien, model,time_work);
         }
         private string get_id_primary_key_cong_viec()
         {

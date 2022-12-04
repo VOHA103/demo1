@@ -45,23 +45,26 @@ export class sys_cong_viec_popupComponent {
   ) {
     this.record = data;
     if (this.record.db.id == '0') this.Save();
+    this.get_list_loai_cong_viec();
+    this.load_filter();
     this.get_list_bo_mon();
   }
   get_list_bo_mon(): void {
     this.sys_bo_mon_service.get_list_bo_mon().subscribe((data) => {
       this.lst_bo_mon = data;
-      this.list_giang_vien = this.list_giang_vien.split(0, 0, {
+      this.lst_bo_mon = this.lst_bo_mon.split(0, 0, {
         id: -1,
         name: 'Tất cả',
       });
+      this.record.id_bo_mon = -1;
       this.get_list_giang_vien();
     });
   }
   get_list_giang_vien(): void {
     this.sys_giang_vien_service
-      .get_list_giang_vien_change(this.record.id_chuc_vu, this.record.id_khoa)
+      .get_list_giang_vien_bo_mon(this.record.id_bo_mon)
       .subscribe((result) => {
-        this.list_giang_vien = result;
+        if (this.record.id_bo_mon != -1) this.list_giang_vien = result;
         this.list_giang_vien = this.list_giang_vien.split(0, 0, {
           id: '-1',
           name: 'Tất cả',
@@ -108,8 +111,6 @@ export class sys_cong_viec_popupComponent {
   }
 
   ngOnInit(): void {
-    this.get_list_loai_cong_viec();
-    this.load_filter();
   }
   load_filter() {
     this.lst_gio = [
