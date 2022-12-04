@@ -21,6 +21,8 @@ export class filter_thong_ke {
   id_cong_viec: string;
   id_chuc_vu: number | null;
   id_khoa: number | null;
+  id_bo_mon: number | null;
+  status_del: number | null;
   tu: Date | null;
   den: Date | null;
 }

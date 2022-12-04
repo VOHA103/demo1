@@ -61,4 +61,9 @@ export class sys_bo_mon_service {
     const url = this.REST_API_URL + '/sys_bo_mon/DataHanlder';
     return this.http.post(url,filter);
   }
+  // edit sys_bo_mon
+  public get_list_bo_mon_khoa(id: any) {
+    const url = this.REST_API_URL + '/sys_bo_mon/get_list_bo_mon_khoa?id_khoa=' + id;
+    return this.http.get(url);
+  }
 }

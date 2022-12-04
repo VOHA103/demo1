@@ -443,6 +443,50 @@ namespace WebAPI.Controllers
                }).ToList();
             return Ok(result);
         }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> get_thong_ke_cong_viec_admin([FromBody] filter_thong_ke filter)
+        {
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
+            var result = _context.sys_cong_viec_giang_vien.Select(d => new sys_cong_viec_giang_vien_model()
+            {
+                db = d,
+            }).Where(q => q.db.id_chuc_vu == filter.id_chuc_vu || filter.id_chuc_vu == -1)
+                .Where(q => q.db.id_khoa == filter.id_khoa || filter.id_khoa == -1)
+                .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
+                .Where(q => q.db.ngay_bat_dau >= filter.tu)
+                .Where(q => q.db.ngay_ket_thuc <= filter.den).ToList();
+
+            var count = result.Count();
+            result.ForEach(q =>
+            {
+                var cong_viec = _context.sys_cong_viec.Where(d => d.id == q.db.id_cong_viec).SingleOrDefault();
+                var time_now = DateTime.Now;
+                //trang_thai => 1 đã xong 2 chưa thực hiện 3 đang thực hiện
+                if (cong_viec.ngay_bat_dau > time_now)
+                {
+                    q.trang_thai = 2;
+                }
+                else if (time_now > cong_viec.ngay_bat_dau && time_now < cong_viec.ngay_ket_thuc)
+                {
+                    q.trang_thai = 3;
+                }
+                else
+                {
+                    q.trang_thai = 1;
+                }
+            });
+
+            result = result.Where(q => q.trang_thai == filter.status_del || filter.status_del == -1).ToList();
+            count = result.Count();
+            var list = result.GroupBy(q => q.db.id_giang_vien).Select(q => new
+            {
+                label = _context.sys_giang_vien.Where(d => d.id == q.Key).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                y = _context.sys_cong_viec_giang_vien.Where(d => d.id_giang_vien == q.Key).Where(q => q.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "").Sum(q => q.so_gio) ?? 0,
+            }).ToList();
+            return Ok(result);
+        }
         [HttpPost("[action]")]
         public async Task<IActionResult> get_thong_ke_cong_viec_khoa([FromBody] filter_thong_ke filter)
         {

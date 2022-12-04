@@ -47,6 +47,8 @@ namespace WebAPI.Model
         public string id_cong_viec { get; set; }
         public int? id_chuc_vu { get; set; }
         public int? id_khoa { get; set; }
+        public int? id_bo_mon { get; set; }
+        public int? status_del { get; set; }
         public DateTime? tu { get; set; }
         public DateTime? den { get; set; }
 

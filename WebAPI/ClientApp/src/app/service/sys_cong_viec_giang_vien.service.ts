@@ -71,6 +71,12 @@ export class sys_cong_viec_giang_vien_service {
     const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/get_thong_ke_cong_viec_khoa';
     return this.http.post(url, filter);
   }
+  //get_thong_ke_cong_viec
+  public get_thong_ke_cong_viec_admin(filter: any) {
+    debugger
+    const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/get_thong_ke_cong_viec_admin';
+    return this.http.post(url, filter);
+  }
   // reven status sys_cong_viec_giang_vien
   public get_thong_ke_cong_viec_nguoi_dung(filter: any) {
     const url =

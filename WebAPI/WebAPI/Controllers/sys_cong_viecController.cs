@@ -35,6 +35,15 @@ namespace WebAPI.Controllers
             this._context = _context;
         }
         [HttpGet("[action]")]
+        public IActionResult get_list_cong_viec_khoa([FromQuery] int id_khoa)
+        {
+            var result = _context.sys_cong_viec.Where(q => q.id_khoa == id_khoa).Select(q => new {
+                id = q.id.ToString(),
+                name = q.ten_cong_viec,
+            }).ToList();
+            return Ok(result);
+        }
+        [HttpGet("[action]")]
         public IActionResult get_list_person_cong_viec()
         {
             var result = _context.sys_cong_viec.Select(q => new

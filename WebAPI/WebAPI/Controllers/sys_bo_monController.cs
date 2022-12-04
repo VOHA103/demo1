@@ -64,6 +64,15 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
         [HttpGet("[action]")]
+        public IActionResult get_list_bo_mon_khoa([FromQuery] int id_khoa)
+        {
+            var result = _context.sys_bo_mon.Where(q=>q.id_khoa==id_khoa).Select(q => new {
+                id = q.id.ToString(),
+                name = q.ten_bo_mon,
+            }).ToList();
+            return Ok(result);
+        }
+        [HttpGet("[action]")]
         public IActionResult delete([FromQuery] string id)
         {
             var result = _context.sys_bo_mon.Where(q => q.id == Int32.Parse(id)).SingleOrDefault();

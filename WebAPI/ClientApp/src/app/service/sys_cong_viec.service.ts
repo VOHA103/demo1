@@ -71,4 +71,9 @@ export class sys_cong_viec_service {
     const url = this.REST_API_URL + '/sys_cong_viec/DataHanlder';
     return this.http.post(url,filter);
   }
+  // edit sys_cong_viec
+  public get_list_cong_viec_khoa(id: any) {
+    const url = this.REST_API_URL + '/sys_cong_viec/get_list_cong_viec_khoa?id_khoa=' + id;
+    return this.http.get(url);
+  }
 }

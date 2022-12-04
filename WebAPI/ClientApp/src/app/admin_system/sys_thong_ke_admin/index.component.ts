@@ -25,6 +25,7 @@ export class sys_thong_ke_indexComponent implements OnInit {
   public lst_cong_viec: any = [];
   public lst_data: any = [];
   public lst_chuc_vu: any = [];
+  public lst_bo_mon: any = [];
   public chartOptions: any;
   public loading: any;
   public data_excel: any;
@@ -36,11 +37,14 @@ export class sys_thong_ke_indexComponent implements OnInit {
     private sys_cong_viec_service: sys_cong_viec_service,
     private sys_chuc_vu_service: sys_chuc_vu_service,
     private sys_khoa_service: sys_khoa_service,
+    private sys_bo_mon_service: sys_bo_mon_service,
     private exportExcelService: ExportExcelService,
     private sys_cong_viec_giang_vien_service: sys_cong_viec_giang_vien_service
   ) {
     this.filter.id_chuc_vu = -1;
     this.filter.id_khoa = -1;
+    this.filter.status_del = -1;
+    this.filter.id_bo_mon = -1;
     this.filter.id_cong_viec = '';
     this.filter.den = new Date();
     this.filter.tu = new Date();
@@ -52,23 +56,22 @@ export class sys_thong_ke_indexComponent implements OnInit {
       .subscribe((result) => {
         this.data_excel = result;
 
-    this.exportExcelService.exportToExcelPro({
-      myData: this.data_excel,
-      fileName: 'DSCViecGV',
-      sheetName: 'CVGV',
-      report: 'CÔNG VIỆC GIẢNG VIÊN',
-      myHeader: [
-        'Tên giảng viên',
-        'Tên công việc',
-        'Tên loại công việc',
-        'Số giờ',
-        'Ngày bắt đầu',
-        'Ngày kết thúc',
-      ],
-      widths: [
-      ],
-    });
-      })
+        this.exportExcelService.exportToExcelPro({
+          myData: this.data_excel,
+          fileName: 'DSCViecGV',
+          sheetName: 'CVGV',
+          report: 'CÔNG VIỆC GIẢNG VIÊN',
+          myHeader: [
+            'Tên giảng viên',
+            'Tên công việc',
+            'Tên loại công việc',
+            'Số giờ',
+            'Ngày bắt đầu',
+            'Ngày kết thúc',
+          ],
+          widths: [],
+        });
+      });
   }
   load_data(data: any): void {
     this.chartOptions = {
@@ -92,15 +95,17 @@ export class sys_thong_ke_indexComponent implements OnInit {
     this.loading = true;
   }
   get_list_cong_viec(): void {
-    this.sys_cong_viec_service.get_list_cong_viec().subscribe((result) => {
-      this.lst_cong_viec = result;
-      this.lst_cong_viec.splice(0, 0, { id: '', name: 'Tất cả' });
-    });
+    this.sys_cong_viec_service
+      .get_list_cong_viec_khoa(this.filter.id_khoa)
+      .subscribe((result) => {
+        this.lst_cong_viec = result;
+        this.lst_cong_viec.splice(0, 0, { id: '', name: 'Tất cả' });
+      });
   }
   get_thong_ke_cong_viec(): void {
     this.loading = false;
     this.sys_cong_viec_giang_vien_service
-      .get_thong_ke_cong_viec(this.filter)
+      .get_thong_ke_cong_viec_admin(this.filter)
       .subscribe((result) => {
         this.lst_data = result;
         this.load_data(result);
@@ -113,6 +118,16 @@ export class sys_thong_ke_indexComponent implements OnInit {
       this.get_list_chuc_vu();
     });
   }
+  get_list_bo_mon(): void {
+    this.sys_bo_mon_service
+      .get_list_bo_mon_khoa(this.filter.id_khoa)
+      .subscribe((data) => {
+        this.lst_bo_mon = data;
+        this.lst_bo_mon.splice(0, 0, { id: -1, name: 'Tất cả' });
+        this.get_list_cong_viec();
+        this.get_thong_ke_cong_viec();
+      });
+  }
   get_list_chuc_vu(): void {
     this.sys_chuc_vu_service.get_list_chuc_vu().subscribe((data) => {
       this.lst_chuc_vu = data;
@@ -120,8 +135,29 @@ export class sys_thong_ke_indexComponent implements OnInit {
       this.get_list_cong_viec();
     });
   }
+  get_list_status_del() {
+    this.lst_status = [
+      {
+        id: -1,
+        name: 'Tất cả',
+      },
+      {
+        id: 1,
+        name: 'Hoàn thành',
+      },
+      {
+        id: 2,
+        name: 'Chưa hoàn thành',
+      },
+      {
+        id: 3,
+        name: 'Đang thực hiện',
+      },
+    ];
+  }
   ngOnInit(): void {
     this.get_list_khoa();
     this.get_thong_ke_cong_viec();
+    this.get_list_status_del();
   }
 }
