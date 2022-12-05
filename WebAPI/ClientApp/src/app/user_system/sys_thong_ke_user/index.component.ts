@@ -23,6 +23,7 @@ export class sys_thong_ke_user_indexComponent implements OnInit {
     private sys_loai_cong_viec_service: sys_loai_cong_viec_service,
     private sys_cong_viec_giang_vien_service: sys_cong_viec_giang_vien_service
   ) {
+
     this.filter.id_loai_cong_viec = -1;
     this.filter.den = new Date();
     this.filter.tu = new Date();
@@ -58,6 +59,7 @@ export class sys_thong_ke_user_indexComponent implements OnInit {
       });
   }
   load_data(data: any): void {
+
     this.chartOptions = {
       title: {
         text: 'Thống kê',
