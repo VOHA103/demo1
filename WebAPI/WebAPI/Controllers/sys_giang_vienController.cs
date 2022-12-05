@@ -425,6 +425,38 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
         [HttpPost("[action]")]
+        public IActionResult DataHanlderKhoaBo_mon([FromBody] filter_data_giang_vien filter)
+        {
+
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var GV = _context.sys_giang_vien.Where(q => q.id == user_id).SingleOrDefault();
+            var result = _context.sys_giang_vien
+              .Select(d => new sys_giang_vien_model()
+              {
+                  db = d,
+                  create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == d.id_chuc_vu).Select(q => q.ten_chuc_vu).SingleOrDefault(),
+                  ten_khoa = _context.sys_khoa.Where(q => q.id == d.id_khoa).Select(q => q.ten_khoa).SingleOrDefault(),
+                  ten_bo_mon = _context.sys_bo_mon.Where(q => q.id == d.id_bo_mon).Select(q => q.ten_bo_mon).SingleOrDefault(),
+                  ten_chuyen_nghanh = _context.sys_chuyen_nganh.Where(q => q.id == d.id_chuyen_nghanh).Select(q => q.ten_chuyen_nganh).SingleOrDefault(),
+
+              })
+              .Where(q => q.db.id_khoa == GV.id_khoa)
+              .Where(q => q.db.id_bo_mon == GV.id_bo_mon)
+              .Where(q => q.db.ten_giang_vien.Contains(filter.search) || filter.search == "")
+              .Where(q => q.db.id_chuc_vu == filter.id_chuc_vu || filter.id_chuc_vu == -1)
+              .Where(q => q.db.id_chuyen_nghanh == filter.id_chuyen_nghanh || filter.id_chuyen_nghanh == -1)
+              .ToList();
+            result = result.OrderByDescending(q => q.db.update_date).ToList();
+            var model = new
+            {
+                data = result,
+                total = result.Count(),
+            };
+            return Ok(model);
+        }
+        [HttpPost("[action]")]
         public IActionResult DataHanlderKhoa([FromBody] filter_data_giang_vien filter)
        {
 
@@ -606,6 +638,49 @@ namespace WebAPI.Controllers
               })
               .ToList();
             return Ok(result);
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> create_giang_vien_khoa_bo_mon([FromBody] sys_giang_vien_model sys_giang_vien)
+        {
+            try
+            {
+                string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+                var GV = _context.sys_giang_vien.Where(q => q.id == user_id).SingleOrDefault();
+                sys_giang_vien.db.id_khoa = GV.id_khoa;
+                sys_giang_vien.db.id_bo_mon = GV.id_bo_mon;
+                var error = sys_giang_vien_part.get_list_error(sys_giang_vien);
+                var check_ma_giang_vien = _context.sys_giang_vien.Where(q => q.username == sys_giang_vien.db.ma_giang_vien && q.status_del == 1).Select(q => q.ma_giang_vien).SingleOrDefault();
+                if (check_ma_giang_vien != null && sys_giang_vien.db.ma_giang_vien != "")
+                {
+                    error.Add(set_error.set("db.ma_giang_vien", "Trùng mã giảng viên!"));
+                }
+                if (error.Count() == 0)
+                {
+                    sys_giang_vien.db.id = get_id_primary_key();
+                    sys_giang_vien.db.update_date = DateTime.Now;
+                    sys_giang_vien.db.create_date = DateTime.Now;
+                    sys_giang_vien.db.ngay_sinh = sys_giang_vien.db.ngay_sinh.Value.AddDays(1);
+                    sys_giang_vien.db.update_by = user_id;
+                    sys_giang_vien.db.create_by = user_id;
+                    sys_giang_vien.db.username = sys_giang_vien.db.ma_giang_vien;
+                    sys_giang_vien.db.id_bo_mon = sys_giang_vien.db.id_bo_mon;
+                    sys_giang_vien.db.status_del = 1;
+                    sys_giang_vien.db.pass_word = chang_password(sys_giang_vien);
+                    _context.sys_giang_vien.Add(sys_giang_vien.db);
+                    await _context.SaveChangesAsync();
+                }
+                var result = new
+                {
+                    data = sys_giang_vien,
+                    error = error,
+                };
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
+
         }
         [HttpPost("[action]")]
         public async Task<IActionResult> create_giang_vien_khoa([FromBody] sys_giang_vien_model sys_giang_vien)

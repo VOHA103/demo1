@@ -47,24 +47,22 @@
         </div>
       </div>
       <div class="flex">
-        <div class="flex-1  px-2">
-          <mat-label>Bộ môn</mat-label>
+        <div class="flex-1 px-2">
+          <mat-label>Từ ngày
+          </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="filter.id_bo_mon" (selectionChange)="get_list_giang_vien()">
-              <mat-option *ngFor="let item of lst_bo_mon" [value]="item.id">
-                {{ item.name }}
-              </mat-option>
-            </mat-select>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="filter.tu">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
         </div>
-        <div class="flex-1  px-2">
-          <mat-label>Giảng viên</mat-label>
+        <div class="flex-1 px-2">
+          <mat-label>Đến ngày
+          </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="filter.id_giang_vien" (selectionChange)="DataHanlder()">
-              <mat-option *ngFor="let item of lst_giang_vien" [value]="item.id">
-                {{ item.name }}
-              </mat-option>
-            </mat-select>
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="filter.den">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
           </mat-form-field>
         </div>
       </div>
@@ -159,10 +157,13 @@
               <td class="">
                 <div *ngIf="item.trang_thai==1" class="border-2 border-black rounded-full w-8 h-8"
                   style="background-color: rgb(16, 188, 56);"></div>
+
                 <div *ngIf="item.trang_thai==2" class="border-2 border-black rounded-full w-8 h-8"
                   style="background-color: rgb(188, 23, 39);"></div>
+
                 <div *ngIf="item.trang_thai==3" class="border-2 border-black rounded-full w-8 h-8"
                   style="background-color: rgb(230, 238, 22);"></div>
+
               </td>
               <td class="">
                 {{ item.create_name }}

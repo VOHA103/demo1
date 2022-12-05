@@ -1,0 +1,129 @@
+<div class="w-full">
+  <mat-progress-bar *ngIf="loading==false" mode="indeterminate"></mat-progress-bar>
+
+  <div class="flex flex-col p-4" *ngIf="loading==true">
+    <div class="flex">
+      <h1 class="font-bold text-xl uppercase">Giảng viên</h1>
+    </div>
+    <mat-card>
+      <div class="w-full max-w-sm" style="min-width:500px">
+        <div class="flex items-center border-b border-teal-500 py-2">
+          <input
+            class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+            type="file" (change)="onFileSelected($event)" #fileUpLoad>
+
+          <button
+            class="flex-shrink-0 border-transparent border-4 text-teal-500 hover:text-teal-800 text-base py-1 px-2 rounded"
+            type="button" (click)="dowloadFileMau()">
+            Mẫu Import
+          </button>
+          <button
+            class="flex-shrink-0 bg-teal-500 hover:bg-teal-500 border-teal-500 hover:border-teal-700 text-base border-4 text-white py-1 px-2 rounded"
+            type="button" (click)="onSubmitFile()">
+            Upload
+          </button>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Tên giảng viên</mat-label>
+          <mat-form-field class="w-full" appearance="outline" class="w-full">
+            <input [(ngModel)]="filter.search" matInput (keyup.enter)="DataHanlderKhoa()">
+          </mat-form-field>
+        </div>
+        <div class="flex-1  px-2">
+          <mat-label>Chức vụ</mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="filter.id_chuc_vu" (selectionChange)="DataHanlderKhoa()">
+              <mat-option *ngFor="let item of lst_chuc_vu" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card>
+
+    <div class="flex justify-end mt-5">
+      <div class="flex justify-end mr-10">
+        <button mat-raised-button (click)="DataHanlderKhoa()">Tìm kiếm</button>
+      </div>
+      <div class="flex justify-end mr-10">
+        <button mat-raised-button color="primary" (click)="openDialogAdd()">
+          <mat-icon>add</mat-icon>Thêm
+        </button>
+      </div>
+    </div>
+    <div class="flex mt-10">
+      <mat-card class="w-full">
+        <table class="w-full table_admin">
+          <thead class="">
+            <th class=" text-base" style="width: 10%; height: 60px"></th>
+            <th class=" text-base" style="width: 5%; height: 60px">STT</th>
+            <th class=" text-base" style="height: 60px">Giảng viên</th>
+            <th class=" text-base" style="height: 60px">Thông tin</th>
+            <th class=" text-base" style="height: 60px">Chuyên môn</th>
+            <th class=" text-base" style="height: 60px">Người tạo</th>
+            <th class=" text-base" style="height: 60px">Ngày tạo</th>
+          </thead>
+          <tbody
+            *ngFor="let item of listData|paginate: { itemsPerPage: 5, currentPage: p, totalItems: total } ; index as i">
+            <tr>
+              <td class="">
+                <div class="flex flex-row justify-center item-center">
+                  <div class="flex justify-center items-center ng-star-inserted" *ngIf="item.db.status_del==1" matTooltip=
+                  "Ngưng sử dụng"
+                      matTooltipPosition="right"
+                    (click)="delete(item.db.id)"><span class="material-icons"
+                      style="color: rgb(255, 0, 0);">cancel</span></div>
+
+                  <div class="flex justify-center items-center ng-star-inserted" *ngIf="item.db.status_del==2" matTooltip=
+                  "Sử dụng"
+                      matTooltipPosition="right"
+                    (click)="reven_status(item.db.id)"><span class="material-icons" style="color: rgb(16, 222, 36)">
+                      <mat-icon>done_outline</mat-icon>
+                    </span></div>
+
+                  <div matTooltip=
+                  "Chỉnh sửa thông tin"
+                      matTooltipPosition="right" class="flex justify-center items-center ng-star-inserted" (click)="openDialogDetail(item)"><span
+                      class="material-icons">
+                      <mat-icon>build</mat-icon>
+                    </span></div>
+                  <div matTooltip=
+                  "Cập nhập lại mật khẩu"
+                      matTooltipPosition="right" class="flex justify-center items-center ng-star-inserted" (click)="reset_password(item.db.id)"><span
+                      class="material-icons">
+                      <mat-icon>sync</mat-icon>
+                    </span></div>
+                </div>
+
+              </td>
+              <td class=""><span class="p-4">{{ i + 1 }}</span></td>
+              <td class="">
+                <span>{{ item.db.ten_giang_vien }}</span><br>
+                <span>{{ item.db.ma_giang_vien }}</span><br>
+              </td>
+              <td class="">
+                <span>Chức vụ: </span> <span>{{ item.ten_chuc_vu }}</span><br>
+                <span>Tên khoa: </span> <span>{{ item.ten_khoa }}</span><br>
+                <span>Email: </span> <span>{{ item.db.email }}</span><br>
+                <span>Địa chỉ: </span> <span>{{ item.db.dia_chi }}</span><br>
+                <span>Ngày sinh: </span> <span>{{ item.db.ngay_sinh | date :'dd/MM/YYYY' }}</span><br>
+              </td>
+              <td class="">
+
+                <span>Tên chuyên nghành: </span> <span>{{ item.ten_chuyen_nghanh }}</span><br>
+                <span>Bộ môn: </span> <span> {{ item.ten_bo_mon }}</span>
+              </td>
+              <td class="">{{ item.create_name }}</td>
+              <td class="">{{ item.db.create_date | date :'dd/MM/YYYY' }}</td>
+            </tr>
+          </tbody>
+
+        </table>
+      </mat-card>
+    </div>
+    <pagination-controls (pageChange)="pageChangeEvent($event)"></pagination-controls>
+  </div>
+</div>

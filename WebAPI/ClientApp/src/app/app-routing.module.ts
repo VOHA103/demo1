@@ -26,12 +26,17 @@ import { sys_giang_vien_indexComponent } from './admin_system/sys_giang_vien/ind
 import { sys_ky_truc_khoa_indexComponent } from './admin_khoa/sys_ky_truc_khoa/index.component';
 import { sys_loai_cong_viec_indexComponent } from './admin_khoa/sys_loai_cong_viec/index.component';
 import { sys_cong_viec_giang_vien_admin_bo_mon_indexComponent } from './admin_bo_mon/sys_cong_viec_giang_vien/index.component';
+import { sys_giang_vien_khoa_bo_mon_indexComponent } from './admin_bo_mon/sys_giang_vien/index.component';
 const routes: Routes = [
   { path: "login", component: login_indexComponent },
   { path: "", component: login_indexComponent },
   { path: "home", component: nav_indexComponent,canActivate:[AuthGuard] },
   { path: "", component: nav_indexComponent ,children: [
 
+    {
+      path: "sys_giang_vien_khoa_bo_mon_index",
+      component: sys_giang_vien_khoa_bo_mon_indexComponent
+    },
     {
       path: "sys_cong_viec_giang_vien_admin_bo_mon_index",
       component: sys_cong_viec_giang_vien_admin_bo_mon_indexComponent

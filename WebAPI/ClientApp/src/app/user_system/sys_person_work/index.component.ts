@@ -40,7 +40,7 @@ export class sys_person_work_indexComponent implements OnInit {
   ) {
     this.filter.id_cong_viec = "";
     this.filter.search = "";
-    this.filter.status_del = 1;
+    this.filter.status_del = -1;
     this.filter.den = new Date();
     this.filter.tu = new Date();
     this.filter.tu.setDate(this.filter.den.getDate() - 7);

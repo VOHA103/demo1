@@ -122,6 +122,11 @@ export class nav_indexComponent implements OnInit {
       },
     ];
     this.menu_admin_bo_mon = [
+
+      {
+        link: 'sys_giang_vien_khoa_bo_mon_index',
+        label: 'Giảng viên',
+      },
       {
         link: 'sys_cong_viec_giang_vien_admin_bo_mon_index',
         label: 'Công việc giảng viên',

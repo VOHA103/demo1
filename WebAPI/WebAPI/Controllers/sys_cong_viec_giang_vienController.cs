@@ -32,295 +32,58 @@ namespace WebAPI.Controllers
             _appSettings = appSettings.Value;
         }
         [HttpPost("[action]")]
-        public async Task<IActionResult> ImportFromExcel()
+        public async Task<IActionResult> DataHanlderBo_mon([FromBody] filter_data_bo_mon_CV filter)
         {
-            var error = "";
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
-            IFormFile file = Request.Form.Files[0];
-
-            string folderName = "import_excel";
-
-            var currentpath = Directory.GetCurrentDirectory();
-
-            string newPath = Path.Combine(currentpath, "file_upload", folderName);
-            var tick = Guid.NewGuid();
-            if (!Directory.Exists(newPath))
-
-            {
-
-                Directory.CreateDirectory(newPath);
-
-            }
-
-            var list_cell = new List<cell>();
-
-            var list_row = new List<row>();
-            if (file.Length > 0)
-
-            {
-
-                string sFileExtension = Path.GetExtension(file.FileName).ToLower();
-
-                ISheet sheet;
-
-                string fullPath = Path.Combine(newPath, tick + "." + file.FileName.Split(".").Last());
-
-                try
-                {
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-
-                    {
-
-                        file.CopyTo(stream);
-
-                        stream.Position = 0;
-
-                        if (sFileExtension == ".xls")
-
-                        {
-
-                            HSSFWorkbook hssfwb = new HSSFWorkbook(stream); //This will read the Excel 97-2000 formats  
-
-                            sheet = hssfwb.GetSheetAt(0); //get first sheet from workbook  
-
-                        }
-
-                        else
-
-                        {
-
-                            XSSFWorkbook hssfwb = new XSSFWorkbook(stream); //This will read 2007 Excel format  
-
-                            sheet = hssfwb.GetSheetAt(0); //get first sheet from workbook   
-
-                        }
-
-                        IRow headerRow = sheet.GetRow(0); //Get Header Row
-
-                        int cellCount = headerRow.LastCellNum;
-
-
-                        for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
-
-                        {
-
-                            IRow row = sheet.GetRow(i);
-
-                            if (row == null) continue;
-
-                            if (row.Cells.All(d => d.CellType == NPOI.SS.UserModel.CellType.Blank)) continue;
-
-                            for (int j = row.FirstCellNum; j < cellCount; j++)
-
-                            {
-
-                                if (row.GetCell(j) != null)
-                                {
-                                    var cell = new cell();
-
-                                    var value = row.GetCell(j).ToString();
-
-
-                                    cell.value = value;
-                                    list_cell.Add(cell);
-                                }
-
-                            }
-
-                            var data_row = new row();
-
-
-                            data_row.key = i.ToString();
-                            data_row.list_cell = list_cell;
-                            list_cell = new List<cell>();
-                            list_row.Add(data_row);
-                        }
-
-
-                    }
-
-
-                    for (int ct = 0; ct < list_row.Count(); ct++)
-                    {
-                        var fileImport = list_row[ct].list_cell.ToList();
-
-
-                        var model = new sys_cong_viec_giang_vien_model();
-
-                        var ten_cong_viec = (fileImport[0].value.ToString() ?? "").Trim();
-                        var ten_giang_vien = (fileImport[1].value.ToString() ?? "").Trim();
-                        var chuc_vu = (fileImport[2].value.ToString() ?? "").Trim();
-                        var khoa = (fileImport[3].value.ToString() ?? "").Trim();
-
-
-                        if (String.IsNullOrEmpty(ten_cong_viec))
-                        {
-                            error += "Phải nhập công việc tại dòng" + (ct + 1) + "<br />";
-                        }
-                        else
-                        {
-                            var cong_viec = _context.sys_cong_viec.Where(q => q.ten_cong_viec.ToLower().Trim() == ten_cong_viec.ToLower().Trim()).Select(q => q.id).SingleOrDefault();
-                            if (cong_viec == null)
-                            {
-
-                                error += "Không có công việc tại dòng" + (ct + 1) + "<br />";
-                            }
-                            else
-                                model.db.id_cong_viec = cong_viec;
-                        }
-                        if (String.IsNullOrEmpty(ten_giang_vien))
-                        {
-                            error += "Phải nhập giảng viên tại dòng" + (ct + 1) + "<br />";
-                        }
-                        else
-                        {
-                            var giang_vien = _context.sys_giang_vien.Where(q => q.ten_giang_vien.ToLower().Trim() == ten_giang_vien.ToLower().Trim()).Select(q => q.id).SingleOrDefault();
-                            if (giang_vien == null)
-                            {
-
-                                error += "Không có giảng viên tại dòng" + (ct + 1) + "<br />";
-                            }
-                            else
-                                model.db.id_giang_vien = giang_vien;
-                        }
-                        if (chuc_vu == null || chuc_vu == "")
-                        {
-                            error += "Phải nhập chức vụ tại dòng" + (ct + 1) + "<br />";
-                        }
-                        else
-                        {
-                            var id_chuc_vu = _context.sys_chuc_vu.Where(q => q.ten_chuc_vu.ToLower().Trim().Equals(chuc_vu.ToLower().Trim())).Select(q => q.id).SingleOrDefault();
-                            if (id_chuc_vu != 0)
-                            {
-                                model.db.id_chuc_vu = id_chuc_vu;
-                            }
-                            else
-                            {
-                                error += "Không có khoa tại dòng" + (ct + 1) + "<br />";
-                            }
-                        }
-                        if (khoa == null || khoa == "")
-                        {
-                            error += "Phải nhập khoa vụ tại dòng" + (ct + 1) + "<br />";
-                        }
-                        else
-                        {
-                            var id_khoa = _context.sys_khoa.Where(q => q.ten_khoa.ToLower().Trim().Equals(khoa.ToLower().Trim())).Select(q => q.id).SingleOrDefault();
-                            if (id_khoa != 0)
-                            {
-                                model.db.id_khoa = id_khoa;
-                            }
-                            else
-                            {
-                                error += "Không có khoa tại dòng" + (ct + 1) + "<br />";
-                            }
-                        }
-
-                        if (!string.IsNullOrEmpty(error))
-                        {
-
-                        }
-                        else
-                        {
-                            model.db.create_date = DateTime.Now;
-                            model.db.update_date = DateTime.Now;
-                            model.db.create_by = user_id;
-                            model.db.update_by = user_id;
-                            model.db.id = get_id_primary_key();
-                            model.db.status_del = 1;
-
-                            _context.sys_cong_viec_giang_vien.Add(model.db);
-                            _context.SaveChanges();
-
-                        }
-
-
-                    }
-                    return Ok(error);
-                }
-                catch
-                {
-                    return Ok("File không đúng định dạng");
-                }
-
-
-            }
-            else
-            {
-                return Ok("File không đúng định dạng");
-
-            }
-
-        }
-        private string CheckErrorImport(sys_giang_vien_model model, int ct, string error)
-        {
-
-            if (String.IsNullOrEmpty(model.db.ten_giang_vien))
-            {
-                error += "Phải nhập tên giảng viên tại dòng" + (ct + 1) + "<br />";
-            }
-            if (model.db.gioi_tinh == null)
-            {
-                error += "Phải nhập giới tính tại dòng" + (ct + 1) + "<br />";
-            }
-
-            return error;
-        }
-        [HttpPost("[action]")]
-        public async Task<IActionResult> ExportExcel([FromBody] filter_data_cong_viec_giang_vien_user filter)
-        {
+            var GV = _context.sys_giang_vien.Where(q => q.id == user_id).SingleOrDefault();
             var result = _context.sys_cong_viec_giang_vien
-          .Select(d => new sys_cong_viec_giang_vien_model()
-          {
-              db = d,
-              create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
-              update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
-              ten_giang_vien = _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.ten_giang_vien).SingleOrDefault(),
-              ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.id_chuc_vu).SingleOrDefault()).Select(q => q.ten_chuc_vu).SingleOrDefault(),
-              ten_khoa = _context.sys_khoa.Where(q => q.id == _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.id_khoa).SingleOrDefault()).Select(q => q.ten_khoa).SingleOrDefault(),
-              ten_cong_viec = _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.ten_cong_viec).SingleOrDefault(),
-              ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(q => q.id == _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.id_loai_cong_viec).SingleOrDefault()).Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
-          })
-          .Where(q => q.db.status_del == filter.status_del)
-          .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
-          .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || q.ten_giang_vien.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
-          .ToList();
-            using (var workbook = new XLWorkbook())
+              .Select(d => new sys_cong_viec_giang_vien_model()
+              {
+                  db = d,
+                  create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  ten_giang_vien = _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.ten_giang_vien).SingleOrDefault(),
+                  ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.id_chuc_vu).SingleOrDefault()).Select(q => q.ten_chuc_vu).SingleOrDefault(),
+                  ten_khoa = _context.sys_khoa.Where(q => q.id == _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.id_khoa).SingleOrDefault()).Select(q => q.ten_khoa).SingleOrDefault(),
+                  ten_cong_viec = _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.ten_cong_viec).SingleOrDefault(),
+                  ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(q => q.id == _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.id_loai_cong_viec).SingleOrDefault()).Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
+              })
+              .Where(q => q.db.id_bo_mon == GV.id_bo_mon)
+              .Where(q => q.db.id_khoa == GV.id_khoa)
+              .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
+              .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
+              .ToList();
+            var count = result.Count();
+            result.ForEach(q =>
             {
-                var worksheet = workbook.Worksheets.Add("Works");
-                var currentRow = 1;
-                worksheet.Cell(currentRow, 1).Value = "";
-                worksheet.Cell(currentRow, 2).Value = "Trường đại học Công Nghiệp Thực Phẩm Thành phố Hồ Chí Minh";
-                currentRow++;
-                worksheet.Cell(currentRow, 1).Value = "Công việc";
-                worksheet.Cell(currentRow, 2).Value = "Giảng viên";
-                //worksheet.Cell(currentRow, 3).Value = "Người tạo";
-                //worksheet.Cell(currentRow, 4).Value = "Ngày tạo";
-                foreach (var item in result)
+                var time_work = _context.sys_cong_viec.Where(d => d.id == q.db.id_cong_viec).SingleOrDefault();
+                var time_now = DateTime.Now;
+                //trang_thai => 1 đã xong 2 chưa thực hiện 3 đang thực hiện
+                if (time_work.ngay_bat_dau > time_now)
                 {
-                    currentRow++;
-                    worksheet.Cell(currentRow, 1).Value = item.ten_cong_viec;
-                    worksheet.Cell(currentRow, 2).Value = item.ten_giang_vien;
-                    //worksheet.Cell(currentRow, 3).Value = item.create_name;
-                    //worksheet.Cell(currentRow, 4).Value = item.create_day;
-
+                    q.trang_thai = 2;
                 }
-                currentRow++;
-                worksheet.Cell(currentRow, 1).Value = "Tổng cộng";
-                worksheet.Cell(currentRow, 2).Value = "320 giờ";
-                using (var stream = new MemoryStream())
+                else if (time_now >= time_work.ngay_bat_dau && time_now <= time_work.ngay_ket_thuc)
                 {
-
-                    workbook.SaveAs(stream);
-                    var content = stream.ToArray();
-                    string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                    string fileName = "works.xlsx";
-                    return File(content, contentType, fileName);
+                    q.trang_thai = 3;
                 }
-            }
-            return Ok("Lỗi");
+                else
+                {
+                    if ( time_now <= time_work.ngay_bat_dau)
+                        q.trang_thai = 1;
+                }
+            });
+            result = result.Where(q => q.trang_thai == filter.status_del || filter.status_del == -1)
+              .Where(q => q.db.ngay_bat_dau >= filter.tu)
+              .Where(q => q.db.ngay_ket_thuc <= filter.den).ToList();
+            count = result.Count();
+            var model = new
+            {
+                data = result.OrderByDescending(q => q.db.create_date).ToList(),
+                total = count,
+            };
+            return Ok(model);
         }
-
         [HttpPost("[action]")]
         public async Task<IActionResult> DataHanlderUser([FromBody] filter_data_cong_viec_giang_vien_user filter)
         {
@@ -340,20 +103,17 @@ namespace WebAPI.Controllers
               .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
               .Where(q => q.db.id_giang_vien == user_id)
               .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
-              .Where(q => q.db.ngay_bat_dau >= filter.tu)
-              .Where(q => q.db.ngay_ket_thuc <= filter.den)
-              .Where(q => q.db.status_del <= filter.status_del)
               .ToList();
             result.ForEach(q =>
             {
-                var time_work = _context.sys_cong_viec.Where(d => d.id == q.db.id_cong_viec).Select(q => q.ngay_bat_dau).SingleOrDefault();
+                var time_work = _context.sys_cong_viec.Where(d => d.id == q.db.id_cong_viec).SingleOrDefault();
                 var time_now = DateTime.Now;
                 //trang_thai => 1 đã xong 2 chưa thực hiện 3 đang thực hiện
-                if (time_work > time_now)
+                if (time_work.ngay_bat_dau > time_now)
                 {
                     q.trang_thai = 2;
                 }
-                else if (time_now == time_work)
+                else if (time_now >= time_work.ngay_bat_dau && time_now <= time_work.ngay_ket_thuc)
                 {
                     q.trang_thai = 3;
                 }
@@ -362,7 +122,10 @@ namespace WebAPI.Controllers
                     q.trang_thai = 1;
                 }
             });
-            result = result.Where(q => q.trang_thai == filter.status_del).ToList();
+            result = result.Where(q => q.trang_thai == filter.status_del || filter.status_del==-1)
+              .Where(q => q.db.ngay_bat_dau >= filter.tu)
+              .Where(q => q.db.ngay_ket_thuc <= filter.den)
+              .ToList();
             var count = result.Count();
             var model = new
             {
@@ -723,6 +486,297 @@ namespace WebAPI.Controllers
                 throw;
             }
         }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> ImportFromExcel()
+        {
+            var error = "";
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            IFormFile file = Request.Form.Files[0];
+
+            string folderName = "import_excel";
+
+            var currentpath = Directory.GetCurrentDirectory();
+
+            string newPath = Path.Combine(currentpath, "file_upload", folderName);
+            var tick = Guid.NewGuid();
+            if (!Directory.Exists(newPath))
+
+            {
+
+                Directory.CreateDirectory(newPath);
+
+            }
+
+            var list_cell = new List<cell>();
+
+            var list_row = new List<row>();
+            if (file.Length > 0)
+
+            {
+
+                string sFileExtension = Path.GetExtension(file.FileName).ToLower();
+
+                ISheet sheet;
+
+                string fullPath = Path.Combine(newPath, tick + "." + file.FileName.Split(".").Last());
+
+                try
+                {
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+
+                    {
+
+                        file.CopyTo(stream);
+
+                        stream.Position = 0;
+
+                        if (sFileExtension == ".xls")
+
+                        {
+
+                            HSSFWorkbook hssfwb = new HSSFWorkbook(stream); //This will read the Excel 97-2000 formats  
+
+                            sheet = hssfwb.GetSheetAt(0); //get first sheet from workbook  
+
+                        }
+
+                        else
+
+                        {
+
+                            XSSFWorkbook hssfwb = new XSSFWorkbook(stream); //This will read 2007 Excel format  
+
+                            sheet = hssfwb.GetSheetAt(0); //get first sheet from workbook   
+
+                        }
+
+                        IRow headerRow = sheet.GetRow(0); //Get Header Row
+
+                        int cellCount = headerRow.LastCellNum;
+
+
+                        for (int i = (sheet.FirstRowNum + 1); i <= sheet.LastRowNum; i++) //Read Excel File
+
+                        {
+
+                            IRow row = sheet.GetRow(i);
+
+                            if (row == null) continue;
+
+                            if (row.Cells.All(d => d.CellType == NPOI.SS.UserModel.CellType.Blank)) continue;
+
+                            for (int j = row.FirstCellNum; j < cellCount; j++)
+
+                            {
+
+                                if (row.GetCell(j) != null)
+                                {
+                                    var cell = new cell();
+
+                                    var value = row.GetCell(j).ToString();
+
+
+                                    cell.value = value;
+                                    list_cell.Add(cell);
+                                }
+
+                            }
+
+                            var data_row = new row();
+
+
+                            data_row.key = i.ToString();
+                            data_row.list_cell = list_cell;
+                            list_cell = new List<cell>();
+                            list_row.Add(data_row);
+                        }
+
+
+                    }
+
+
+                    for (int ct = 0; ct < list_row.Count(); ct++)
+                    {
+                        var fileImport = list_row[ct].list_cell.ToList();
+
+
+                        var model = new sys_cong_viec_giang_vien_model();
+
+                        var ten_cong_viec = (fileImport[0].value.ToString() ?? "").Trim();
+                        var ten_giang_vien = (fileImport[1].value.ToString() ?? "").Trim();
+                        var chuc_vu = (fileImport[2].value.ToString() ?? "").Trim();
+                        var khoa = (fileImport[3].value.ToString() ?? "").Trim();
+
+
+                        if (String.IsNullOrEmpty(ten_cong_viec))
+                        {
+                            error += "Phải nhập công việc tại dòng" + (ct + 1) + "<br />";
+                        }
+                        else
+                        {
+                            var cong_viec = _context.sys_cong_viec.Where(q => q.ten_cong_viec.ToLower().Trim() == ten_cong_viec.ToLower().Trim()).Select(q => q.id).SingleOrDefault();
+                            if (cong_viec == null)
+                            {
+
+                                error += "Không có công việc tại dòng" + (ct + 1) + "<br />";
+                            }
+                            else
+                                model.db.id_cong_viec = cong_viec;
+                        }
+                        if (String.IsNullOrEmpty(ten_giang_vien))
+                        {
+                            error += "Phải nhập giảng viên tại dòng" + (ct + 1) + "<br />";
+                        }
+                        else
+                        {
+                            var giang_vien = _context.sys_giang_vien.Where(q => q.ten_giang_vien.ToLower().Trim() == ten_giang_vien.ToLower().Trim()).Select(q => q.id).SingleOrDefault();
+                            if (giang_vien == null)
+                            {
+
+                                error += "Không có giảng viên tại dòng" + (ct + 1) + "<br />";
+                            }
+                            else
+                                model.db.id_giang_vien = giang_vien;
+                        }
+                        if (chuc_vu == null || chuc_vu == "")
+                        {
+                            error += "Phải nhập chức vụ tại dòng" + (ct + 1) + "<br />";
+                        }
+                        else
+                        {
+                            var id_chuc_vu = _context.sys_chuc_vu.Where(q => q.ten_chuc_vu.ToLower().Trim().Equals(chuc_vu.ToLower().Trim())).Select(q => q.id).SingleOrDefault();
+                            if (id_chuc_vu != 0)
+                            {
+                                model.db.id_chuc_vu = id_chuc_vu;
+                            }
+                            else
+                            {
+                                error += "Không có khoa tại dòng" + (ct + 1) + "<br />";
+                            }
+                        }
+                        if (khoa == null || khoa == "")
+                        {
+                            error += "Phải nhập khoa vụ tại dòng" + (ct + 1) + "<br />";
+                        }
+                        else
+                        {
+                            var id_khoa = _context.sys_khoa.Where(q => q.ten_khoa.ToLower().Trim().Equals(khoa.ToLower().Trim())).Select(q => q.id).SingleOrDefault();
+                            if (id_khoa != 0)
+                            {
+                                model.db.id_khoa = id_khoa;
+                            }
+                            else
+                            {
+                                error += "Không có khoa tại dòng" + (ct + 1) + "<br />";
+                            }
+                        }
+
+                        if (!string.IsNullOrEmpty(error))
+                        {
+
+                        }
+                        else
+                        {
+                            model.db.create_date = DateTime.Now;
+                            model.db.update_date = DateTime.Now;
+                            model.db.create_by = user_id;
+                            model.db.update_by = user_id;
+                            model.db.id = get_id_primary_key();
+                            model.db.status_del = 1;
+
+                            _context.sys_cong_viec_giang_vien.Add(model.db);
+                            _context.SaveChanges();
+
+                        }
+
+
+                    }
+                    return Ok(error);
+                }
+                catch
+                {
+                    return Ok("File không đúng định dạng");
+                }
+
+
+            }
+            else
+            {
+                return Ok("File không đúng định dạng");
+
+            }
+
+        }
+        private string CheckErrorImport(sys_giang_vien_model model, int ct, string error)
+        {
+
+            if (String.IsNullOrEmpty(model.db.ten_giang_vien))
+            {
+                error += "Phải nhập tên giảng viên tại dòng" + (ct + 1) + "<br />";
+            }
+            if (model.db.gioi_tinh == null)
+            {
+                error += "Phải nhập giới tính tại dòng" + (ct + 1) + "<br />";
+            }
+
+            return error;
+        }
+        [HttpPost("[action]")]
+        public async Task<IActionResult> ExportExcel([FromBody] filter_data_cong_viec_giang_vien_user filter)
+        {
+            var result = _context.sys_cong_viec_giang_vien
+          .Select(d => new sys_cong_viec_giang_vien_model()
+          {
+              db = d,
+              create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+              update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+              ten_giang_vien = _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.ten_giang_vien).SingleOrDefault(),
+              ten_chuc_vu = _context.sys_chuc_vu.Where(q => q.id == _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.id_chuc_vu).SingleOrDefault()).Select(q => q.ten_chuc_vu).SingleOrDefault(),
+              ten_khoa = _context.sys_khoa.Where(q => q.id == _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.id_khoa).SingleOrDefault()).Select(q => q.ten_khoa).SingleOrDefault(),
+              ten_cong_viec = _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.ten_cong_viec).SingleOrDefault(),
+              ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(q => q.id == _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.id_loai_cong_viec).SingleOrDefault()).Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
+          })
+          .Where(q => q.db.status_del == filter.status_del)
+          .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
+          .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || q.ten_giang_vien.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
+          .ToList();
+            using (var workbook = new XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("Works");
+                var currentRow = 1;
+                worksheet.Cell(currentRow, 1).Value = "";
+                worksheet.Cell(currentRow, 2).Value = "Trường đại học Công Nghiệp Thực Phẩm Thành phố Hồ Chí Minh";
+                currentRow++;
+                worksheet.Cell(currentRow, 1).Value = "Công việc";
+                worksheet.Cell(currentRow, 2).Value = "Giảng viên";
+                //worksheet.Cell(currentRow, 3).Value = "Người tạo";
+                //worksheet.Cell(currentRow, 4).Value = "Ngày tạo";
+                foreach (var item in result)
+                {
+                    currentRow++;
+                    worksheet.Cell(currentRow, 1).Value = item.ten_cong_viec;
+                    worksheet.Cell(currentRow, 2).Value = item.ten_giang_vien;
+                    //worksheet.Cell(currentRow, 3).Value = item.create_name;
+                    //worksheet.Cell(currentRow, 4).Value = item.create_day;
+
+                }
+                currentRow++;
+                worksheet.Cell(currentRow, 1).Value = "Tổng cộng";
+                worksheet.Cell(currentRow, 2).Value = "320 giờ";
+                using (var stream = new MemoryStream())
+                {
+
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    string fileName = "works.xlsx";
+                    return File(content, contentType, fileName);
+                }
+            }
+            return Ok("Lỗi");
+        }
+
         private string get_id_primary_key()
         {
             var id = "";

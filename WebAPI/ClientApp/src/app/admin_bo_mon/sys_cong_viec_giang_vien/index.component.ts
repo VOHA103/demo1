@@ -37,6 +37,8 @@ export class sys_cong_viec_giang_vien_admin_bo_mon_indexComponent implements OnI
     id_cong_viec: '',
     id_bo_mon: -1,
     status_del: -1,
+    tu: new Date(),
+    den: new Date(),
     id_loai_cong_viec: -1,
   };
   private REST_API_URL = environment.api;
@@ -62,6 +64,7 @@ export class sys_cong_viec_giang_vien_admin_bo_mon_indexComponent implements OnI
     private excelServicesService: ExcelServicesService,
     private exportExcelService: ExportExcelService
   ) {
+    this.filter.tu.setDate(this.filter.den.getDate() - 7);
   }
   get_list_bo_mon(): void {
     this.sys_bo_mon_service.get_list_bo_mon().subscribe((data) => {
@@ -206,7 +209,7 @@ export class sys_cong_viec_giang_vien_admin_bo_mon_indexComponent implements OnI
   DataHanlder(): void {
     this.loading = false;
     this.sys_cong_viec_giang_vien_service
-      .DataHanlder(this.filter)
+      .DataHanlderBo_mon(this.filter)
       .subscribe((resp) => {
         var model: any;
         this.listData = resp;

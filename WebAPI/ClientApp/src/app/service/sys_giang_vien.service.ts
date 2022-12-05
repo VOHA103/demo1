@@ -44,6 +44,11 @@ export class sys_giang_vien_service {
     const url = this.REST_API_URL + '/sys_giang_vien/create_giang_vien_khoa';
     return this.http.post(url, sys_giang_viens);
   }
+  // thêm sys_giang_vien
+  public create_giang_vien_khoa_bo_mon(sys_giang_viens: sys_giang_vien_model) {
+    const url = this.REST_API_URL + '/sys_giang_vien/create_giang_vien_khoa_bo_mon';
+    return this.http.post(url, sys_giang_viens);
+  }
   // edit sys_giang_vien
   public edit(sys_giang_viens: sys_giang_vien_model) {
     const url = this.REST_API_URL + '/sys_giang_vien/edit';
@@ -77,6 +82,11 @@ export class sys_giang_vien_service {
   //lấy danh sách sys_giang_vien
   public DataHanlderKhoa(filter:any){
     const url = this.REST_API_URL + '/sys_giang_vien/DataHanlderKhoa';
+    return this.http.post(url,filter);
+  }
+  //lấy danh sách sys_giang_vien
+  public DataHanlderKhoaBo_mon(filter:any){
+    const url = this.REST_API_URL + '/sys_giang_vien/DataHanlderKhoaBo_mon';
     return this.http.post(url,filter);
   }
   //lấy danh sách sys_giang_vien

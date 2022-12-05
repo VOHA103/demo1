@@ -27,6 +27,16 @@ namespace WebAPI.Model
         public List<string> list_giang_vien { get; set; }
     }
 
+    public class filter_data_bo_mon_CV
+    {
+        public string id_cong_viec { get; set; }
+        public string search { get; set; }
+        public int? id_loai_cong_viec { get; set; }
+        public int? status_del { get; set; }
+        public DateTime? tu { get; set; }
+        public DateTime? den { get; set; }
+
+    }
     public class filter_thong_ke_user_data
     {
         public string id_cong_viec { get; set; }

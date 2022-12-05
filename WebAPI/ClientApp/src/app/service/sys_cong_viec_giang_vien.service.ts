@@ -101,6 +101,12 @@ export class sys_cong_viec_giang_vien_service {
     return this.http.post(url,filter);
   }
   //lấy danh sách sys_cong_viec
+  public DataHanlderBo_mon(filter:any){
+    const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/DataHanlderBo_mon';
+    return this.http.post(url,filter);
+  }
+
+  //lấy danh sách sys_cong_viec
   public ExportExcel(filter:any){
     const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/ExportExcel';
     return this.http.post(url,filter);
