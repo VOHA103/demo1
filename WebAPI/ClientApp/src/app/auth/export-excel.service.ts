@@ -48,28 +48,32 @@ export class ExportExcelService {
         title: 'Chưa có dữ liệu',
         showConfirmButton: false,
         timer: 1500,
-      }).then((result) => {
-      });
+      }).then((result) => {});
       return;
     }
     const wb = new Excel.Workbook();
     const ws = wb.addWorksheet(sheetName);
     const colums = myHeader?.length;
+
     const data = {
       border: true,
       height: 30,
       font: {
-        size: 20,
+        size: 13,
         bold: false,
-        color: { argb: '000000' },
+      //  color: { argb: '000000' },
       },
-      alignment: { horizontal: 'center', vertical: 'center' },
+      alignment: null,
+      // { horizontal: 'center', vertical: 'center' },
       fill: {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: {
-          argb: '0000FF',
-        },
+        // fgColor: {
+        //   argb: '#000000',
+        // },
+        // bgColor: {
+        //   argb: '#FFFFFF',
+        // },
       },
     };
 
@@ -78,17 +82,16 @@ export class ExportExcelService {
       height: 70,
       font: {
         family: 4,
-        size: 50,
+        size: 40,
         bold: true,
-        align: 'center',
       },
-      alignment: { horizontal: 'center', vertical: 'center' },
+      alignment: { horizontal: 'center', vertical: 'middle' },
       fill: {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: {
-          argb: '0000FF',
-        },
+        // fgColor: {
+        //   argb: '0000FF',
+        // },
       },
     };
 
@@ -96,23 +99,23 @@ export class ExportExcelService {
       border: true,
       height: 40,
       font: {
-        size: 40,
-        bold: false,
-        color: { argb: 'FFFFFF' },
-        align: 'center',
+        size: 15,
+        bold: true,
+       // color: { argb: 'FFFFFF' },
       },
-      alignment: { horizontal: 'center', vertical: 'center ' },
+      alignment: { horizontal: 'center', vertical: 'middle ' },
       fill: {
         type: 'pattern',
         pattern: 'solid',
-        fgColoor: {
-          argb: '0000FF',
-        },
-        bgColor: {
-          argb: '#FFF0F5',
-        },
+        // fgColor: {
+        //   argb: '0000FF',
+        // },
+        // bgColor: {
+        //   argb: '#FFFFFF',
+        // },
       },
     };
+
     let row = this.addRow(ws, [report], title);
     this.mergeCells(ws, row, 1, colums);
 
@@ -128,32 +131,38 @@ export class ExportExcelService {
   private addRow(ws, data, section) {
     const borderStyles = {
       top: { style: 'thin' },
-      left: { stype: 'thin' },
-      bottom: { stype: 'thin' },
-      right: { stype: 'thin' },
+      left: { style: 'thin' },
+      bottom: { style: 'thin' },
+      right: { style: 'thin' },
     };
     const row = ws.addRow(data);
 
     ws.getColumn(1).width = 40;
     ws.getColumn(2).width = 30;
-    ws.getColumn(3).width = 10;
+    ws.getColumn(3).width = 30;
     ws.getColumn(4).width = 30;
     ws.getColumn(5).width = 30;
-    ws.getColumn(6).width = 20;
+    ws.getColumn(6).width = 40;
+    row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+      if (section?.border) {
+        cell.border = borderStyles;
+      }
 
-    if (section?.alignment) {
-      row.alignment = section.alignment;
-    } else {
-      row.alignment = { vertical: 'middle' };
-    }
+      if (section?.alignment) {
+        row.alignment = section.alignment;
+      } else {
+        row.alignment = { vertical: 'middle' };
+      }
+      if(section?.font){
+        cell.font=section.font;
+      }
+   
+    });
     if (section?.height > 0) {
       row.height = section.height;
     }
-    ws.addRow([]);
-
     return row;
   }
-
   private mergeCells(ws, row, from, to) {
     ws.mergeCells(`${row.getCell(from)._address}:${row.getCell(to)._address}`);
   }

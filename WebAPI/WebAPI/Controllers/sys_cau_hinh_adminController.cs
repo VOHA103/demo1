@@ -68,6 +68,37 @@ namespace WebAPI.Controllers
                 return StatusCode(500, $"error: {ex}");
             }
         }
+        [HttpPost("create")]
+
+        public async Task<IActionResult> create([FromBody] sys_cau_hinh_admin_model sys_cau_hinh_admin)
+        {
+            try
+            {
+                string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+                var error = sys_cau_hinh_admin_part.check_error_insert_update(sys_cau_hinh_admin);
+                if (error.Count() == 0)
+                {
+                    sys_cau_hinh_admin.db.id = 0;
+                    sys_cau_hinh_admin.db.update_date = DateTime.Now;
+                    sys_cau_hinh_admin.db.create_date = DateTime.Now;
+                    sys_cau_hinh_admin.db.update_by = user_id;
+                    sys_cau_hinh_admin.db.status_del = 1;
+                    _context.sys_cau_hinh_admin.Add(sys_cau_hinh_admin.db);
+                    await _context.SaveChangesAsync();
+                }
+                var result = new
+                {
+                    data = sys_cau_hinh_admin,
+                    error = error,
+                };
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
+        }
+
         [HttpPost("[action]")]
         public IActionResult DataHanlder([FromBody] filter_data_bo_mon filter)
         {
@@ -80,7 +111,7 @@ namespace WebAPI.Controllers
                   update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
               })
               .Where(q => q.db.status_del == status_del)
-              .Where(q => q.db.title == filter.search || filter.search=="")
+              .Where(q => q.db.title == filter.search || filter.search == "")
               .ToList();
             result = result.OrderByDescending(q => q.db.update_date).ToList();
             var model = new
@@ -93,7 +124,7 @@ namespace WebAPI.Controllers
         [HttpGet("[action]")]
         public IActionResult get_cau_hinh_admin()
         {
-            var result = _context.sys_cau_hinh_admin.Where(q=>q.type_==1).SingleOrDefault();
+            var result = _context.sys_cau_hinh_admin.Where(q => q.type_ == 1).SingleOrDefault();
             return Ok(result);
         }
         [HttpGet("[action]")]
@@ -139,35 +170,6 @@ namespace WebAPI.Controllers
                     model.image = sys_cau_hinh_admin.db.image;
                     model.name_footer = sys_cau_hinh_admin.db.name_footer;
                     model.title_footer = sys_cau_hinh_admin.db.title_footer;
-                    await _context.SaveChangesAsync();
-                }
-                var result = new
-                {
-                    data = sys_cau_hinh_admin,
-                    error = error,
-                };
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return Ok(ex.Message);
-            }
-        }
-        [HttpPost("create")]
-        public async Task<IActionResult> create([FromBody] sys_cau_hinh_admin_model sys_cau_hinh_admin)
-        {
-            try
-            {
-                string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
-                var error = sys_cau_hinh_admin_part.check_error_insert_update(sys_cau_hinh_admin);
-                if (error.Count() == 0)
-                {
-                    sys_cau_hinh_admin.db.id = 0;
-                    sys_cau_hinh_admin.db.update_date = DateTime.Now;
-                    sys_cau_hinh_admin.db.create_date = DateTime.Now;
-                    sys_cau_hinh_admin.db.update_by = user_id;
-                    sys_cau_hinh_admin.db.status_del = 1;
-                    _context.sys_cau_hinh_admin.Add(sys_cau_hinh_admin.db);
                     await _context.SaveChangesAsync();
                 }
                 var result = new

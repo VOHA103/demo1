@@ -39,14 +39,17 @@
       <mat-card class="w-full">
         <table class="w-full table_admin">
           <thead class="">
-            <th class=" text-base" style="width: 10%; height: 60px"></th>
+            <th class=" text-base" style="width: 7%; height: 60px"></th>
             <th class=" text-base" style="width: 5%; height: 60px">
               STT
             </th>
-            <th class=" text-base" style="height: 60px">
+            <th class=" text-base" style="height: 60px;width: 15%;">
               Tiêu đề
             </th>
-            <th class=" text-base" style="height: 60px">
+            <th class=" text-base" style="height: 60px;width: 15%;">
+              Hình đại diện
+            </th>
+            <th class=" text-base" style="height: 60px;width: 20%;">
               Copyright
             </th>
             <th class=" text-base" style="height: 60px">
@@ -90,8 +93,12 @@
                 {{ item.db.title }}
               </td>
               <td class="">
+                <img [src]="createImgPath(item.image)" alt="profile picture" style="width:60px; height:60px;">
+              </td>
+              <td class="">
                 {{ item.db.title_footer }}
               </td>
+            
               <td class="">
                 {{ item.db.name_footer }}
               </td>

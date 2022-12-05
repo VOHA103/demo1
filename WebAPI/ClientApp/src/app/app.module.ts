@@ -100,15 +100,20 @@ import { sys_chuyen_nganh_indexComponent } from './admin_khoa/sys_chuyen_nganh/i
 import { sys_thong_ke_indexComponent } from './admin_system/sys_thong_ke_admin/index.component';
 import { sys_cong_viec_giang_vien_admin_bo_mon_indexComponent } from './admin_bo_mon/sys_cong_viec_giang_vien/index.component';
 import { sys_cong_viec_giang_vien_admin_bo_mon_popupComponent } from './admin_bo_mon/sys_cong_viec_giang_vien/popupAdd.component';
-import { sys_giang_vien_khoa_bo_mon_indexComponent } from './admin_bo_mon/sys_giang_vien_khoa/index.component';
-import { sys_giang_vien_khoa_bo_mon_popupComponent } from './admin_bo_mon/sys_giang_vien_khoa/popupAdd.component';
+
 import { NgApexchartsModule } from 'ng-apexcharts';
+
+import { sys_giang_vien_khoa_bo_mon_indexComponent } from './admin_bo_mon/sys_giang_vien/index.component';
+import { sys_giang_vien_khoa_bo_mon_popupComponent } from './admin_bo_mon/sys_giang_vien/popupAdd.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+
     sys_giang_vien_khoa_bo_mon_indexComponent,
     sys_giang_vien_khoa_bo_mon_popupComponent,
+    sys_cau_hinh_admin_indexComponent,
+    sys_cau_hinh_admin_popupComponent,
     sys_cong_viec_giang_vien_admin_bo_mon_indexComponent,
     sys_cong_viec_giang_vien_admin_bo_mon_popupComponent,
     sys_thong_ke_khoa_indexComponent,

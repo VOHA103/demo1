@@ -38,6 +38,9 @@ export class sys_cau_hinh_admin_indexComponent implements OnInit {
       this.DataHanlder();
     });
   }
+  public createImgPath = (serverPath: string) => { 
+    return `https://localhost:44334/sys_cau_hinh_admin/${serverPath}`; 
+  }
   DataHanlder(): void {
     this.loading = false;
     this.sys_cau_hinh_admin_service.DataHanlder(this.filter).subscribe((resp) => {

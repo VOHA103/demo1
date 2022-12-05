@@ -66,6 +66,10 @@ namespace WebAPI.Part
             {
                 list_error.Add(set_error.set("db.id_khoa", "Bắt buộc"));
             }
+            if (item.db.id_chuyen_nghanh == 0)
+            {
+                list_error.Add(set_error.set("db.id_chuyen_nghanh", "Bắt buộc"));
+            }
             if (item.db.id_bo_mon == null)
             {
                 list_error.Add(set_error.set("db.id_bo_mon", "Bắt buộc"));
