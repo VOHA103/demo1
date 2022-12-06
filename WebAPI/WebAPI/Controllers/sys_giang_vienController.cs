@@ -630,7 +630,7 @@ namespace WebAPI.Controllers
         {
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
             var id_khoa = _context.sys_giang_vien.Where(q => q.id == user_id).Select(q => q.id_khoa).SingleOrDefault();
-            var result = _context.sys_giang_vien.Where(q => q.id_bo_mon == id_bo_mon && q.id_khoa == id_khoa)
+            var result = _context.sys_giang_vien.Where(q => q.id_bo_mon == id_bo_mon || id_bo_mon==-1 && q.id_khoa == id_khoa)
               .Select(d => new
               {
                   id = d.id,

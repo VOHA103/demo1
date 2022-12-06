@@ -430,7 +430,7 @@ namespace WebAPI.Controllers
               .Where(q => q.db.id_giang_vien == filter.id_giang_vien || filter.id_giang_vien == "")
               .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
               .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || q.ten_giang_vien.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
-              .Where(q => q.db.id_chuc_vu == filter.id_bo_mon || filter.id_bo_mon == -1)
+              .Where(q => q.db.id_bo_mon == filter.id_bo_mon || filter.id_bo_mon == -1)
               .Where(q => q.db.id_khoa == id_khoa)
               .ToList();
             result.ForEach(q =>
@@ -457,7 +457,7 @@ namespace WebAPI.Controllers
             var count = result.Count();
             var model = new
             {
-                data = result,
+                data = result.OrderByDescending(q=>q.db.create_date),
                 total = count,
             };
             return Ok(model);

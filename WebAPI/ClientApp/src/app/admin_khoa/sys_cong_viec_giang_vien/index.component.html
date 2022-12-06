@@ -70,7 +70,7 @@
       </div>
       <div class="flex">
         <div class="flex-1 px-2">
-          <mat-label>Tìm kiếm</mat-label>
+          <mat-label>Tìm kiếm (Tên công việc / Tên giảng viên)</mat-label>
           <mat-form-field class="w-full" appearance="outline" class="w-full">
             <input [(ngModel)]="filter.search" matInput (keyup.enter)="DataHanlder()">
           </mat-form-field>
@@ -118,8 +118,9 @@
             <th class=" text-base" style="height: 60px">Công việc</th>
             <th class=" text-base" style="height: 60px">Trạng thái</th>
             <th class=" text-base" style="height: 60px">Người tạo</th>
+            <th class=" text-base" style="height: 60px">Ngày bắt đầu</th>
+            <th class=" text-base" style="height: 60px">Ngày kết thúc</th>
             <th class=" text-base" style="height: 60px">Ngày tạo</th>
-            <th class=" text-base" style="height: 60px">Ghi chú</th>
           </thead>
           <tbody
             *ngFor="let item of listData|paginate: { itemsPerPage: 5, currentPage: p, totalItems: total } ; index as i">
@@ -168,9 +169,14 @@
                 {{ item.create_name }}
               </td>
               <td class="">
+                {{ item.db.ngay_bat_dau | date :'dd/MM/YYYY' }}
+              </td>
+              <td class="">
+                {{ item.db.ngay_ket_thuc | date :'dd/MM/YYYY' }}
+              </td>
+              <td class="">
                 {{ item.db.create_date | date :'dd/MM/YYYY HH:mm' }}
               </td>
-              <td class="">{{ item.db.note }}</td>
             </tr>
           </tbody>
         </table>

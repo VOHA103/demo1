@@ -62,8 +62,7 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
     public dialog: MatDialog,
     private excelServicesService: ExcelServicesService,
     private exportExcelService: ExportExcelService
-  ) {
-  }
+  ) {}
   get_list_bo_mon(): void {
     this.sys_bo_mon_service.get_list_bo_mon().subscribe((data) => {
       this.lst_bo_mon = data;
@@ -140,7 +139,6 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
       this.DataHanlder();
     });
   }
@@ -226,11 +224,12 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
     this.sys_giang_vien_service
       .get_list_giang_vien_bo_mon(this.filter.id_bo_mon)
       .subscribe((result) => {
-        if (this.filter.id_bo_mon != -1) this.lst_giang_vien = result;
-        this.lst_giang_vien = this.lst_giang_vien.split(0, 0, {
-          id: '-1',
+        this.lst_giang_vien = result;
+        this.lst_giang_vien.splice(0, 0, {
+          id: '',
           name: 'Tất cả',
         });
+        this.DataHanlder();
       });
   }
   get_list_cong_viec(): void {
