@@ -32,6 +32,69 @@ namespace WebAPI.Controllers
             _appSettings = appSettings.Value;
         }
         [HttpPost("[action]")]
+        public async Task<IActionResult> DataHanlderGiangVien([FromBody] filter_data_bo_mon_CV filter)
+        {
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var GV = _context.sys_giang_vien.Where(q => q.id == user_id).SingleOrDefault();
+            DateTime now = DateTime.Now;
+            var result = _context.sys_loai_cong_viec.Where(q=>q.id_khoa==GV.id_khoa)
+              .Select(d => new cong_viec_giang_vien_model()
+              {
+                  ten_loai_cong_viec = d.ten_loai_cong_viec,
+                  list_cong_viec = _context.sys_cong_viec.Where(q => q.id_loai_cong_viec == d.id && GV.id_khoa==q.id_khoa).Select(q => new cong_viec_model()
+                  {
+                      ten_cong_viec = q.ten_cong_viec,
+                      loai = q.loai,
+                      so_gio_cv = q.so_gio,
+                      so_gio=_context.sys_cong_viec_giang_vien.Where(d=>d.id_cong_viec==q.id && d.ngay_bat_dau.Value.Year==now.Year && d.id_giang_vien== GV.id && d.id_khoa == GV.id_khoa).Sum(q=>q.so_gio)??0,
+                  }).ToList()
+              })
+              .ToList();
+            var count = result.Count();
+            var model = _context.sys_cong_viec_giang_vien
+              .Select(d => new sys_cong_viec_giang_vien_model()
+              {
+                  db = d,
+              }).Where(d => d.db.ngay_bat_dau.Value.Year == now.Year && d.db.id_giang_vien == GV.id && d.db.id_khoa == GV.id_khoa).ToList();
+            model.ForEach(q =>
+            {
+                var time_work = _context.sys_cong_viec.Where(d => d.id == q.db.id_cong_viec).SingleOrDefault();
+                var time_now = DateTime.Now;
+                //trang_thai => 1 đã xong 2 chưa thực hiện 3 đang thực hiện
+                if (time_work.ngay_bat_dau > time_now)
+                {
+                    q.trang_thai = 2;
+                }
+                else if (time_now >= time_work.ngay_bat_dau && time_now <= time_work.ngay_ket_thuc)
+                {
+                    q.trang_thai = 3;
+                }
+                else
+                {
+                    if (time_now <= time_work.ngay_bat_dau)
+                        q.trang_thai = 1;
+                }
+            });
+            //result = result.Where(q => q.trang_thai == filter.status_del || filter.status_del == -1)
+            //  .Where(q => q.db.ngay_bat_dau >= filter.tu)
+            //  .Where(q => q.db.ngay_ket_thuc <= filter.den).ToList();
+            //count = result.Count();
+            //var model = new
+            //{
+            //    data = result.OrderByDescending(q => q.db.create_date).ToList(),
+            //    total = count,
+            //};
+            var data =new 
+            {
+                result= result,
+                time_done=model.Where(q=>q.trang_thai==1).Sum(q=>q.db.so_gio),
+                time_pending=model.Where(q=>q.trang_thai==3).Sum(q=>q.db.so_gio),
+                time_wait=model.Where(q=>q.trang_thai==2).Sum(q=>q.db.so_gio),
+            };
+            return Ok(data);
+        }
+
+        [HttpPost("[action]")]
         public async Task<IActionResult> DataHanlderBo_mon([FromBody] filter_data_bo_mon_CV filter)
         {
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
@@ -69,7 +132,7 @@ namespace WebAPI.Controllers
                 }
                 else
                 {
-                    if ( time_now <= time_work.ngay_bat_dau)
+                    if (time_now <= time_work.ngay_bat_dau)
                         q.trang_thai = 1;
                 }
             });
@@ -88,7 +151,8 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DataHanlderUser([FromBody] filter_data_cong_viec_giang_vien_user filter)
         {
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
-            var result = _context.sys_cong_viec_giang_vien
+            var GV = _context.sys_giang_vien.Where(q => q.id == user_id).SingleOrDefault();
+            var result = _context.sys_cong_viec_giang_vien.Where(q=>q.id_giang_vien==GV.id&& q.id_khoa==GV.id_khoa)
               .Select(d => new sys_cong_viec_giang_vien_model()
               {
                   db = d,
@@ -101,7 +165,6 @@ namespace WebAPI.Controllers
                   ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(q => q.id == _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.id_loai_cong_viec).SingleOrDefault()).Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
               })
               .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
-              .Where(q => q.db.id_giang_vien == user_id)
               .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
               .ToList();
             result.ForEach(q =>
@@ -122,7 +185,7 @@ namespace WebAPI.Controllers
                     q.trang_thai = 1;
                 }
             });
-            result = result.Where(q => q.trang_thai == filter.status_del || filter.status_del==-1)
+            result = result.Where(q => q.trang_thai == filter.status_del || filter.status_del == -1)
               .Where(q => q.db.ngay_bat_dau >= filter.tu)
               .Where(q => q.db.ngay_ket_thuc <= filter.den)
               .ToList();

@@ -69,7 +69,7 @@ export class sys_person_work_indexComponent implements OnInit {
   }
 
   get_list_cong_viec(): void {
-    this.sys_cong_viec_service.get_list_cong_viec().subscribe((result) => {
+    this.sys_cong_viec_service.change_cong_viec_khoa().subscribe((result) => {
       this.lst_cong_viec = result;
       this.lst_cong_viec.splice(0, 0, { id: "", name: 'Tất cả' });
     });

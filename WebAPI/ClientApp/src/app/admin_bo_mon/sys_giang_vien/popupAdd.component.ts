@@ -42,6 +42,9 @@ export class sys_giang_vien_khoa_bo_mon_popupComponent {
     @Inject(MAT_DIALOG_DATA) public data: sys_giang_vien_model
   ) {
     this.record = data;
+    this.get_list_chuc_vu();
+    this.get_list_bo_mon();
+    this.get_list_chuyen_nganh();
     if (this.record.db.id == '0'){
        this.Save();
     }
@@ -62,6 +65,9 @@ export class sys_giang_vien_khoa_bo_mon_popupComponent {
         var result:any;
         result=data;
         this.lst_chuc_vu = result;
+        if (this.record.db.id == '0'){
+          this.record.db.id_chuc_vu=this.lst_chuc_vu[0].id;
+       }
       });
   }
   get_list_chuyen_nganh(): void {
@@ -71,6 +77,9 @@ export class sys_giang_vien_khoa_bo_mon_popupComponent {
         var result:any;
         result=data;
         this.lst_chuyen_nghanh = result;
+        if (this.record.db.id == '0'){
+          this.record.db.id_chuyen_nghanh=this.lst_chuyen_nghanh[0].id;
+       }
       });
   }
   Close(): void {
@@ -110,10 +119,6 @@ export class sys_giang_vien_khoa_bo_mon_popupComponent {
   }
 
   ngOnInit(): void {
-    this.get_list_chuc_vu();
-    this.get_list_bo_mon();
-    this.get_list_chuyen_nganh();
-
     this.lst_gioi_tinh = [
       {
         id: 1,

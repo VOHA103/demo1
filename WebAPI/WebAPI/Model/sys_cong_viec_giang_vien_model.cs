@@ -26,7 +26,32 @@ namespace WebAPI.Model
         public int? trang_thai { get; set; }
         public List<string> list_giang_vien { get; set; }
     }
+    public class cong_viec_giang_vien_model{
+        public cong_viec_giang_vien_model()
+        {
+            list_cong_viec = new List<cong_viec_model>();
+        }
+        public string ten_loai_cong_viec { get; set; }
+        public List<cong_viec_model> list_cong_viec { get; set; }
 
+    }
+    public class cong_viec_ref_model
+    {
+
+        public string ten_cong_viec { get; set; }
+        public DateTime? ngay_bat_dau { get; set; }
+        public DateTime? ngay_ket_thuc { get; set; }
+        public int? so_gio { get; set; }
+        public int? trang_thai { get; set; }
+    }
+    public class cong_viec_model
+    {
+
+        public string ten_cong_viec { get; set; }
+        public int? so_gio { get; set; }
+        public int? loai { get; set; }
+        public int? so_gio_cv { get; set; }
+    }
     public class filter_data_bo_mon_CV
     {
         public string id_cong_viec { get; set; }

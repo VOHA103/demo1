@@ -115,13 +115,16 @@ export class sys_giang_vien_khoa_bo_mon_indexComponent implements OnInit {
       this.lst_khoa.splice(0, 0, { id: -1, name: 'Tất cả' });
     });
   }
+
   get_list_chuc_vu(): void {
-    this.sys_chuc_vu_service.get_list_chuc_vu().subscribe((data) => {
-      var result: any;
-      result = data;
-      this.lst_chuc_vu = result;
-      this.lst_chuc_vu.splice(0, 0, { id: -1, name: 'Tất cả' });
-    });
+    this.sys_chuc_vu_service
+      .get_list_chuc_vu_change()
+      .subscribe((data) => {
+        var result:any;
+        result=data;
+        this.lst_chuc_vu = result;
+        this.lst_chuc_vu.splice(0, 0, { id: -1, name: 'Tất cả' });
+      });
   }
   DataHanlderKhoa(): void {
     // debugger;
