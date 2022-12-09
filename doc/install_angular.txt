@@ -8,7 +8,7 @@ npx tailwindcss init
 npm install sweetalert2
 
 npm install aos --save
-
+npm install angular-datatables --save
 npm install moment --save 
 npm install moment
 npm install --save @angular/material-moment-adapter

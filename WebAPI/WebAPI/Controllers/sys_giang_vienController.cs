@@ -612,6 +612,20 @@ namespace WebAPI.Controllers
 
         }
         [HttpGet("[action]")]
+        public IActionResult get_list_giang_vien_change_khoa_bo_mon()
+        {
+            string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var GV = _context.sys_giang_vien.Where(q => q.id == user_id).SingleOrDefault();
+            var result = _context.sys_giang_vien.Where(q => q.id_bo_mon == GV.id_bo_mon && q.id_khoa == GV.id_khoa)
+              .Select(d => new
+              {
+                  id = d.id,
+                  name = d.ten_giang_vien
+              })
+              .ToList();
+            return Ok(result);
+        }
+        [HttpGet("[action]")]
         public IActionResult get_list_giang_vien_change_khoa(int id_chuc_vu)
         {
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;

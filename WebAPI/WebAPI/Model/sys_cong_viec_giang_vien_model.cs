@@ -24,6 +24,7 @@ namespace WebAPI.Model
         public int? so_gio { get; set; }
         //1 đã xong 2 chưa thực hiện 3 đang thực hiện
         public int? trang_thai { get; set; }
+        public int? check_all { get; set; }
         public List<string> list_giang_vien { get; set; }
     }
     public class cong_viec_giang_vien_model{

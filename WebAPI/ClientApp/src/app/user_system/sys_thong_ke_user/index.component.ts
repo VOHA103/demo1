@@ -101,7 +101,7 @@ export class sys_thong_ke_user_indexComponent implements OnInit {
         this.time_done = model.time_done;
         this.time_pending = model.time_pending;
         this.time_wait = model.time_wait;
-        this.total_time = model.time_wait + model.time_wait + model.time_pending + 100;
+        this.total_time = model.time_wait + model.time_wait + model.time_pending;
         this.set_value_pie();
       });
   }

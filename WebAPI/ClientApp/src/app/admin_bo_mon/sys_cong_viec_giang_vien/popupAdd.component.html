@@ -19,7 +19,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="flex-1 px-2">
+        <!-- <div class="flex-1 px-2">
           <mat-label>Khoa
             <span *ngFor="let key of check_error">
               <span style="color:red" *ngIf="key.key=='db.id_khoa'">({{key.value}})</span>
@@ -32,10 +32,26 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-        </div>
+        </div> -->
       </div>
       <div class="flex">
         <div class="flex-1 px-2">
+          <mat-label class="mb-5">Chọn
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='list_giang_vien'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="sys_cong_viec_giang_vien_model.check_all" >
+              <mat-option *ngFor="let item of list_option" [value]="item.id">{{
+                item.name
+                }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex" *ngIf="sys_cong_viec_giang_vien_model.check_all==1">
+        <!-- <div class="flex-1 px-2">
           <mat-label>Chức vụ
             <span *ngFor="let key of check_error">
               <span style="color:red" *ngIf="key.key=='db.id_chuc_vu'">({{key.value}})</span>
@@ -48,7 +64,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-        </div>
+        </div> -->
         <div class="flex-1 px-2">
           <mat-label class="mb-5">Giảng viên
             <span *ngFor="let key of check_error">

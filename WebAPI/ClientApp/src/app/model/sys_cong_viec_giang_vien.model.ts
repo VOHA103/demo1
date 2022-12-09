@@ -10,6 +10,7 @@ export class sys_cong_viec_giang_vien_model {
   ten_khoa: string;
   so_gio: number | null;
   trang_thai: number | null;
+  check_all: number | null;
   list_giang_vien: string[];
 }
 export class filter_thong_ke_user {

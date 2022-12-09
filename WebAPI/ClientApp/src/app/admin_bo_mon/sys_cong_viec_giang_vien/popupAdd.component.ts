@@ -28,6 +28,8 @@ export class sys_cong_viec_giang_vien_admin_bo_mon_popupComponent {
   public lst_khoa: any = [];
   public lst_chuc_vu: any = [];
   public lst_bo_mon: any = [];
+  public list_option: any = [];
+  public option: any;
   constructor(
     private http: HttpClient,
     private sys_cong_viec_giang_vien_service: sys_cong_viec_giang_vien_service,
@@ -40,18 +42,27 @@ export class sys_cong_viec_giang_vien_admin_bo_mon_popupComponent {
     public dialogRef: MatDialogRef<sys_cong_viec_giang_vien_admin_bo_mon_popupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: sys_cong_viec_giang_vien_model
   ) {
+    this.list_option = [
+      {
+        id: -1,
+        name: 'Tất cả',
+      },
+      {
+        id: 1,
+        name: 'Chọn',
+      },
+    ];
+    this.sys_cong_viec_giang_vien_model.check_all=-1
     //this.sys_cong_viec_giang_vien = data;
     this.sys_cong_viec_giang_vien_model = data;
     if (this.sys_cong_viec_giang_vien_model.db.id == '0') this.Save();
-    this.get_list_khoa();
-    this.get_list_bo_mon();
   }
   Close(): void {
     this.dialogRef.close();
   }
   Save(): void {
     this.sys_cong_viec_giang_vien_service
-      .add(this.sys_cong_viec_giang_vien_model)
+      .create_cong_viec_bo_mon(this.sys_cong_viec_giang_vien_model)
       .subscribe((result) => {
         var data: any = result;
         this.check_error = data.error;
@@ -81,45 +92,21 @@ export class sys_cong_viec_giang_vien_admin_bo_mon_popupComponent {
         });
       });
   }
-  get_list_giang_vien(id_chuc_vu:any,id_khoa:any ): void {
+  get_list_giang_vien(): void {
     debugger
-    this.sys_giang_vien_service.get_list_giang_vien_change(id_chuc_vu,id_khoa).subscribe((result) => {
+    this.sys_giang_vien_service.get_list_giang_vien_change_khoa_bo_mon().subscribe((result) => {
       this.list_giang_vien = result;
       this.list_giang_vien.splice(0,0,{id:"-1",name:"Tất cả"})
     });
   }
   get_list_cong_viec(): void {
-    this.sys_cong_viec_service.get_list_cong_viec().subscribe((result) => {
+    this.sys_cong_viec_service.change_cong_viec_khoa().subscribe((result) => {
       this.list_cong_viec = result;
     });
   }
-  get_list_khoa(): void {
-    this.sys_khoa_service
-      .get_list_khoa()
-      .subscribe((data) => {
-        this.lst_khoa = data
-        this.sys_cong_viec_giang_vien_model.db.id_khoa=this.lst_khoa[0].id;
-        this.get_list_chuc_vu();
-      });
-  }
-  get_list_bo_mon(): void {
-    this.sys_bo_mon_service
-      .get_list_bo_mon()
-      .subscribe((data) => (this.lst_bo_mon = data));
-  }
-  get_list_chuc_vu(): void {
-    this.sys_chuc_vu_service
-      .get_list_chuc_vu()
-      .subscribe((data) => {
-        debugger
-        this.lst_chuc_vu = data
-        debugger
-        this.sys_cong_viec_giang_vien_model.db.id_chuc_vu=this.lst_chuc_vu[0].id;
-        this.get_list_giang_vien(this.sys_cong_viec_giang_vien_model.db.id_chuc_vu,this.sys_cong_viec_giang_vien_model.db.id_khoa);
-      });
-  }
   ngOnInit(): void {
     this.get_list_cong_viec();
+    this.get_list_giang_vien();
     this.lst_status = [
       {
         id: '1',

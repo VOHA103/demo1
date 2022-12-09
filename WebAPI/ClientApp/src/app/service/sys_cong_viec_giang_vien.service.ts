@@ -43,6 +43,11 @@ export class sys_cong_viec_giang_vien_service {
     const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/create';
     return this.http.post(url, sys_cong_viec_giang_viens);
   }
+  // thêm sys_cong_viec_giang_vien
+  public create_cong_viec_bo_mon(sys_cong_viec_giang_viens: sys_cong_viec_giang_vien_model) {
+    const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/create_cong_viec_bo_mon';
+    return this.http.post(url, sys_cong_viec_giang_viens);
+  }
   // edit sys_cong_viec_giang_vien
   public edit(sys_cong_viec_giang_viens: sys_cong_viec_giang_vien_model) {
     const url = this.REST_API_URL + '/sys_cong_viec_giang_vien/edit';

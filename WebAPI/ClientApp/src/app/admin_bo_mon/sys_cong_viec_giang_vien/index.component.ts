@@ -14,6 +14,7 @@ import { sys_bo_mon_service } from '../../service/sys_bo_mon.service';
 import { sys_loai_cong_viec_service } from '../../service/sys_loai_cong_viec.service';
 import { ExportExcelService } from '@/app/auth/export-excel.service';
 import { environment } from '@/environments/environment';
+import { sys_cong_viec_giang_vien_admin_bo_mon_popupComponent } from './popupAdd.component';
 @Component({
   selector: 'sys_cong_viec_giang_vien_index',
   templateUrl: './index.component.html',
@@ -116,7 +117,7 @@ export class sys_cong_viec_giang_vien_admin_bo_mon_indexComponent implements OnI
   }
   openDialogDetail(item): void {
     const dialogRef = this.dialog.open(
-      sys_cong_viec_giang_vien_admin_bo_mon_indexComponent,
+      sys_cong_viec_giang_vien_admin_bo_mon_popupComponent,
       {
         width: '850px',
         data: item,
@@ -129,7 +130,7 @@ export class sys_cong_viec_giang_vien_admin_bo_mon_indexComponent implements OnI
   }
   openDialogAdd(): void {
     const dialogRef = this.dialog.open(
-      sys_cong_viec_giang_vien_admin_bo_mon_indexComponent,
+      sys_cong_viec_giang_vien_admin_bo_mon_popupComponent,
       {
         width: '850px',
         data: {

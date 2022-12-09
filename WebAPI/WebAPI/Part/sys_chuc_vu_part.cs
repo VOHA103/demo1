@@ -10,7 +10,6 @@ namespace WebAPI.Part
 {
     public static class sys_chuc_vu_part
     {
-        private static readonly ApplicationDbContext _context;
         public static List<check_error> check_error_insert_update(sys_chuc_vu_model item)
         {
             List<check_error> list_error = new List<check_error>();

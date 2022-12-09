@@ -75,6 +75,11 @@ export class sys_giang_vien_service {
     return this.http.get<sys_giang_vien_model[]>(url);
   }
   //lấy danh sách sys_giang_vien
+  public get_list_giang_vien_change_khoa_bo_mon(): Observable<sys_giang_vien_model[]> {
+    const url =  this.REST_API_URL + '/sys_giang_vien/get_list_giang_vien_change_khoa_bo_mon';
+    return this.http.get<sys_giang_vien_model[]>(url);
+  }
+  //lấy danh sách sys_giang_vien
   public DataHanlder(filter:any){
     const url = this.REST_API_URL + '/sys_giang_vien/DataHanlder';
     return this.http.post(url,filter);

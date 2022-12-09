@@ -120,10 +120,10 @@ export class nav_indexComponent implements OnInit {
         link: 'sys_thong_ke_user_index',
         label: 'Thống kê người dùng',
       },
-      {
-        link: 'sys_cau_hinh_admin_index',
-        label: 'Cấu hình admin',
-      },
+      // {
+      //   link: 'sys_cau_hinh_admin_index',
+      //   label: 'Cấu hình admin',
+      // },
     ];
     this.menu_admin_bo_mon = [
 

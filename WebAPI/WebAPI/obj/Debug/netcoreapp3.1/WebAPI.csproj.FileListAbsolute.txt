@@ -416,6 +416,7 @@ D:\khoa_luan_thu_ha\khoa_luan_tot_nghiep\WebAPI\WebAPI\obj\Debug\netcoreapp3.1\W
 D:\khoa_luan_thu_ha\khoa_luan_tot_nghiep\WebAPI\WebAPI\obj\Debug\netcoreapp3.1\WebAPI.dll
 D:\khoa_luan_thu_ha\khoa_luan_tot_nghiep\WebAPI\WebAPI\obj\Debug\netcoreapp3.1\WebAPI.pdb
 D:\khoa_luan_thu_ha\khoa_luan_tot_nghiep\WebAPI\WebAPI\obj\Debug\netcoreapp3.1\WebAPI.genruntimeconfig.cache
+D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\appsettings.Development.json
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\appsettings.json
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\WebAPI.exe
@@ -482,7 +483,6 @@ D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\SixLabors.F
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\SixLabors.ImageSharp.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
-D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Syncfusion.Compression.Portable.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Syncfusion.Licensing.dll
 D:\Github\khoa_luan_tot_nghiep\WebAPI\WebAPI\bin\Debug\netcoreapp3.1\Syncfusion.XlsIO.Portable.dll
