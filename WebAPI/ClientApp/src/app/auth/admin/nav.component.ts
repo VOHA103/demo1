@@ -126,7 +126,10 @@ export class nav_indexComponent implements OnInit {
       // },
     ];
     this.menu_admin_bo_mon = [
-
+      {
+        link: 'sys_thong_ke_bo_mon_index',
+        label: 'Thống kê bộ môn',
+      },
       {
         link: 'sys_giang_vien_khoa_bo_mon_index',
         label: 'Giảng viên',
@@ -144,7 +147,6 @@ export class nav_indexComponent implements OnInit {
         label: 'Thống kê người dùng',
       },
     ];
-    debugger
     if (this.profile.code === 'admin') this.menu = this.menu_admin;
     if (this.profile.code === 'sub_admin') this.menu = this.menu_sub_admin;
     if (this.profile.code === 'admin_bo_mon')  this.menu = this.menu_admin_bo_mon;

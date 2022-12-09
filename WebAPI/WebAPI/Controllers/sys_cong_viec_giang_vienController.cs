@@ -55,8 +55,8 @@ namespace WebAPI.Controllers
               .Select(d => new sys_cong_viec_giang_vien_model()
               {
                   db = d,
-              }).Where(d => d.db.ngay_bat_dau.Value.Year == now.Year && d.db.id_giang_vien == GV.id && d.db.id_khoa == GV.id_khoa).ToList();
-                var time_now = DateTime.Now;
+              }).Where(d => d.db.ngay_bat_dau.Value.Year == now.Year && d.db.id_giang_vien == GV.id && d.db.id_khoa == GV.id_khoa && d.db.id_bo_mon == GV.id_bo_mon).ToList();
+            var time_now = DateTime.Now;
             model.ForEach(q =>
             {
                 //trang_thai => 1 đã xong 2 chưa thực hiện 3 đang thực hiện
@@ -67,22 +67,15 @@ namespace WebAPI.Controllers
                 if (time_now < q.db.ngay_bat_dau)
                     q.trang_thai = 2;
             });
-          
-            //result = result.Where(q => q.trang_thai == filter.status_del || filter.status_del == -1)
-            //  .Where(q => q.db.ngay_bat_dau >= filter.tu)
-            //  .Where(q => q.db.ngay_ket_thuc <= filter.den).ToList();
-            //count = result.Count();
-            //var model = new
-            //{
-            //    data = result.OrderByDescending(q => q.db.create_date).ToList(),
-            //    total = count,
-            //};
+            var time_done = model.Where(q => q.trang_thai == 1).Sum(q => q.db.so_gio);
+            var time_pending = model.Where(q => q.trang_thai == 3).Sum(q => q.db.so_gio);
+            var time_wait = model.Where(q => q.trang_thai == 2).Sum(q => q.db.so_gio);
             var data = new
             {
                 result = result,
-                time_done = model.Where(q => q.trang_thai == 1).Sum(q => q.db.so_gio),
-                time_pending = model.Where(q => q.trang_thai == 3).Sum(q => q.db.so_gio),
-                time_wait = model.Where(q => q.trang_thai == 2).Sum(q => q.db.so_gio),
+                time_done = time_done,
+                time_pending = time_pending,
+                time_wait = time_wait,
             };
             return Ok(data);
         }
@@ -116,7 +109,7 @@ namespace WebAPI.Controllers
                 //trang_thai => 1 đã xong 2 chưa thực hiện 3 đang thực hiện
                 if (q.db.ngay_bat_dau < time_now && q.db.ngay_ket_thuc < time_now)
                     q.trang_thai = 1;
-                if (q.db.ngay_bat_dau <= time_now  && time_now <= q.db.ngay_ket_thuc)
+                if (q.db.ngay_bat_dau <= time_now && time_now <= q.db.ngay_ket_thuc)
                     q.trang_thai = 3;
                 if (time_now < q.db.ngay_bat_dau)
                     q.trang_thai = 2;
@@ -153,7 +146,7 @@ namespace WebAPI.Controllers
               .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
               .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
               .ToList();
-                var time_now = DateTime.Now;
+            var time_now = DateTime.Now;
             result.ForEach(q =>
             {
                 //trang_thai => 1 đã xong 2 chưa thực hiện 3 đang thực hiện

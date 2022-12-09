@@ -29,12 +29,17 @@ import { sys_cong_viec_giang_vien_admin_bo_mon_indexComponent } from './admin_bo
 
 
 import { sys_giang_vien_khoa_bo_mon_indexComponent } from './admin_bo_mon/sys_giang_vien/index.component';
+import { sys_thong_ke_bo_mon_indexComponent } from './admin_bo_mon/sys_thong_ke/index.component';
 const routes: Routes = [
   { path: "login", component: login_indexComponent },
   { path: "", component: login_indexComponent },
   { path: "home", component: nav_indexComponent,canActivate:[AuthGuard] },
   { path: "", component: nav_indexComponent ,children: [
 
+    {
+      path: "sys_thong_ke_bo_mon_index",
+      component: sys_thong_ke_bo_mon_indexComponent
+    },
     {
       path: "sys_giang_vien_khoa_bo_mon_index",
       component: sys_giang_vien_khoa_bo_mon_indexComponent

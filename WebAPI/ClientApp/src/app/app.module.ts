@@ -105,11 +105,12 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 
 import { sys_giang_vien_khoa_bo_mon_indexComponent } from './admin_bo_mon/sys_giang_vien/index.component';
 import { sys_giang_vien_khoa_bo_mon_popupComponent } from './admin_bo_mon/sys_giang_vien/popupAdd.component';
+import { sys_thong_ke_bo_mon_indexComponent } from './admin_bo_mon/sys_thong_ke/index.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-
+    sys_thong_ke_bo_mon_indexComponent,
     sys_giang_vien_khoa_bo_mon_indexComponent,
     sys_giang_vien_khoa_bo_mon_popupComponent,
     sys_cau_hinh_admin_indexComponent,

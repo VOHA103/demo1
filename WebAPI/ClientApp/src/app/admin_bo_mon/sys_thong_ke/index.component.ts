@@ -6,11 +6,11 @@ import { sys_loai_cong_viec_service } from '../../service/sys_loai_cong_viec.ser
 import { ExportExcelService } from '@/app/auth/export-excel.service';
 import { filter_thong_ke_user } from '@/app/model/sys_cong_viec_giang_vien.model';
 @Component({
-  selector: 'sys_thong_ke_user_index',
+  selector: 'sys_thong_ke_bo_mon_index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.scss'],
 })
-export class sys_thong_ke_user_indexComponent implements OnInit {
+export class sys_thong_ke_bo_mon_indexComponent implements OnInit {
   public lst_loai_cong_viec: any = [];
   public lst_data: any = [];
   public listData: any = [];
@@ -110,11 +110,13 @@ export class sys_thong_ke_user_indexComponent implements OnInit {
         var model: any;
         model = resp;
         this.listData = model.result;
+        this.total_time =
+          model.time_wait + model.time_wait + model.time_pending;
         this.time_done = model.time_done;
         this.time_pending = model.time_pending;
         this.time_wait = model.time_wait;
+        debugger
         var total = model.time_wait + model.time_pending + model.time_done;
-        this.total_time=total;
         this.time_done_pie = Math.round( (model.time_done / total) * 100);
         this.time_pending_pie = Math.round((model.time_pending / total) * 100);
         this.time_wait_pie = Math.round((model.time_wait / total) * 100);

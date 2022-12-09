@@ -1,0 +1,150 @@
+<div class="w-full">
+  <div class="flex flex-col p-4">
+    <div class="flex justify-center">
+      <span class="font-bold text-3xl text-black">
+        BẢNG TÍNH KHỐI LƯỢNG CÔNG TÁC KHÁC CỦA GIẢNG VIÊN
+      </span>
+    </div>
+    <div class="flex justify-center">
+      <span class="font-bold text-3xl text-black">
+        Năm học
+      </span>
+    </div>
+    <!-- <mat-card>
+      <div class="flex">
+        <div class="flex-1  px-2">
+          <mat-label>Loại công việc</mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="filter.id_loai_cong_viec"  (selectionChange)="get_thong_ke_cong_viec_nguoi_dung()">
+              <mat-option *ngFor="let item of lst_loai_cong_viec" [value]="item.id">
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex">
+        <div class="flex-1 px-2">
+          <mat-label>Từ ngày
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput [matDatepicker]="picker"  [(ngModel)]="filter.tu">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="flex-1 px-2">
+          <mat-label>Đến ngày
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="filter.den">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex justify-end mt-5">
+        <div class="flex justify-end mr-10">
+          <button mat-raised-button color="primary" (click)="export_Excel()">
+            <mat-icon>cloud_download</mat-icon> Export Excel
+          </button>
+        </div>
+        <div class="flex justify-end mr-10">
+          <button mat-raised-button (click)="get_thong_ke_cong_viec_nguoi_dung()">Tìm kiếm</button>
+        </div>
+        </div>
+    </mat-card> -->
+    <mat-progress-bar *ngIf="loading==false" mode="indeterminate"></mat-progress-bar>
+    <!-- <mat-card *ngIf="loading==true" class="mt-5">
+      <div>
+        <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'500px'}"></canvasjs-chart>
+      </div>
+    </mat-card> -->
+    <mat-card class="mt-5">
+      <div>
+        <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px'}"></canvasjs-chart>
+      </div>
+    </mat-card>
+    <div class="flex mt-10">
+      <mat-card class="w-full">
+        <table class="w-full table_admin">
+          <thead class="">
+            <th class=" text-base">
+              Loại công việc
+            </th>
+            <th class=" text-base">Công việc</th>
+            <th class=" text-base">Loại</th>
+            <th class=" text-base">Số giờ tổng</th>
+            <th class=" text-base">Số giờ thực</th>
+          </thead>
+          <tbody *ngFor="let item of listData ; index as i">
+            <tr *ngIf="item.list_cong_viec.length != 0">
+              <td class="" colspan="5">
+                {{ item.ten_loai_cong_viec}}
+              </td>
+            </tr>
+            <tr *ngFor="let item2 of item.list_cong_viec">
+              <td></td>
+              <td class="">
+                {{ item2.ten_cong_viec}}
+              </td>
+              <td class="">
+                <span *ngIf="item2.loai==1">
+                  Cá nhân
+                </span>
+                <span *ngIf="item2.loai==2">
+                  Tập thể
+                </span>
+              </td>
+              <td class="">
+                <span *ngIf="item2.loai==2">
+                  {{ item2.so_gio_cv}}/Số giảng viên
+                </span>
+                <span *ngIf="item2.loai==1">
+                  {{ item2.so_gio_cv}}/Lần
+                </span>
+              </td>
+              <td class="">
+                {{ item2.so_gio}}
+              </td>
+            </tr>
+          </tbody>
+          <tbody>
+            <tr>
+              <td colspan="3">
+                Tổng số giờ đã hoàn thành:
+              </td>
+              <td colspan="2">
+                {{ time_done}}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                Tổng số giờ đang thực hiện:
+              </td>
+              <td colspan="2">
+                {{ time_pending}}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                Tổng số giờ chưa thực hiện:
+              </td>
+              <td colspan="2">
+                {{ time_wait}}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                Tổng cộng:
+              </td>
+              <td colspan="2">
+                {{ total_time}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card>
+    </div>
+  </div>
+</div>
