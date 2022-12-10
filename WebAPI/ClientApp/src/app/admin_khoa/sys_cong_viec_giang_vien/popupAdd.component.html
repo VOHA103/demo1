@@ -5,6 +5,7 @@
   <div class="w-full p-6 sm:p-8 space-y-1 overflow-y-auto">
     <div class="flex flex-col">
       <div class="flex">
+        <!-- select công việc -->
         <div class="flex-1 px-2">
           <mat-label>Công việc
             <span *ngFor="let key of check_error">
@@ -19,22 +20,9 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="flex-1 px-2">
-          <mat-label>Khoa
-            <span *ngFor="let key of check_error">
-              <span style="color:red" *ngIf="key.key=='db.id_khoa'">({{key.value}})</span>
-            </span>
-          </mat-label>
-          <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="record.db.id_khoa">
-              <mat-option *ngFor="let item of lst_khoa" [value]="item.id">
-                {{ item.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
       </div>
       <div class="flex">
+
         <div class="flex-1 px-2">
           <mat-label>Bộ môn
             <span *ngFor="let key of check_error">
@@ -49,7 +37,25 @@
             </mat-select>
           </mat-form-field>
         </div>
+        <!-- select loại chọn tất cả hay cụ thể  -->
         <div class="flex-1 px-2">
+          <mat-label class="mb-5">Chọn
+            <span *ngFor="let key of check_error">
+              <span style="color:red" *ngIf="key.key=='list_giang_vien'">({{key.value}})</span>
+            </span>
+          </mat-label>
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-select [(ngModel)]="record.check_all">
+              <mat-option *ngFor="let item of list_option" [value]="item.id">{{
+                item.name
+                }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- select giảng viên -->
+      <div class="flex">
+        <div class="flex-1 px-2" *ngIf="record.check_all==1">
           <mat-label class="mb-5">Giảng viên
             <span *ngFor="let key of check_error">
               <span style="color:red" *ngIf="key.key=='list_giang_vien'">({{key.value}})</span>
@@ -90,7 +96,6 @@
           </mat-form-field>
         </div>
       </div>
-
       <div class="flex">
         <div class="flex-1 px-2">
           <mat-label>Giờ

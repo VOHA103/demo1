@@ -43,8 +43,9 @@ namespace WebAPI.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> ImportFromExcel()
         {
-            var error = "";
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var GV = _context.sys_giang_vien.Where(q => q.id == user_id).SingleOrDefault();
+            var error = "";
             IFormFile file = Request.Form.Files[0];
 
             string folderName = "import_excel";
@@ -159,7 +160,7 @@ namespace WebAPI.Controllers
                         var ten_giang_vien = (fileImport[0].value.ToString() ?? "").Trim();
                         var ma_giang_vien = (fileImport[1].value.ToString() ?? "").Trim();
                         var chuc_vu = (fileImport[2].value.ToString() ?? "").Trim();
-                        var khoa = (fileImport[3].value.ToString() ?? "").Trim();
+                        var bo_mon = (fileImport[3].value.ToString() ?? "").Trim();
                         var chuyen_nghanh = (fileImport[4].value.ToString() ?? "").Trim();
                         var so_dien_thoai = (fileImport[5].value.ToString() ?? "").Trim();
                         var email = (fileImport[6].value.ToString() ?? "").Trim();
@@ -184,16 +185,16 @@ namespace WebAPI.Controllers
                                 error += "Không có khoa tại dòng" + (ct + 1) + "<br />";
                             }
                         }
-                        if (khoa == null || khoa == "")
+                        if (bo_mon == null || bo_mon == "")
                         {
                             error += "Phải nhập khoa vụ tại dòng" + (ct + 1) + "<br />";
                         }
                         else
                         {
-                            var id_khoa = _context.sys_khoa.Where(q => q.ten_khoa.ToLower().Trim().Equals(khoa.ToLower().Trim())).Select(q => q.id).SingleOrDefault();
-                            if (id_khoa != 0)
+                            var id_bo_mon = _context.sys_bo_mon.Where(q => q.ten_bo_mon.ToLower().Trim().Equals(bo_mon.ToLower().Trim()) && q.id_khoa == GV.id_khoa).Select(q => q.id).SingleOrDefault();
+                            if (id_bo_mon != 0)
                             {
-                                model.db.id_khoa = id_khoa;
+                                model.db.id_bo_mon = id_bo_mon;
                             }
                             else
                             {
@@ -206,7 +207,7 @@ namespace WebAPI.Controllers
                         }
                         else
                         {
-                            var id_chuyen_nghanh = _context.sys_chuyen_nganh.Where(q => q.ten_chuyen_nganh.ToLower().Trim().Equals(chuyen_nghanh.ToLower().Trim())).Select(q => q.id).SingleOrDefault();
+                            var id_chuyen_nghanh = _context.sys_chuyen_nganh.Where(q => q.ten_chuyen_nganh.ToLower().Trim()==chuyen_nghanh.ToLower().Trim() && q.id_khoa==GV.id_khoa).Select(q => q.id).SingleOrDefault();
                             if (id_chuyen_nghanh != 0)
                             {
                                 model.db.id_chuyen_nghanh = id_chuyen_nghanh;
@@ -226,6 +227,7 @@ namespace WebAPI.Controllers
                             if (id_ma_giang_vien == 0)
                             {
                                 model.db.ma_giang_vien = ma_giang_vien;
+                        model.db.username = ma_giang_vien;
                             }
                             else
                             {
@@ -233,9 +235,7 @@ namespace WebAPI.Controllers
                             }
                         }
 
-
-                        model.db.ma_giang_vien = ma_giang_vien;
-                        model.db.username = ma_giang_vien;
+                        model.db.id_khoa = GV.id_khoa;
                         model.db.ten_giang_vien = ten_giang_vien;
                         model.db.email = email;
                         model.db.sdt = so_dien_thoai;

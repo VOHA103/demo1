@@ -98,9 +98,9 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
         )
         .subscribe((res) => {
           console.log(res);
+            this.DataHanlder();
           if (res == '') {
             Swal.fire('Lưu thành công', '', 'success');
-            this.DataHanlder();
           } else {
             Swal.fire(res.toString(), '', 'warning');
           }
@@ -149,7 +149,6 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
       return {
         ten_giang_vien: data.ten_giang_vien,
         ten_cong_viec: data.ten_cong_viec,
-        status_del: data.db.status_del,
         create_name: data.create_name,
         create_date: data.db.create_date,
         note: data.db.note,
@@ -163,7 +162,6 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
       myHeader: [
         'Tên giảng viên',
         'Công việc',
-        'Trạng thái',
         'Người tạo',
         'Ngày tạo',
         'Ghi chú',

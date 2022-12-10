@@ -93,8 +93,8 @@ export class sys_giang_vien_khoa_indexComponent implements OnInit {
         .post(this.REST_API_URL+'/sys_giang_vien/ImportFromExcel/', formData, {})
         .subscribe((res) => {
             console.log(res);
-          if (res == '') {
-
+            this.DataHanlderKhoa();
+          if (res === '') {
             Swal.fire('Lưu thành công', '', 'success');
             this.DataHanlderKhoa();
           } else {

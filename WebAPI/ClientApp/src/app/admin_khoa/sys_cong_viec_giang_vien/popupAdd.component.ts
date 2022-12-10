@@ -30,6 +30,7 @@ export class sys_cong_viec_giang_vien_popupComponent {
   public lst_bo_mon: any = [];
   public lst_phut: any = [];
   public lst_gio: any = [];
+  public list_option: any = [];
   public action: any;
   constructor(
     private http: HttpClient,
@@ -93,8 +94,13 @@ export class sys_cong_viec_giang_vien_popupComponent {
         });
       });
   }
+  // get_list_cong_viec(): void {
+  //   this.sys_cong_viec_service.get_list_cong_viec().subscribe((result) => {
+  //     this.list_cong_viec = result;
+  //   });
+  // }
   get_list_cong_viec(): void {
-    this.sys_cong_viec_service.get_list_cong_viec().subscribe((result) => {
+    this.sys_cong_viec_service.change_cong_viec_khoa().subscribe((result) => {
       this.list_cong_viec = result;
     });
   }
@@ -110,6 +116,16 @@ export class sys_cong_viec_giang_vien_popupComponent {
   }
   ngOnInit(): void {
     this.get_list_cong_viec();
+    this.list_option = [
+      {
+        id: -1,
+        name: 'Tất cả',
+      },
+      {
+        id: 1,
+        name: 'Chọn',
+      },
+    ];
     this.lst_gio = [
       {
         id: '1',

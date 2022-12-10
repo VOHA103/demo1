@@ -22,5 +22,6 @@ namespace WebAPI.System
         public int? id_bo_mon { get; set; }
         public int? id_khoa { get; set; }
         public string note { get; set; }
+        public string thoi_gian { get; set; }
     }
 }

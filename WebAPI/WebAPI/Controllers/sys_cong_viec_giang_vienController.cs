@@ -399,6 +399,7 @@ namespace WebAPI.Controllers
               .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || q.ten_giang_vien.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
               .Where(q => q.db.id_bo_mon == filter.id_bo_mon || filter.id_bo_mon == -1)
               .Where(q => q.db.id_khoa == id_khoa)
+              .Where(q => q.id_loai_cong_viec == filter.id_loai_cong_viec || filter.id_loai_cong_viec == -1)
               .ToList();
             var time_now = DateTime.Now;
             result.ForEach(q =>
@@ -412,12 +413,11 @@ namespace WebAPI.Controllers
                     q.trang_thai = 2;
             });
             result = result.Where(q => q.trang_thai == filter.status_del || filter.status_del == -1)
-              .Where(q => q.id_loai_cong_viec == filter.id_loai_cong_viec || filter.id_loai_cong_viec == -1)
               .ToList();
             var count = result.Count();
             var model = new
             {
-                data = result.OrderByDescending(q => q.db.create_date),
+                data = result.OrderByDescending(q => q.db.ngay_bat_dau),
                 total = count,
             };
             return Ok(model);
@@ -519,36 +519,41 @@ namespace WebAPI.Controllers
             try
             {
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
-                var error = sys_cong_viec_giang_vien_part.check_error_insert_update(data);
+                var GV = _context.sys_giang_vien.Where(q => q.id == user_id).SingleOrDefault();
+                var error = sys_cong_viec_giang_vien_part.check_error_insert_update_bo_mon_khoa(data);
                 if (error.Count() == 0)
                 {
                     var work = _context.sys_cong_viec.Where(q => q.id == data.db.id_cong_viec).Select(q => new sys_cong_viec_model
                     {
                         db = q,
                     }).SingleOrDefault();
+                    var list_giang_vien = data.list_giang_vien;
+                    if (data.check_all == -1)
+                    {
+                        list_giang_vien = _context.sys_giang_vien.Where(q => q.id_khoa == GV.id_khoa && q.id_bo_mon == GV.id_bo_mon).Select(q => q.id).ToList();
+                    }
                     var time_work = 0;
                     if (work.db.loai == 2)
                     {
-                        time_work = work.db.so_gio / data.list_giang_vien.Count() ?? 0;
+                        time_work = work.db.so_gio / list_giang_vien.Count() ?? 0;
                     }
                     data.db.update_date = DateTime.Now;
                     data.db.create_date = DateTime.Now;
+                    data.db.ngay_bat_dau = data.db.ngay_bat_dau.Value.AddDays(1);
+                    data.db.ngay_ket_thuc = data.db.ngay_bat_dau.Value.AddDays(1);
                     data.db.create_by = user_id;
                     data.db.update_by = user_id;
                     data.db.status_del = 1;
+                    data.db.id_bo_mon = data.db.id_bo_mon;
+                    data.db.id_khoa = GV.id_khoa;
                     data.db.so_gio = time_work;
-                    var list_giang_vien = data.list_giang_vien;
-                    if (list_giang_vien.Count() > 1 && list_giang_vien.Contains("-1"))
-                    {
-                        list_giang_vien = _context.sys_giang_vien.Where(q => q.id_khoa == data.db.id_khoa && q.id_chuc_vu == data.db.id_chuc_vu).Select(q => q.id).ToList();
-                    }
+                    data.db.thoi_gian = data.gio+":"+data.phut;
                     for (int i = 0; i < list_giang_vien.Count(); i++)
                     {
                         var id_giang_vien = list_giang_vien[i];
                         data.db.id = get_id_primary_key();
                         data.db.id_giang_vien = id_giang_vien;
                         var giang_vien = _context.sys_giang_vien.Where(q => q.id == id_giang_vien).Select(q => q.email).SingleOrDefault();
-
                         Mail.send_work(giang_vien, work, time_work);
                         _context.sys_cong_viec_giang_vien.Add(data.db);
                         _context.SaveChanges();
@@ -573,6 +578,7 @@ namespace WebAPI.Controllers
         {
             var error = "";
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
+            var GV = _context.sys_giang_vien.Where(q => q.id == user_id).SingleOrDefault();
             IFormFile file = Request.Form.Files[0];
 
             string folderName = "import_excel";
@@ -685,9 +691,13 @@ namespace WebAPI.Controllers
                         var model = new sys_cong_viec_giang_vien_model();
 
                         var ten_cong_viec = (fileImport[0].value.ToString() ?? "").Trim();
-                        var ten_giang_vien = (fileImport[1].value.ToString() ?? "").Trim();
-                        var chuc_vu = (fileImport[2].value.ToString() ?? "").Trim();
-                        var khoa = (fileImport[3].value.ToString() ?? "").Trim();
+                        var bo_mon = (fileImport[1].value.ToString() ?? "").Trim();
+                        var ma_giang_vien = (fileImport[2].value.ToString() ?? "").Trim();
+                        var ten_giang_vien = (fileImport[3].value.ToString() ?? "").Trim();
+                        var ngay_bat_dau = (fileImport[4].value.ToString() ?? "").Trim();
+                        var ngay_ket_thuc = (fileImport[5].value.ToString() ?? "").Trim();
+                        var gio = (fileImport[6].value.ToString() ?? "").Trim();
+                        var phut = (fileImport[7].value.ToString() ?? "").Trim();
 
 
                         if (String.IsNullOrEmpty(ten_cong_viec))
@@ -696,7 +706,7 @@ namespace WebAPI.Controllers
                         }
                         else
                         {
-                            var cong_viec = _context.sys_cong_viec.Where(q => q.ten_cong_viec.ToLower().Trim() == ten_cong_viec.ToLower().Trim()).Select(q => q.id).SingleOrDefault();
+                            var cong_viec = _context.sys_cong_viec.Where(q => q.ten_cong_viec.ToLower().Trim() == ten_cong_viec.ToLower().Trim() && q.id_khoa == GV.id_khoa).Select(q => q.id).SingleOrDefault();
                             if (cong_viec == null)
                             {
 
@@ -705,13 +715,13 @@ namespace WebAPI.Controllers
                             else
                                 model.db.id_cong_viec = cong_viec;
                         }
-                        if (String.IsNullOrEmpty(ten_giang_vien))
+                        if (String.IsNullOrEmpty(ma_giang_vien))
                         {
                             error += "Phải nhập giảng viên tại dòng" + (ct + 1) + "<br />";
                         }
                         else
                         {
-                            var giang_vien = _context.sys_giang_vien.Where(q => q.ten_giang_vien.ToLower().Trim() == ten_giang_vien.ToLower().Trim()).Select(q => q.id).SingleOrDefault();
+                            var giang_vien = _context.sys_giang_vien.Where(q => q.ma_giang_vien.ToLower().Trim() == ma_giang_vien.ToLower().Trim()).Select(q => q.id).SingleOrDefault();
                             if (giang_vien == null)
                             {
 
@@ -720,39 +730,22 @@ namespace WebAPI.Controllers
                             else
                                 model.db.id_giang_vien = giang_vien;
                         }
-                        if (chuc_vu == null || chuc_vu == "")
+                        if (bo_mon == null || bo_mon == "")
                         {
-                            error += "Phải nhập chức vụ tại dòng" + (ct + 1) + "<br />";
+                            error += "Phải nhập bộ môn tại dòng" + (ct + 1) + "<br />";
                         }
                         else
                         {
-                            var id_chuc_vu = _context.sys_chuc_vu.Where(q => q.ten_chuc_vu.ToLower().Trim().Equals(chuc_vu.ToLower().Trim())).Select(q => q.id).SingleOrDefault();
-                            if (id_chuc_vu != 0)
+                            var id_bo_mon = _context.sys_bo_mon.Where(q => q.ten_bo_mon.ToLower().Trim().Equals(bo_mon.ToLower().Trim()) && q.id_khoa == GV.id_khoa).Select(q => q.id).SingleOrDefault();
+                            if (id_bo_mon != 0)
                             {
-                                model.db.id_chuc_vu = id_chuc_vu;
-                            }
+                                model.db.id_bo_mon = id_bo_mon;
+                            }   
                             else
                             {
-                                error += "Không có khoa tại dòng" + (ct + 1) + "<br />";
+                                error += "Không có bộ môn tại dòng" + (ct + 1) + "<br />";
                             }
                         }
-                        if (khoa == null || khoa == "")
-                        {
-                            error += "Phải nhập khoa vụ tại dòng" + (ct + 1) + "<br />";
-                        }
-                        else
-                        {
-                            var id_khoa = _context.sys_khoa.Where(q => q.ten_khoa.ToLower().Trim().Equals(khoa.ToLower().Trim())).Select(q => q.id).SingleOrDefault();
-                            if (id_khoa != 0)
-                            {
-                                model.db.id_khoa = id_khoa;
-                            }
-                            else
-                            {
-                                error += "Không có khoa tại dòng" + (ct + 1) + "<br />";
-                            }
-                        }
-
                         if (!string.IsNullOrEmpty(error))
                         {
 
@@ -765,7 +758,10 @@ namespace WebAPI.Controllers
                             model.db.update_by = user_id;
                             model.db.id = get_id_primary_key();
                             model.db.status_del = 1;
-
+                            model.db.id_khoa = GV.id_khoa;
+                            model.db.thoi_gian = gio+":"+phut;
+                            model.db.ngay_bat_dau = DateTime.Parse(ngay_bat_dau);
+                            model.db.ngay_ket_thuc = DateTime.Parse(ngay_ket_thuc);
                             _context.sys_cong_viec_giang_vien.Add(model.db);
                             _context.SaveChanges();
 

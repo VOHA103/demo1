@@ -158,12 +158,9 @@
                 </span>
               </td>
               <td class="">
-                <div *ngIf="item.trang_thai==1" class="border-2 border-black rounded-full w-8 h-8"
-                  style="background-color: rgb(16, 188, 56);"></div>
-                <div *ngIf="item.trang_thai==2" class="border-2 border-black rounded-full w-8 h-8"
-                  style="background-color: rgb(188, 23, 39);"></div>
-                <div *ngIf="item.trang_thai==3" class="border-2 border-black rounded-full w-8 h-8"
-                  style="background-color: rgb(230, 238, 22);"></div>
+                <div style="color:#a40000" *ngIf="item.trang_thai==1">Đã hết hạn</div>
+                <div style="color:#bbd306" *ngIf="item.trang_thai==2">Chưa thực hiện</div>
+                <div style="color:#1de53e" *ngIf="item.trang_thai==3">Đang thực hiện</div>
               </td>
               <td class="">
                 {{ item.create_name }}

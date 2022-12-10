@@ -150,6 +150,8 @@ namespace WebAPI.Controllers
                     db.ten_cong_viec = model.db.ten_cong_viec;
                     db.status_del = 1;
                     db.loai = model.db.loai;
+                    db.ngay_bat_dau = model.db.ngay_bat_dau.Value.AddDays(1);
+                    db.ngay_ket_thuc = model.db.ngay_ket_thuc.Value.AddDays(1);
                     await _context.SaveChangesAsync();
                 }
                 var result = new
@@ -235,14 +237,15 @@ namespace WebAPI.Controllers
             cong_viec_giang_vien.db.id_cong_viec = model.db.id;
             cong_viec_giang_vien.db.id_khoa = model.db.id_khoa;
             cong_viec_giang_vien.db.id_bo_mon = model.id_bo_mon;
-            cong_viec_giang_vien.db.ngay_bat_dau = model.db.ngay_bat_dau;
-            cong_viec_giang_vien.db.ngay_ket_thuc = model.db.ngay_ket_thuc;
+            cong_viec_giang_vien.db.ngay_bat_dau = model.db.ngay_bat_dau.Value.AddDays(1);
+            cong_viec_giang_vien.db.ngay_ket_thuc = model.db.ngay_ket_thuc.Value.AddDays(1);
             cong_viec_giang_vien.db.update_date = DateTime.Now;
             cong_viec_giang_vien.db.create_date = DateTime.Now;
             cong_viec_giang_vien.db.create_by = user_id;
             cong_viec_giang_vien.db.update_by = user_id;
             cong_viec_giang_vien.db.status_del = 1;
             cong_viec_giang_vien.db.so_gio = time_work;
+            cong_viec_giang_vien.db.thoi_gian = model.gio+":"+model.phut;
             cong_viec_giang_vien.db.id_giang_vien = id_giang_vien;
             var giang_vien = _context.sys_giang_vien.Where(q => q.id == id_giang_vien).Select(q => q.email).SingleOrDefault();
             _context.sys_cong_viec_giang_vien.Add(cong_viec_giang_vien.db);
