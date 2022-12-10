@@ -254,7 +254,7 @@ export class sys_cong_viec_giang_vien_admin_bo_mon_indexComponent implements OnI
       },
       {
         id: 1,
-        name: 'Hoàn thành',
+        name: 'Đã hết hạn',
       },
       {
         id: 2,

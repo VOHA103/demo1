@@ -1,9 +1,10 @@
 import { sys_user_service } from '../../service/sys_user.service';
 import { sys_cau_hinh_admin_service } from '../../service/sys_cau_hinh_admin.service';
 import { MatDialog } from '@angular/material/dialog';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { MatSidenav } from '@angular/material/sidenav';
 @Component({
   selector: 'nav_index',
   templateUrl: './nav.component.html',
@@ -23,6 +24,8 @@ export class nav_indexComponent implements OnInit {
   public id_user: any;
   public cau_hinh: any;
 
+  @ViewChild('sidenav') sidenav: MatSidenav;
+  public isOpened = false;
   anio: number = new Date().getFullYear();
   constructor(
     private router: Router,
@@ -32,6 +35,14 @@ export class nav_indexComponent implements OnInit {
     public dialog: MatDialog
   ) {
     this.currentYear = new Date('YYYY');
+  }
+  public openLeftSide() {
+    this.isOpened = !this.isOpened;
+    this.sidenav.toggle();
+  }
+
+  public closeLeftSide() {
+    this.isOpened = false;
   }
   show_hide() {
     if (this.opened == false) this.opened = true;

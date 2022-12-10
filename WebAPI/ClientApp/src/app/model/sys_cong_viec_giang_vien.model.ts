@@ -9,6 +9,8 @@ export class sys_cong_viec_giang_vien_model {
   ten_chuc_vu: string;
   ten_khoa: string;
   so_gio: number | null;
+  gio: string;
+  phut: string;
   trang_thai: number | null;
   check_all: number | null;
   list_giang_vien: string[];

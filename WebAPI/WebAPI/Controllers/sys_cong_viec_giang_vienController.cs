@@ -96,10 +96,14 @@ namespace WebAPI.Controllers
                   ten_khoa = _context.sys_khoa.Where(q => q.id == _context.sys_giang_vien.Where(q => q.id == d.id_giang_vien).Select(q => q.id_khoa).SingleOrDefault()).Select(q => q.ten_khoa).SingleOrDefault(),
                   ten_cong_viec = _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.ten_cong_viec).SingleOrDefault(),
                   ten_loai_cong_viec = _context.sys_loai_cong_viec.Where(q => q.id == _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.id_loai_cong_viec).SingleOrDefault()).Select(q => q.ten_loai_cong_viec).SingleOrDefault(),
+                  id_loai_cong_viec = _context.sys_cong_viec.Where(q => q.id == d.id_cong_viec).Select(q => q.id_loai_cong_viec).SingleOrDefault(),
               })
               .Where(q => q.db.id_bo_mon == GV.id_bo_mon)
               .Where(q => q.db.id_khoa == GV.id_khoa)
+              .Where(q => q.db.ngay_bat_dau >= filter.tu)
+              .Where(q => q.db.ngay_ket_thuc <= filter.den)
               .Where(q => q.db.id_cong_viec == filter.id_cong_viec || filter.id_cong_viec == "")
+              .Where(q => q.id_loai_cong_viec == filter.id_loai_cong_viec || filter.id_loai_cong_viec == -1)
               .Where(q => q.ten_cong_viec.Trim().ToLower().Contains(filter.search.Trim().ToLower()) || filter.search == "")
               .ToList();
             var time_now = DateTime.Now;
@@ -115,13 +119,11 @@ namespace WebAPI.Controllers
                     q.trang_thai = 2;
             });
             result = result.Where(q => q.trang_thai == filter.status_del || filter.status_del == -1)
-              .Where(q => q.db.ngay_bat_dau >= filter.tu)
-              .Where(q => q.db.ngay_ket_thuc <= filter.den)
               .ToList();
             count = result.Count();
             var model = new
             {
-                data = result.OrderByDescending(q => q.db.create_date).ToList(),
+                data = result.OrderByDescending(q => q.db.ngay_bat_dau).ToList(),
                 total = count,
             };
             return Ok(model);
@@ -164,7 +166,7 @@ namespace WebAPI.Controllers
             var count = result.Count();
             var model = new
             {
-                data = result.OrderByDescending(q => q.db.create_date).ToList(),
+                data = result.OrderByDescending(q => q.db.ngay_bat_dau).ToList(),
                 total = count,
             };
             return Ok(model);

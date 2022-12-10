@@ -10,19 +10,7 @@
         Năm học
       </span>
     </div>
-    <!-- <mat-card>
-      <div class="flex">
-        <div class="flex-1  px-2">
-          <mat-label>Loại công việc</mat-label>
-          <mat-form-field appearance="outline" class="w-full">
-            <mat-select [(ngModel)]="filter.id_loai_cong_viec"  (selectionChange)="get_thong_ke_cong_viec_nguoi_dung()">
-              <mat-option *ngFor="let item of lst_loai_cong_viec" [value]="item.id">
-                {{ item.name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
+    <mat-card>
       <div class="flex">
         <div class="flex-1 px-2">
           <mat-label>Từ ngày
@@ -45,27 +33,17 @@
       </div>
       <div class="flex justify-end mt-5">
         <div class="flex justify-end mr-10">
-          <button mat-raised-button color="primary" (click)="export_Excel()">
-            <mat-icon>cloud_download</mat-icon> Export Excel
-          </button>
-        </div>
-        <div class="flex justify-end mr-10">
-          <button mat-raised-button (click)="get_thong_ke_cong_viec_nguoi_dung()">Tìm kiếm</button>
+          <button mat-raised-button (click)="DataHanlder()">Tìm kiếm</button>
         </div>
         </div>
-    </mat-card> -->
+    </mat-card>
     <mat-progress-bar *ngIf="loading==false" mode="indeterminate"></mat-progress-bar>
-    <!-- <mat-card *ngIf="loading==true" class="mt-5">
-      <div>
-        <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'500px'}"></canvasjs-chart>
-      </div>
-    </mat-card> -->
-    <mat-card class="mt-5">
+    <mat-card class="mt-5" *ngIf="loading==true" >
       <div>
         <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px'}"></canvasjs-chart>
       </div>
     </mat-card>
-    <div class="flex mt-10">
+    <div class="flex mt-10" *ngIf="loading==true" >
       <mat-card class="w-full">
         <table class="w-full table_admin">
           <thead class="">

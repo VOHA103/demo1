@@ -111,12 +111,13 @@ export class sys_cong_viec_giang_vien_indexComponent implements OnInit {
     this.p = event;
     this.DataHanlder();
   }
-  openDialogDetail(item): void {
+  openDialogDetail(model): void {
+    model.actionEnum=1;
     const dialogRef = this.dialog.open(
       sys_cong_viec_giang_vien_popupComponent,
       {
         width: '850px',
-        data: item,
+        data: model,
       }
     );
 

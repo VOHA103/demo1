@@ -11,6 +11,27 @@ namespace WebAPI.Part
     public static class sys_cong_viec_part
     {
         private static readonly ApplicationDbContext _context;
+        public static List<check_error> check_error_update(sys_cong_viec_model item)
+        {
+            List<check_error> list_error = new List<check_error>();
+            if (string.IsNullOrEmpty(item.db.ten_cong_viec))
+            {
+                list_error.Add(set_error.set("db.ten_cong_viec", "Bắt buộc"));
+            }
+            if (item.db.id_loai_cong_viec == 0)
+            {
+                list_error.Add(set_error.set("db.id_loai_cong_viec", "Bắt buộc"));
+            }
+            if (string.IsNullOrEmpty(item.db.so_gio.ToString()))
+            {
+                list_error.Add(set_error.set("db.so_gio", "Bắt buộc"));
+            }
+            if (string.IsNullOrEmpty(item.db.loai.ToString()))
+            {
+                list_error.Add(set_error.set("db.loai", "Bắt buộc"));
+            }
+            return list_error;
+        }
         public static List<check_error> check_error_insert_update(sys_cong_viec_model item)
         {
             List<check_error> list_error = new List<check_error>();

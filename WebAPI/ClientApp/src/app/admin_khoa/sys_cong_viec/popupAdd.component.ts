@@ -33,6 +33,7 @@ export class sys_cong_viec_popupComponent {
   public lst_khoa: any = [];
   public lst_chuc_vu: any = [];
   public lst_bo_mon: any = [];
+  public action: any;
   constructor(
     private http: HttpClient,
     private sys_cong_viec_service: sys_cong_viec_service,
@@ -41,9 +42,10 @@ export class sys_cong_viec_popupComponent {
     private sys_giang_vien_service: sys_giang_vien_service,
     private sys_bo_mon_service: sys_bo_mon_service,
     public dialogRef: MatDialogRef<sys_cong_viec_popupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: sys_cong_viec_model
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.record = data;
+    this.action = data.actionEnum;
     if (this.record.db.id == '0') this.Save();
     this.get_list_loai_cong_viec();
     this.load_filter();

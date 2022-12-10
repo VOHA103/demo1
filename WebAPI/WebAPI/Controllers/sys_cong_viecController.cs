@@ -133,29 +133,28 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
         [HttpPost("edit")]
-        public async Task<IActionResult> edit([FromBody] sys_cong_viec_model sys_cong_viec)
+        public async Task<IActionResult> edit([FromBody] sys_cong_viec_model model)
         {
             string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
             try
             {
-                var error = sys_cong_viec_part.check_error_insert_update(sys_cong_viec);
+                var error = sys_cong_viec_part.check_error_update(model);
                 if (error.Count() == 0)
                 {
-                    var model = _context.sys_cong_viec.Where(q => q.id == sys_cong_viec.db.id).SingleOrDefault();
-                    model.update_date = DateTime.Now;
-                    model.update_by = user_id;
-                    model.note = sys_cong_viec.db.note;
-                    model.id_loai_cong_viec = sys_cong_viec.db.id_loai_cong_viec;
-                    model.ten_cong_viec = sys_cong_viec.db.ten_cong_viec;
-                    model.status_del = 1;
-                    model.loai = sys_cong_viec.db.loai;
-                    model.ngay_bat_dau = sys_cong_viec.db.ngay_bat_dau.Value.AddDays(1);
-                    model.ngay_ket_thuc = sys_cong_viec.db.ngay_ket_thuc.Value.AddDays(1);
+                    var db = _context.sys_cong_viec.Where(q => q.id == model.db.id).SingleOrDefault();
+                    db.update_date = DateTime.Now;
+                    db.update_by = user_id;
+                    db.note = model.db.note;
+                    db.so_gio = model.db.so_gio;
+                    db.id_loai_cong_viec = model.db.id_loai_cong_viec;
+                    db.ten_cong_viec = model.db.ten_cong_viec;
+                    db.status_del = 1;
+                    db.loai = model.db.loai;
                     await _context.SaveChangesAsync();
                 }
                 var result = new
                 {
-                    data = sys_cong_viec,
+                    data = model,
                     error = error,
                 };
                 return Ok(result);

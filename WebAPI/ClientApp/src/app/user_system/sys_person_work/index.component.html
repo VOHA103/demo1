@@ -29,7 +29,7 @@
           <mat-label>Từ ngày
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <input matInput [matDatepicker]="picker"  [(ngModel)]="filter.tu">
+            <input matInput [matDatepicker]="picker" [(ngModel)]="filter.tu">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
@@ -51,8 +51,8 @@
         <button mat-raised-button (click)="DataHanlderUser()">Tìm kiếm</button>
       </div>
       <div class="flex justify-end mr-10">
-        <button mat-raised-button color="primary"   (click)="export_Excel()">
-          <mat-icon>cloud_download</mat-icon>  Export Excel
+        <button mat-raised-button color="primary" (click)="export_Excel()">
+          <mat-icon>cloud_download</mat-icon> Export Excel
         </button>
       </div>
 
@@ -62,15 +62,12 @@
 
         <table id="excel-table" class="w-full table_admin">
           <thead class="">
-            <!-- <th class=" text-base" style="width: 5%; height: 60px"></th> -->
             <th class=" text-base" style="width: 5%; height: 60px">
               STT
             </th>
-            <th class=" text-base" style="height: 60px">
-              Tên giảng viên
-            </th>
             <th class=" text-base" style="height: 60px">Công việc</th>
             <th class=" text-base" style="height: 60px">Trạng thái</th>
+            <th class=" text-base" style="height: 60px">Thời gian</th>
             <th class=" text-base" style="height: 60px">Người tạo</th>
             <th class=" text-base" style="height: 60px">Ngày tạo</th>
             <th class=" text-base" style="height: 60px">Ghi chú</th>
@@ -78,30 +75,10 @@
           <tbody
             *ngFor="let item of listData|paginate: { itemsPerPage: 5, currentPage: p, totalItems: total } ; index as i">
             <tr>
-              <!-- <td class="">
-                <div class="flex justify-center item-center">
-                  <div class="flex justify-center items-center ng-star-inserted" *ngIf="item.db.status_del==1"
-                    (click)="delete(item.db.id)"><span class="material-icons"
-                      style="color: rgb(255, 0, 0);">cancel</span></div>
-                  <div class="flex justify-center items-center ng-star-inserted" *ngIf="item.db.status_del==2"
-                    (click)="reven_status(item.db.id)"><span class="material-icons" style="color: rgb(16, 222, 36)">
-                      <mat-icon>done_outline</mat-icon>
-                    </span></div>
-                  <div class="flex justify-center items-center ng-star-inserted" (click)="openDialogDetail(item)"><span
-                      class="material-icons">
-                      <mat-icon>build</mat-icon>
-                    </span></div>
-                </div>
-              </td> -->
               <td class="">
                 <span class="p-4">
                   {{ i + 1 }}
                 </span>
-              </td>
-              <td class="">
-                <span>{{ item.ten_giang_vien }}</span><br>
-                <span>Chức vụ:{{ item.ten_chuc_vu }}</span><br>
-                <span>Khoa:{{ item.ten_khoa }}</span><br>
               </td>
               <td class="">
                 <span class="text-base text-blue-600">
@@ -115,12 +92,13 @@
                 </span>
               </td>
               <td class="">
-                <div *ngIf="item.trang_thai==1" class="border-2 border-black rounded-full w-8 h-8"
-                  style="background-color: rgb(16, 188, 56);"></div>
-                <div *ngIf="item.trang_thai==2" class="border-2 border-black rounded-full w-8 h-8"
-                  style="background-color: rgb(188, 23, 39);"></div>
-                <div *ngIf="item.trang_thai==3" class="border-2 border-black rounded-full w-8 h-8"
-                  style="background-color: rgb(230, 238, 22);"></div>
+                <div style="color:#a40000" *ngIf="item.trang_thai==1">Đã hết hạn</div>
+                <div style="color:#bbd306" *ngIf="item.trang_thai==2">Chưa thực hiện</div>
+                <div style="color:#1de53e" *ngIf="item.trang_thai==3">Đang thực hiện</div>
+              </td>
+              <td class="">
+                <span>Ngày bắt đầu : {{ item.db.ngay_bat_dau | date :'dd/MM/YYYY HH:mm' }}</span><br>
+                <span>Ngày kết thúc : {{ item.db.ngay_ket_thuc | date :'dd/MM/YYYY HH:mm' }}</span>
               </td>
               <td class="">
                 {{ item.create_name }}

@@ -57,6 +57,7 @@ export class sys_cong_viec_indexComponent implements OnInit {
      });
    }
   openDialogDetail(item): void {
+    item.actionEnum=1;
     const dialogRef = this.dialog.open(sys_cong_viec_popupComponent, {
       width: '850px',
       data: item,

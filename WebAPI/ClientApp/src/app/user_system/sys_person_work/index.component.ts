@@ -35,7 +35,6 @@ export class sys_person_work_indexComponent implements OnInit {
   constructor(
     private sys_cong_viec_service: sys_cong_viec_service,
     private sys_cong_viec_giang_vien_service: sys_cong_viec_giang_vien_service,
-    private sys_loai_cong_viec_service: sys_loai_cong_viec_service,
     public dialog: MatDialog
   ) {
     this.filter.id_cong_viec = "";

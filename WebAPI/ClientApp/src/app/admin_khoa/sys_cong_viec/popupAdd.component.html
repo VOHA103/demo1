@@ -61,10 +61,10 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8">
+      <div *ngIf="action!=1" class="flex flex-0 items-center justify-between h-16 pr-3 sm:pr-5 pl-6 sm:pl-8">
         <span class="text-lg font-medium">Thời gian/Giảng viên</span>
       </div>
-      <div class="flex">
+      <div class="flex" *ngIf="action!=1" >
         <div class="flex-1 px-2">
           <mat-label>Ngày bắt đầu
             <span *ngFor="let key of check_error">
@@ -90,7 +90,7 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="flex">
+      <div class="flex" *ngIf="action!=1" >
         <div class="flex-1 px-2">
           <mat-label>Giờ
             <span *ngFor="let key of check_error">
@@ -120,7 +120,7 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="flex">
+      <div class="flex" *ngIf="action!=1" >
         <div class="flex-1 px-2">
           <mat-label>Bộ môn
             <span *ngFor="let key of check_error">

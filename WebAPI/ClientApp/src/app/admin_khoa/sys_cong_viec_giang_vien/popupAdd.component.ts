@@ -20,7 +20,7 @@ import { sys_cong_viec_giang_vien_model } from '@/app/model/sys_cong_viec_giang_
   styleUrls: ['./popupAdd.component.scss'],
 })
 export class sys_cong_viec_giang_vien_popupComponent {
-  public sys_cong_viec_giang_vien_model = new sys_cong_viec_giang_vien_model();
+  public record = new sys_cong_viec_giang_vien_model();
   public lst_status: any = [];
   public list_cong_viec: any;
   public check_error: any = [];
@@ -28,6 +28,9 @@ export class sys_cong_viec_giang_vien_popupComponent {
   public lst_khoa: any = [];
   public lst_chuc_vu: any = [];
   public lst_bo_mon: any = [];
+  public lst_phut: any = [];
+  public lst_gio: any = [];
+  public action: any;
   constructor(
     private http: HttpClient,
     private sys_cong_viec_giang_vien_service: sys_cong_viec_giang_vien_service,
@@ -38,12 +41,10 @@ export class sys_cong_viec_giang_vien_popupComponent {
     private sys_bo_mon_service: sys_bo_mon_service,
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<sys_cong_viec_giang_vien_popupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: sys_cong_viec_giang_vien_model
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    //this.sys_cong_viec_giang_vien = data;
-    this.sys_cong_viec_giang_vien_model = data;
-    if (this.sys_cong_viec_giang_vien_model.db.id == '0') this.Save();
-    this.get_list_khoa();
+    this.record = data;
+    if (this.record.db.id == '0') this.Save();
     this.get_list_bo_mon();
   }
   Close(): void {
@@ -51,7 +52,7 @@ export class sys_cong_viec_giang_vien_popupComponent {
   }
   Save(): void {
     this.sys_cong_viec_giang_vien_service
-      .add(this.sys_cong_viec_giang_vien_model)
+      .add(this.record)
       .subscribe((result) => {
         var data: any = result;
         this.check_error = data.error;
@@ -69,7 +70,7 @@ export class sys_cong_viec_giang_vien_popupComponent {
   }
   Edit(): void {
     this.sys_cong_viec_giang_vien_service
-      .edit(this.sys_cong_viec_giang_vien_model)
+      .edit(this.record)
       .subscribe((result) => {
         Swal.fire({
           icon: 'success',
@@ -81,45 +82,150 @@ export class sys_cong_viec_giang_vien_popupComponent {
         });
       });
   }
-  get_list_giang_vien(id_chuc_vu:any,id_khoa:any ): void {
-    debugger
-    this.sys_giang_vien_service.get_list_giang_vien_change(id_chuc_vu,id_khoa).subscribe((result) => {
-      this.list_giang_vien = result;
-      this.list_giang_vien.splice(0,0,{id:"-1",name:"Tất cả"})
-    });
+  get_list_giang_vien(): void {
+    this.sys_giang_vien_service
+      .get_list_giang_vien_bo_mon(this.record.db.id_bo_mon)
+      .subscribe((result) => {
+        if (this.record.db.id_bo_mon != -1) this.list_giang_vien = result;
+        this.list_giang_vien = this.list_giang_vien.split(0, 0, {
+          id: '-1',
+          name: 'Tất cả',
+        });
+      });
   }
   get_list_cong_viec(): void {
     this.sys_cong_viec_service.get_list_cong_viec().subscribe((result) => {
       this.list_cong_viec = result;
     });
   }
-  get_list_khoa(): void {
-    this.sys_khoa_service
-      .get_list_khoa()
-      .subscribe((data) => {
-        this.lst_khoa = data
-        this.sys_cong_viec_giang_vien_model.db.id_khoa=this.lst_khoa[0].id;
-        this.get_list_chuc_vu();
-      });
-  }
   get_list_bo_mon(): void {
-    this.sys_bo_mon_service
-      .get_list_bo_mon()
-      .subscribe((data) => (this.lst_bo_mon = data));
-  }
-  get_list_chuc_vu(): void {
-    this.sys_chuc_vu_service
-      .get_list_chuc_vu()
-      .subscribe((data) => {
-        debugger
-        this.lst_chuc_vu = data
-        debugger
-        this.sys_cong_viec_giang_vien_model.db.id_chuc_vu=this.lst_chuc_vu[0].id;
-        this.get_list_giang_vien(this.sys_cong_viec_giang_vien_model.db.id_chuc_vu,this.sys_cong_viec_giang_vien_model.db.id_khoa);
+    this.sys_bo_mon_service.get_list_bo_mon().subscribe((data) => {
+      this.lst_bo_mon = data;
+      this.lst_bo_mon = this.lst_bo_mon.split(0, 0, {
+        id: -1,
+        name: 'Tất cả',
       });
+      this.record.db.id_bo_mon = -1;
+    });
   }
   ngOnInit(): void {
     this.get_list_cong_viec();
+    this.lst_gio = [
+      {
+        id: '1',
+        name: '1',
+      },
+      {
+        id: '2',
+        name: '2',
+      },
+      {
+        id: '3',
+        name: '3',
+      },
+      {
+        id: '4',
+        name: '4',
+      },
+      {
+        id: '5',
+        name: '5',
+      },
+      {
+        id: '6',
+        name: '6',
+      },
+      {
+        id: '7',
+        name: '7',
+      },
+      {
+        id: '8',
+        name: '8',
+      },
+      {
+        id: '9',
+        name: '9',
+      },
+      {
+        id: '10',
+        name: '10',
+      },
+      {
+        id: '11',
+        name: '11',
+      },
+      {
+        id: '12',
+        name: '12',
+      },
+      {
+        id: '13',
+        name: '13',
+      },
+      {
+        id: '14',
+        name: '14',
+      },
+      {
+        id: '15',
+        name: '15',
+      },
+      {
+        id: '16',
+        name: '16',
+      },
+      {
+        id: '17',
+        name: '17',
+      },
+      {
+        id: '18',
+        name: '18',
+      },
+      {
+        id: '19',
+        name: '19',
+      },
+      {
+        id: '20',
+        name: '20',
+      },
+      {
+        id: '21',
+        name: '21',
+      },
+      {
+        id: '22',
+        name: '22',
+      },
+      {
+        id: '23',
+        name: '23',
+      },
+      {
+        id: '24',
+        name: '24',
+      },
+    ];
+    this.lst_phut = [
+      {
+        id: '00',
+        name: '00',
+      },
+      {
+        id: '15',
+        name: '15',
+      },
+      {
+        id: '30',
+        name: '30',
+      },
+      {
+        id: '45',
+        name: '45',
+      },
+    ];
     this.lst_status = [
       {
         id: '1',
