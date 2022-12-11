@@ -79,10 +79,10 @@ namespace WebAPI.Controllers
                 if (error.Count() == 0)
                 {
                     sys_cau_hinh_admin.db.id = 0;
-                    sys_cau_hinh_admin.db.update_date = DateTime.Now;
-                    sys_cau_hinh_admin.db.create_date = DateTime.Now;
-                    sys_cau_hinh_admin.db.update_by = user_id;
-                    sys_cau_hinh_admin.db.status_del = 1;
+                    //sys_cau_hinh_admin.db.update_date = DateTime.Now;
+                    //sys_cau_hinh_admin.db.create_date = DateTime.Now;
+                    //sys_cau_hinh_admin.db.update_by = user_id;
+                    //sys_cau_hinh_admin.db.status_del = 1;
                     _context.sys_cau_hinh_admin.Add(sys_cau_hinh_admin.db);
                     await _context.SaveChangesAsync();
                 }
@@ -107,13 +107,13 @@ namespace WebAPI.Controllers
               .Select(d => new sys_cau_hinh_admin_model()
               {
                   db = d,
-                  create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
-                  update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+               //   create_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
+              //    update_name = _context.sys_giang_vien.Where(q => q.id == d.create_by).Select(q => q.ten_giang_vien).SingleOrDefault(),
               })
-              .Where(q => q.db.status_del == status_del)
+              //.Where(q => q.db.status_del == status_del)
               .Where(q => q.db.title == filter.search || filter.search == "")
               .ToList();
-            result = result.OrderByDescending(q => q.db.update_date).ToList();
+          //  result = result.OrderByDescending(q => q.db.update_date).ToList();
             var model = new
             {
                 data = result,
@@ -135,7 +135,7 @@ namespace WebAPI.Controllers
             //_context.sys_khoa.Remove(result);
 
             //cập nhập trạng thái ngưng sử dụng
-            result.status_del = 2;
+           // result.status_del = 2;
             _context.SaveChanges();
             return Ok();
         }
@@ -147,7 +147,7 @@ namespace WebAPI.Controllers
             //_context.sys_khoa.Remove(result);
 
             //cập nhập trạng thái sử dụng
-            result.status_del = 1;
+           // result.status_del = 1;
             _context.SaveChanges();
             return Ok(result);
         }
@@ -163,8 +163,8 @@ namespace WebAPI.Controllers
                 if (error.Count() == 0)
                 {
                     var model = _context.sys_cau_hinh_admin.Where(q => q.id == sys_cau_hinh_admin.db.id).SingleOrDefault();
-                    model.update_date = DateTime.Now;
-                    model.update_by = user_id;
+               //     model.update_date = DateTime.Now;
+              //      model.update_by = user_id;
                     model.note = sys_cau_hinh_admin.db.note;
                     model.title = sys_cau_hinh_admin.db.title;
                     model.image = sys_cau_hinh_admin.db.image;

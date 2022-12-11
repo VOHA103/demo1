@@ -59,7 +59,7 @@
         </div>
       </div>
       
-      <div class="flex">
+      <!-- <div class="flex">
         <div class="flex-1 px-2">
           <mat-label>Chuyên nghành
             <span *ngFor="let key of check_error">
@@ -67,7 +67,6 @@
             </span>
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <!-- [(ngModel)]="sys_giang_vien_model.db.id_chuc_vu"== [value]="item.id" -->
             <mat-select [(ngModel)]="sys_giang_vien_model.db.id_chuyen_nghanh">
               <mat-option *ngFor="let item of lst_chuyen_nghanh" [value]="item.id">
                 {{ item.name }}
@@ -82,7 +81,6 @@
             </span>
           </mat-label>
           <mat-form-field appearance="outline" class="w-full">
-            <!-- [(ngModel)]="sys_giang_vien_model.db.id_chuc_vu"== [value]="item.id" -->
             <mat-select [(ngModel)]="sys_giang_vien_model.db.id_bo_mon" >
               <mat-option *ngFor="let item of lst_bo_mon" [value]="item.id">
                 {{ item.name }}
@@ -90,7 +88,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-      </div>
+      </div> -->
       <div class="flex">
         <div class="flex-1 px-2">
           <mat-label>Số điện thoại

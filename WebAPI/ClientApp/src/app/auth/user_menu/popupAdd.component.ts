@@ -52,10 +52,8 @@ export class sys_giang_vien_edit_popupComponent {
   ) {
     this.record = data.data;
     this.action = data.action;
-    if(this.action!=1)
-    this.disabled==true;
-    else
-    this.disabled=false;
+    if (this.action != 1) this.disabled == true;
+    else this.disabled = false;
     if (this.record.db.id == '0') {
       this.Save();
     }
@@ -143,18 +141,5 @@ export class sys_giang_vien_edit_popupComponent {
         name: 'Khác',
       },
     ];
-    this.lst_chuyen_nghanh = [
-      {
-        id: 1,
-        name: 'Công Nghệ Thông Tin',
-      },
-      {
-        id: 2,
-        name: 'An Toàn Thông Tin',
-      },
-    ];
-    this.record.db.id_chuyen_nghanh = this.lst_chuyen_nghanh[0].id;
-    this.record.db.id_khoa = this.lst_khoa[0].id;
-    this.record.db.id_chuc_vu = this.lst_chuc_vu[0].id;
   }
 }

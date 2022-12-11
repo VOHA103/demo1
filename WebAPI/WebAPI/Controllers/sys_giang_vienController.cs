@@ -510,7 +510,7 @@ namespace WebAPI.Controllers
               .Where(q => q.db.id_chuyen_nghanh == filter.id_chuyen_nghanh || filter.id_chuyen_nghanh == -1)
               .ToList();
            
-            result = result.OrderByDescending(q => q.db.update_date).ToList();
+            result = result.OrderByDescending(q => q.db.create_date).ToList();
             var model = new
             {
                 data = result,
@@ -744,7 +744,7 @@ namespace WebAPI.Controllers
             try
             {
                 string user_id = User.Claims.FirstOrDefault(q => q.Type.Equals("UserID")).Value;
-                var error = sys_giang_vien_part.get_list_error(sys_giang_vien);
+                var error = sys_giang_vien_part.check_error_insert_update_admin(sys_giang_vien);
                 var check_ma_giang_vien = _context.sys_giang_vien.Where(q => q.username == sys_giang_vien.db.ma_giang_vien && q.status_del == 1).Select(q => q.ma_giang_vien).SingleOrDefault();
                 if (check_ma_giang_vien != null && sys_giang_vien.db.ma_giang_vien!="")
                 {

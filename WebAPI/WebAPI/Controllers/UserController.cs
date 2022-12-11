@@ -74,10 +74,10 @@ namespace WebAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> login(User users)
         {
-            if (users.name != "administrator")
-            {
+            //if (users.name != "administrator")
+            //{
                 users.pass = Libary.EncodeMD5(users.pass);
-            }
+            //}
             var model = _context.sys_giang_vien.Where(q => q.username.Trim() == users.name.Trim() && q.pass_word.Trim() == users.pass.Trim()).SingleOrDefault();
 
             if (model != null)

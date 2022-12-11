@@ -61,8 +61,6 @@ export class sys_giang_vien_popupComponent {
           var result:any;
         result=data;
         this.lst_khoa = result;
-        debugger
-        this.sys_giang_vien_model.db.id_khoa=this.lst_khoa[0].id
         });
   }
   get_list_chuc_vu(): void {
@@ -139,18 +137,5 @@ export class sys_giang_vien_popupComponent {
         name: 'Khác',
       },
     ];
-    this.lst_chuyen_nghanh = [
-      {
-        id: 1,
-        name: 'Công Nghệ Thông Tin',
-      },
-      {
-        id: 2,
-        name: 'An Toàn Thông Tin',
-      }
-    ];
-    this.sys_giang_vien_model.db.id_chuyen_nghanh=this.lst_chuyen_nghanh[0].id;
-    this.sys_giang_vien_model.db.id_khoa=this.lst_khoa[0].id;
-    this.sys_giang_vien_model.db.id_chuc_vu=this.lst_chuc_vu[0].id;
   }
 }

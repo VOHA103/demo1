@@ -30,6 +30,7 @@ export class sys_thong_ke_user_indexComponent implements OnInit {
   time_pending_pie: any;
   time_wait_pie: any;
   total_time: any;
+  anio: number = new Date().getFullYear();
   constructor(
     public dialog: MatDialog,
     private exportExcelService: ExportExcelService,
