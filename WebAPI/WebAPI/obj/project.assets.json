@@ -8826,11 +8826,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\DLoads\\khoa_luan_tot_nghiep\\WebAPI\\WebAPI\\WebAPI.csproj",
+      "projectUniqueName": "D:\\Downloads\\khoa_luan_tot_nghiep\\WebAPI\\WebAPI\\WebAPI.csproj",
       "projectName": "WebAPI",
-      "projectPath": "D:\\DLoads\\khoa_luan_tot_nghiep\\WebAPI\\WebAPI\\WebAPI.csproj",
+      "projectPath": "D:\\Downloads\\khoa_luan_tot_nghiep\\WebAPI\\WebAPI\\WebAPI.csproj",
       "packagesPath": "C:\\Users\\Thu Ha\\.nuget\\packages\\",
-      "outputPath": "D:\\DLoads\\khoa_luan_tot_nghiep\\WebAPI\\WebAPI\\obj\\",
+      "outputPath": "D:\\Downloads\\khoa_luan_tot_nghiep\\WebAPI\\WebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
